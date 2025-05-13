@@ -7,7 +7,8 @@
     <title>پروفایل من</title>
 
     <!-- Font Awesome از CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Bootstrap Icons از CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -29,7 +30,7 @@
             direction: rtl;
             text-align: right;
         }
- 
+
 
         .profile-header {
             background-color: #fff;
@@ -84,100 +85,86 @@
 
 
 </head>
+
 <body>
 
-<div class="container mt-3">
+    <div class="container mt-3">
 
-    <!-- هدر پروفایل -->
-    <div class="profile-header">
-        <div>
-            <div class="text-muted small">09199990467</div>
-            <div class="status">احراز نشده</div>
+        <!-- هدر پروفایل -->
+        <div class="profile-header">
+            <div>
+                <div class="text-muted small">09199990467</div>
+                <div class="status">احراز نشده</div>
+            </div>
+            <i class="bi bi-person-circle fs-2"></i>
         </div>
-        <i class="bi bi-person-circle fs-2"></i>
-    </div>
 
-    <!-- آیتم‌ها -->
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-gift-fill text-warning"></i>
-            <span>کارت هدیه </span>
+        <!-- آیتم‌ها -->
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-gift-fill text-warning"></i>
+                <span>کارت هدیه </span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-key-fill text-primary"></i>
-            <span>تغییر رمز عبور</span>
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-key-fill text-primary"></i>
+                <span>تغییر رمز عبور</span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-wallet-fill text-primary"></i>
-            <span>مدیریت کیف‌ها</span>
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-wallet-fill text-primary"></i>
+                <span>مدیریت کیف‌ها</span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-phone-fill text-primary"></i>
-            <span>دستگاه‌های متصل</span>
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-phone-fill text-primary"></i>
+                <span>دستگاه‌های متصل</span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-life-preserver text-primary"></i>
-            <span>پشتیبانی</span>
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-life-preserver text-primary"></i>
+                <span>پشتیبانی</span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <div class="menu-label">
-            <i class="bi bi-info-circle-fill text-primary"></i>
-            <span>درباره ما</span>
+        <div class="menu-item">
+            <div class="menu-label">
+                <i class="bi bi-info-circle-fill text-primary"></i>
+                <span>درباره ما</span>
+            </div>
+            <i class="bi bi-chevron-left"></i>
         </div>
-        <i class="bi bi-chevron-left"></i>
-    </div>
 
-    <div class="menu-item">
-        <a href="index.php" class="menu-label logout">
-        <div class="menu-label logout">
-            <i class="bi bi-box-arrow-right"></i>
-            <span>خروج از حساب</span>
+        <div class="menu-item">
+            <a href="index.php" class="menu-label logout">
+                <div class="menu-label logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>خروج از حساب</span>
+                </div>
+            </a>
         </div>
-        </a>
+
+        <div class="version-text">نسخه 1.0.4</div>
+
     </div>
-
-    <div class="version-text">نسخه 1.0.4</div>
-
-</div>
-<div class="bottom-navigation-bar">
+    <div class="bottom-navigation-bar">
         <div class="tf-container">
             <ul class="tf-navigation-bar">
-                <li class="active"><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"><i
-                    class="icon-user-outline"></i> پروفایل</a> </li>
-
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><i
-                            class="icon-history"></i> سوابق</a> </li>
-                            <li>
-                                <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <circle cx="9" cy="7" r="1" fill="#717171"/>
-                                    <circle cx="15" cy="7" r="1" fill="#717171"/>
-                                  </svg>
-                                  <span class="mt-1">فروشگاه</span>
-                                </a>
-                              </li>
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="dashboard.php"><i
+                            class="icon-home"></i> خانه</a> </li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><svg
                             width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12.25" cy="12" r="9.5" stroke="#717171" />
@@ -186,9 +173,29 @@
                                 stroke="#717171" stroke-width="1.25" />
                         </svg>
                         خدمات</a> </li>
-                
-                            <li ><a class="fw_6 d-flex justify-content-center align-items-center flex-column"
-                                href="dashboard.php"><i class="icon-home"></i> خانه</a> </li>
+
+
+                <li>
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <path
+                                d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <circle cx="9" cy="7" r="1" fill="#717171" />
+                            <circle cx="15" cy="7" r="1" fill="#717171" />
+                        </svg>
+                        <span class="mt-1">فروشگاه</span>
+                    </a>
+                </li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><i
+                            class="icon-history"></i> سوابق</a> </li>
+                <li class="active"><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="profile.php"><i class="icon-user-outline"></i> پروفایل</a> </li>
+
             </ul>
             <!-- <span class="line"></span> -->
         </div>

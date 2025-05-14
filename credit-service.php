@@ -91,9 +91,9 @@
                 </div>
 
                 <div class="amount-display">
-                    <a href="credit-debt.php">
+                    <a href="credit-detials.php">
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">جزئیات</span>
+                            <span class="text-muted">جزئیات اعتبار</span>
                             <span class="fw-bold fs-4 text-success">۱۳,۵۵۷,۹۱۱ تومان</span>
                         </div>
                     </a>
@@ -102,7 +102,7 @@
                 <div class="payment-info">
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">پرداخت:</span>
-                        <span class="fw-bold">۲,۳۵۰,۵۵۰ تومان</span>
+                        <span class="fw-bold">۲,۴۲۰,۵۵۰ تومان</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted">سررسید:</span>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <a class="btn btn-primary w-100 mt-4 py-2" href="credit-detials.php">پرداخت آنلاین</a>
+                <a class="btn btn-primary w-100 mt-4 py-2" href="credit-debt.php">پرداخت آنلاین</a>
             </div>
         </div>
     </div>

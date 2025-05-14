@@ -87,7 +87,7 @@
                 <div class="balance-box">
                     <div>
                         <div class="text-muted">باقی‌مانده اعتبار</div>
-                        <div class="text-success fw-bold fs-4">۱۳,۰۰۷,۹۱۱ تومان</div>
+                        <div class="text-success fw-bold fs-4">۱۳,۵۵۷,۹۱۱ تومان</div>
                     </div>
                     <div class="text-end">
                         <div class="text-muted">کل اعتبار</div>

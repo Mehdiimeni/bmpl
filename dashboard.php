@@ -151,7 +151,7 @@
                         <div class="credit-offer">
 
                             <div class="d-flex flex-column flex-md-row justify-content-center">
-                                <a class="btn btn-credit" href="credit-service.php">درخواست اعتبار</a>
+                                <a class="btn btn-credit" href="credit-service.php">خدمات اعتباری </a>
                             </div>
                         </div>
                     </div>

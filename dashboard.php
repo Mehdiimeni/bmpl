@@ -64,6 +64,62 @@
             margin-top: 10px;
         }
     </style>
+
+    <style>
+        .credit-offer {
+            
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .credit-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .credit-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 1.5rem 0;
+            color: #4e54c8;
+        }
+
+        .btn-credit {
+            background-color: white;
+            color: #4e54c8;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-credit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-more {
+            color: white;
+            background-color: transparent;
+            border: 2px solid white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-more:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
 </head>
 
 <body>
@@ -90,6 +146,22 @@
     </div>
     <div class="card-secton">
         <div class="tf-container">
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <div class="credit-offer">
+
+                            <div class="d-flex flex-column flex-md-row justify-content-center">
+                                <a class="btn btn-credit" href="credit-service.php">درخواست اعتبار</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+    <div class="mt-5">
+        <div class="tf-container">
+
             <div class="tf-balance-box">
                 <div class="balance">
                     <div class="row">
@@ -100,26 +172,26 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <a href="score.php" >
-                            <div class="inner-right">
-                                <p>امتیاز</p>
-                                <h3>
-                                    <ul class="icon-gift-box">
-                                        <li class="path1"></li>
-                                        <li class="path2"></li>
-                                        <li class="path3"></li>
-                                        <li class="path4"></li>
-                                        <li class="path5"></li>
-                                        <li class="path6"></li>
-                                        <li class="path7"></li>
-                                        <li class="path8"></li>
-                                        <li class="path9"></li>
-                                        <li class="path10"></li>
-                                    </ul>
-                                    4,500
+                            <a href="score.php">
+                                <div class="inner-right">
+                                    <p>امتیاز</p>
+                                    <h3>
+                                        <ul class="icon-gift-box">
+                                            <li class="path1"></li>
+                                            <li class="path2"></li>
+                                            <li class="path3"></li>
+                                            <li class="path4"></li>
+                                            <li class="path5"></li>
+                                            <li class="path6"></li>
+                                            <li class="path7"></li>
+                                            <li class="path8"></li>
+                                            <li class="path9"></li>
+                                            <li class="path10"></li>
+                                        </ul>
+                                        4,500
 
-                                </h3>
-                            </div>
+                                    </h3>
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -153,26 +225,25 @@
                                 </ul>
                                 کارت
                             </a></li>
-                            <li class="wallet-card-item">
-                                <a class="fw_6" href="#" data-bs-toggle="modal" data-bs-target="#qrModal">
-                                    <ul class="icon icon-my-qr">
-                                        <li class="path1"></li>
-                                        <li class="path2"></li>
-                                        <li class="path3"></li>
-                                        <li class="path4"></li>
-                                        <li class="path5"></li>
-                                        <li class="path6"></li>
-                                        <li class="path7"></li>
-                                    </ul>
-                                    QR
-                                </a>
-                            </li>
-                            
+                        <li class="wallet-card-item">
+                            <a class="fw_6" href="#" data-bs-toggle="modal" data-bs-target="#qrModal">
+                                <ul class="icon icon-my-qr">
+                                    <li class="path1"></li>
+                                    <li class="path2"></li>
+                                    <li class="path3"></li>
+                                    <li class="path4"></li>
+                                    <li class="path5"></li>
+                                    <li class="path6"></li>
+                                    <li class="path7"></li>
+                                </ul>
+                                QR
+                            </a>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </div>
-
     </div>
 
 
@@ -273,7 +344,7 @@
                     </a>
                 </li>
 
-    
+
 
                 <li>
                     <a href="#">
@@ -329,7 +400,7 @@
                         دیگر
                     </a>
                 </li>
-                
+
             </ul>
         </div>
     </div>
@@ -450,22 +521,26 @@
         <div class="tf-container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"><i
-                    class="icon-user-outline"></i> پروفایل</a> </li>
+                            class="icon-user-outline"></i> پروفایل</a> </li>
 
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><i
                             class="icon-history"></i> سوابق</a> </li>
-                            <li>
-                                <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11" stroke="#717171" stroke-width="1.5" stroke-linecap="round"/>
-                                    <circle cx="9" cy="7" r="1" fill="#717171"/>
-                                    <circle cx="15" cy="7" r="1" fill="#717171"/>
-                                  </svg>
-                                  <span class="mt-1">فروشگاه</span>
-                                </a>
-                              </li>
+                <li>
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <path
+                                d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11"
+                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
+                            <circle cx="9" cy="7" r="1" fill="#717171" />
+                            <circle cx="15" cy="7" r="1" fill="#717171" />
+                        </svg>
+                        <span class="mt-1">فروشگاه</span>
+                    </a>
+                </li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><svg
                             width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12.25" cy="12" r="9.5" stroke="#717171" />
@@ -474,9 +549,9 @@
                                 stroke="#717171" stroke-width="1.25" />
                         </svg>
                         خدمات</a> </li>
-                
-                            <li class="active"><a class="fw_6 d-flex justify-content-center align-items-center flex-column"
-                                href="dashboard.php"><i class="icon-home2"></i> خانه</a> </li>
+
+                <li class="active"><a class="fw_6 d-flex justify-content-center align-items-center flex-column"
+                        href="dashboard.php"><i class="icon-home2"></i> خانه</a> </li>
             </ul>
             <!-- <span class="line"></span> -->
         </div>
@@ -532,12 +607,19 @@
                             <div class="noti-box">
                                 <div class="noti-list">
                                     <div class="icon-box bg_service-5">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14 4H2C1.44772 4 1 4.44772 1 5V13C1 13.5523 1.44772 14 2 14H14C14.5523 14 15 13.5523 15 13V5C15 4.44772 14.5523 4 14 4Z" stroke="#9C27B0" stroke-width="1.5"/>
-                                            <path d="M4 7H6" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
-                                            <path d="M8 7H12" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
-                                            <path d="M4 10H6" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
-                                            <path d="M8 10H12" stroke="#9C27B0" stroke-width="1.5" stroke-linecap="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14 4H2C1.44772 4 1 4.44772 1 5V13C1 13.5523 1.44772 14 2 14H14C14.5523 14 15 13.5523 15 13V5C15 4.44772 14.5523 4 14 4Z"
+                                                stroke="#9C27B0" stroke-width="1.5" />
+                                            <path d="M4 7H6" stroke="#9C27B0" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path d="M8 7H12" stroke="#9C27B0" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path d="M4 10H6" stroke="#9C27B0" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path d="M8 10H12" stroke="#9C27B0" stroke-width="1.5"
+                                                stroke-linecap="round" />
                                         </svg>
                                     </div>
                                     <div class="content-right">
@@ -546,7 +628,8 @@
                                             <span class="fw_6 text-info">اطلاعیه</span>
                                         </div>
                                         <div class="desc">
-                                            <p class="on_surface_color fw_4">نسخه جدید اپلیکیشن منتشر شد. لطفاً بروزرسانی کنید</p>
+                                            <p class="on_surface_color fw_4">نسخه جدید اپلیکیشن منتشر شد. لطفاً
+                                                بروزرسانی کنید</p>
                                             <span class="time">2 روز پیش</span>
                                             <i class="dot"></i>
                                         </div>
@@ -557,8 +640,11 @@
                             <div class="noti-box">
                                 <div class="noti-list">
                                     <div class="icon-box bg_service-3">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8 11L5 13V9L3 7L5.5 6.5L7 4L8 6L10 4L11.5 6.5L14 7L12 9V13L8 11Z" stroke="#FF9800" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8 11L5 13V9L3 7L5.5 6.5L7 4L8 6L10 4L11.5 6.5L14 7L12 9V13L8 11Z"
+                                                stroke="#FF9800" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
                                         </svg>
                                     </div>
                                     <div class="content-right">
@@ -574,16 +660,22 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <!-- پیام 1 - مالی -->
                             <div class="noti-box">
                                 <div class="noti-list">
                                     <div class="icon-box bg_service-1">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14 4H2C1.44772 4 1 4.44772 1 5V13C1 13.5523 1.44772 14 2 14H14C14.5523 14 15 13.5523 15 13V5C15 4.44772 14.5523 4 14 4Z" stroke="#4CAF50" stroke-width="1.5"/>
-                                            <path d="M1 7H15" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round"/>
-                                            <path d="M4 10H5" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round"/>
-                                            <path d="M7 10H8" stroke="#4CAF50" stroke-width="1.5" stroke-linecap="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14 4H2C1.44772 4 1 4.44772 1 5V13C1 13.5523 1.44772 14 2 14H14C14.5523 14 15 13.5523 15 13V5C15 4.44772 14.5523 4 14 4Z"
+                                                stroke="#4CAF50" stroke-width="1.5" />
+                                            <path d="M1 7H15" stroke="#4CAF50" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path d="M4 10H5" stroke="#4CAF50" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <path d="M7 10H8" stroke="#4CAF50" stroke-width="1.5"
+                                                stroke-linecap="round" />
                                         </svg>
                                     </div>
                                     <div class="content-right">
@@ -599,14 +691,18 @@
                                     </div>
                                 </div>
                             </div>
-    
+
                             <!-- پیام 2 - خدمات -->
                             <div class="noti-box">
                                 <div class="noti-list">
                                     <div class="icon-box bg_service-2">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="#2196F3" stroke-width="1.5"/>
-                                            <path d="M8 5V8L10 9" stroke="#2196F3" stroke-width="1.5" stroke-linecap="round"/>
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
+                                                stroke="#2196F3" stroke-width="1.5" />
+                                            <path d="M8 5V8L10 9" stroke="#2196F3" stroke-width="1.5"
+                                                stroke-linecap="round" />
                                         </svg>
                                     </div>
                                     <div class="content-right">
@@ -615,20 +711,21 @@
                                             <span class="fw_6 text-primary">مهم</span>
                                         </div>
                                         <div class="desc">
-                                            <p class="on_surface_color fw_4">نوبت خدمات فنی شما برای فردا ساعت ۱۰ صبح تنظیم شد</p>
+                                            <p class="on_surface_color fw_4">نوبت خدمات فنی شما برای فردا ساعت ۱۰ صبح
+                                                تنظیم شد</p>
                                             <span class="time">1 ساعت پیش</span>
                                             <i class="dot"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-    
+
                             <!-- پیام 3 - امتیاز -->
-                            
-                          
-    
+
+
+
                             <!-- پیام 5 - عمومی -->
-                            
+
                         </div>
                     </div>
                 </div>
@@ -657,7 +754,7 @@
                             <p>مدیریت اقساط پرداختی</p>
                         </div>
                     </a>
-    
+
                     <!-- معوقه -->
                     <a href="#" class="action-sheet-transfer">
                         <div class="icon"><i class="icon-alert-triangle"></i></div>
@@ -666,7 +763,7 @@
                             <p>بررسی بدهی‌های سررسید گذشته</p>
                         </div>
                     </a>
-    
+
                     <!-- پاداش -->
                     <a href="#" class="action-sheet-transfer">
                         <div class="icon"><i class="icon-gift"></i></div>
@@ -675,7 +772,7 @@
                             <p>دریافت جوایز و امتیازات</p>
                         </div>
                     </a>
-    
+
                     <!-- خرید -->
                     <a href="#" class="action-sheet-transfer">
                         <div class="icon"><i class="icon-cart"></i></div>
@@ -684,7 +781,7 @@
                             <p>سوابق خریدهای انجام‌شده</p>
                         </div>
                     </a>
-    
+
                     <!-- بازگشت پول -->
                     <a href="#" class="action-sheet-transfer">
                         <div class="icon"><i class="icon-undo2"></i></div>
@@ -693,12 +790,12 @@
                             <p>مشاهده مبالغ برگشتی</p>
                         </div>
                     </a>
-    
+
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="tf-panel card-popup">
         <div class="panel_overlay"></div>
         <div class="panel-box panel-down">
@@ -734,29 +831,29 @@
 
     <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content text-center p-4">
-            <div class="modal-header border-0">
-              <h5 class="modal-title w-100" id="qrModalLabel"> QR </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+            <div class="modal-content text-center p-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title w-100" id="qrModalLabel"> QR </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="qrcode"></div>
+                </div>
             </div>
-            <div class="modal-body">
-              <div id="qrcode"></div>
-            </div>
-          </div>
         </div>
-      </div>
-      
-      <script>
+    </div>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             var qrModal = document.getElementById('qrModal');
-        
+
             qrModal.addEventListener('shown.bs.modal', function () {
                 // حذف QR قبلی برای جلوگیری از تکرار
                 document.getElementById('qrcode').innerHTML = "";
-        
+
                 // مقدار QR (اینجا می‌تونی لینک یا اطلاعات کارت یا نام کاربری بذاری)
                 var qrData = "https://example.com/user/12345";
-        
+
                 // تولید QR
                 new QRCode(document.getElementById("qrcode"), {
                     text: qrData,
@@ -765,9 +862,9 @@
                 });
             });
         });
-        </script>
-        
-        
+    </script>
+
+
 
     <script type="text/javascript" src="./assets/jquery.min.js"></script>
     <script type="text/javascript" src="./assets/bootstrap.min.js"></script>

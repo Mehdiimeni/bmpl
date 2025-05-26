@@ -359,18 +359,19 @@
 
             <div class="d-flex justify-content-between mt-4 gap-3">
                 <a href="shop.php" class="btn btn-primary flex-grow-1" aria-label="خرید کالا">خرید کالا</a>
-                <a href="service.php" class="btn btn-outline-secondary flex-grow-1" aria-label="خرید خدمات">خرید خدمات</a>
+                <a href="service.php" class="btn btn-outline-secondary flex-grow-1" aria-label="خرید خدمات">خرید
+                    خدمات</a>
             </div>
         </div>
 
-        
+
     </div>
 
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>

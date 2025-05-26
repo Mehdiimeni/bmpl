@@ -417,8 +417,8 @@
 <body>
     <div class="main-header text-center">
         <div class="container">
-           <h1 class="mb-3">تاریخچه خرید</h1>
-            <p class="mb-0">مشاهده تمام  خریدهای شما</p>
+            <h1 class="mb-3">تاریخچه خرید</h1>
+            <p class="mb-0">مشاهده تمام خریدهای شما</p>
         </div>
     </div>
 
@@ -428,7 +428,8 @@
         </div>
 
         <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="جستجو در تراکنش‌ها..." aria-label="جستجو در تراکنش‌ها">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="جستجو در تراکنش‌ها..."
+                aria-label="جستجو در تراکنش‌ها">
             <i class="fas fa-search"></i>
         </div>
 
@@ -522,8 +523,8 @@
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column "
+                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>

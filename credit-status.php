@@ -390,29 +390,6 @@
 
     </div>
 
-    <div class="bottom-navigation-bar">
-        <div class="container">
-            <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column "
-                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
-                        aria-label="خدمات">
-                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
-                        aria-label="فروشگاه">
-                        <i class="fas fa-store-alt"></i>
-                        <span class="mt-1">فروشگاه</span>
-                    </a>
-                </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="credit-debt.php"
-                        aria-label="پرداخت"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
-                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
-            </ul>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>

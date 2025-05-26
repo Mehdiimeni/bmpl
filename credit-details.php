@@ -56,7 +56,7 @@
             color: var(--text-dark);
             line-height: 1.6;
             /* Ensures space for bottom navigation bar */
-            padding-bottom: 80px; 
+            padding-bottom: 80px;
         }
 
         .club-header {
@@ -125,7 +125,8 @@
             box-shadow: var(--card-shadow);
             overflow: hidden;
             margin-top: 2rem;
-            margin-bottom: 2rem; /* Adjusted to fit the general content flow better */
+            margin-bottom: 2rem;
+            /* Adjusted to fit the general content flow better */
         }
 
         /* Credit Header Styles */
@@ -391,7 +392,7 @@
     </div>
     <div class="container py-5">
         <div class="credit-card">
-            
+
             <div class="p-4">
                 <div class="balance-box">
                     <div>
@@ -432,7 +433,7 @@
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
@@ -452,6 +453,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
 
 </html>

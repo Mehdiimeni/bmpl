@@ -29,7 +29,7 @@
     <meta name="theme-color" content="#2196F3">
     <meta name="apple-mobile-web-app-status-bar-style" content="#2196F3">
 
-    <meta http-equiv="refresh" content="3; url=./login-user.php">
+    <meta http-equiv="refresh" content="3; url=./intro.php">
 
     <style>
         /* تعریف متغیرهای CSS برای تم و رنگ‌ها */
@@ -257,7 +257,7 @@
             const updateTimer = () => {
                 timerElement.textContent = `انتقال خودکار در ${redirectTimer} ثانیه...`;
                 if (redirectTimer <= 0) {
-                    window.location.href = './login-user.php';
+                    window.location.href = './intro.php';
                 } else {
                     redirectTimer--;
                     setTimeout(updateTimer, 1000);

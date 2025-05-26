@@ -176,7 +176,8 @@
             transition: all 0.2s ease-in-out;
             cursor: pointer;
             color: var(--text-dark);
-            text-decoration: none; /* Ensure links don't have underlines */
+            text-decoration: none;
+            /* Ensure links don't have underlines */
         }
 
         .menu-item:hover {
@@ -194,7 +195,8 @@
         .menu-item .menu-label i {
             margin-left: 1rem;
             font-size: 1.4rem;
-            width: 28px; /* Fixed width for icon to prevent text shifting */
+            width: 28px;
+            /* Fixed width for icon to prevent text shifting */
             text-align: center;
         }
 
@@ -567,7 +569,7 @@
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>

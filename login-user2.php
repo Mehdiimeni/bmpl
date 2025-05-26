@@ -9,27 +9,28 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
-    <title>BNPL | تأیید کد فعال‌سازی</title>
+    <title>BNPL | ورود به سامانه</title>
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload" href="./assets/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="./assets/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
 
     <link href="./assets/css/bootstrap.rtl.min.css" rel="stylesheet">
 
     <style>
         /* CSS Variables for theming */
         :root {
-            --primary-color: #2196F3; /* Bright Blue */
-            --primary-dark: #1976D2; /* Darker Blue for hover/active */
-            --secondary-color: #4CAF50; /* Green for success/positive feedback */
-            --error-color: #F44336; /* Red for errors */
-            --background-light: #f0f2f5; /* Light grey background */
-            --card-background: #ffffff; /* White card background */
-            --text-color-dark: #333; /* Dark grey text */
-            --text-color-light: #777; /* Lighter grey text */
-            --shadow-light: rgba(0, 0, 0, 0.08); /* Light shadow */
-            --shadow-medium: rgba(0, 0, 0, 0.15); /* Medium shadow */
-            --border-color: #e0e0e0; /* Light border */
+            --primary-color: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary-color: #4CAF50;
+            --error-color: #F44336;
+            --background-light: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color-dark: #333;
+            --text-color-light: #777;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --border-color: #e0e0e0;
         }
 
         /* Dark mode adjustments */
@@ -106,12 +107,12 @@
             color: var(--primary-color) !important;
         }
 
-        .verification-card {
+        .login-card {
             background-color: var(--card-background);
             max-width: 450px;
             width: 100%;
-            border-radius: 20px; /* More rounded corners */
-            box-shadow: 0 12px 30px var(--shadow-medium); /* Deeper, softer shadow */
+            border-radius: 20px;
+            box-shadow: 0 12px 30px var(--shadow-medium);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -136,8 +137,8 @@
             padding: 2.5rem;
         }
 
-        h2 {
-            font-size: 2.2rem; /* Larger title */
+        h1 {
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--primary-dark);
             margin-bottom: 0.8rem;
@@ -176,19 +177,10 @@
             padding: 14px 18px;
             border: 2px solid var(--border-color);
             border-radius: 12px;
-            font-size: 1.5rem; /* Larger font for code input */
-            text-align: center;
-            letter-spacing: 0.5rem; /* More spacing for digits */
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             background-color: var(--card-background);
             color: var(--text-color-dark);
-            font-weight: 700; /* Bold numbers */
-        }
-
-        /* Adjust placeholder for better visual */
-        .input-field input::placeholder {
-            color: var(--text-color-light);
-            letter-spacing: normal; /* Reset for placeholder */
         }
 
         .input-field input:focus {
@@ -215,6 +207,53 @@
             animation: fadeIn 0.3s ease-out;
         }
 
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            animation: fadeInUp 0.7s ease-out forwards;
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            margin-left: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .terms-checkbox input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .terms-checkbox input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .terms-checkbox label {
+            font-size: 1rem;
+            color: var(--text-color-dark);
+            cursor: pointer;
+            margin-bottom: 0;
+        }
+
         .submit-btn {
             width: 100%;
             padding: 15px;
@@ -228,7 +267,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
             animation: fadeInUp 0.7s ease-out forwards;
-            animation-delay: 0.5s; /* Adjusted delay */
+            animation-delay: 0.6s;
             opacity: 0;
         }
 
@@ -245,94 +284,80 @@
             transform: translateY(-2px);
         }
 
-        .timer-container {
-            text-align: center;
-            margin: 1.5rem 0 2rem 0; /* More margin bottom */
-            color: var(--text-color-light);
-            font-size: 1rem;
-            animation: fadeInUp 0.7s ease-out forwards;
-            animation-delay: 0.6s; /* Adjusted delay */
-            opacity: 0;
-        }
-
-        .timer {
-            font-weight: 700;
-            color: var(--primary-dark);
-            font-size: 1.2rem; /* Larger timer text */
-            direction: ltr; /* Ensure timer displays LTR */
-            display: inline-block; /* For proper spacing with text */
-            margin-left: 5px; /* Space between text and timer */
-        }
-
-        .resend-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 600;
-            display: block; /* Make it block to take full width */
-            margin-top: 1rem;
-            opacity: 0; /* Hidden initially */
-            animation: fadeIn 0.5s ease-out forwards;
-            animation-delay: 0.7s;
-            transition: color 0.2s ease;
-        }
-        .resend-link:hover {
-            text-decoration: underline;
-            color: var(--primary-dark);
-        }
-        .resend-link.disabled {
-            color: var(--text-color-light);
-            cursor: not-allowed;
-            text-decoration: none;
-        }
-
         /* General Animations */
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideInFromTop {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Responsive adjustments */
         @media (max-width: 576px) {
-            .verification-card {
+            .login-card {
                 margin: 1rem auto;
                 border-radius: 15px;
             }
+
             .form-container {
                 padding: 1.5rem;
             }
-            h2 {
+
+            h1 {
                 font-size: 1.8rem;
             }
+
             p.text-muted {
                 font-size: 1rem;
             }
+
             .input-field input {
                 padding: 12px 15px;
-                font-size: 1.2rem;
-                letter-spacing: 0.4rem;
+                font-size: 1rem;
             }
+
             .submit-btn {
                 padding: 12px;
                 font-size: 1.1rem;
-            }
-            .timer {
-                font-size: 1rem;
             }
         }
     </style>
@@ -346,31 +371,32 @@
     </div>
 
     <div class="container">
-        <div class="verification-card">
+        <div class="login-card">
             <div class="logo-container">
                 <img src="./assets/icons/android-icon-192.png" alt="BNPL Logo">
             </div>
 
             <div class="form-container">
-                <h2 class="text-center">تأیید کد فعال‌سازی</h2>
-                <p class="text-center text-muted">کد 6 رقمی ارسال شده به شماره موبایل شما را وارد نمایید</p>
+                <h1 class="text-center">ورود به سامانه</h1>
+                <p class="text-center text-muted">لطفاً شماره موبایل خود را وارد کنید</p>
 
-                <form id="verificationForm" action="credit.php" method="post" novalidate>
+                <form id="loginForm" action="pass-number2.php" method="post" novalidate>
                     <div class="input-field">
-                        <label for="activationCode">کد فعال‌سازی</label>
-                        <input type="tel" id="activationCode" name="activationCode" maxlength="6" minlength="6"
-                            pattern="[0-9]{6}" placeholder="------" required>
-                        <div class="error-message" id="codeError">کد فعال‌سازی باید 6 رقم عددی باشد.</div>
+                        <label for="phoneNumber">شماره موبایل</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" maxlength="11" minlength="11"
+                            pattern="09[0-9]{9}" placeholder="مثال: 09123456789" required>
+                        <div class="error-message" id="phoneError">شماره موبایل باید 11 رقمی و با 09 شروع شود.</div>
                     </div>
 
-                    <div class="timer-container">
-                        <span>زمان باقی‌مانده: </span>
-                        <span id="timer" class="timer">02:00</span>
-                        <a href="javascript:void(0);" id="resendLink" class="resend-link disabled" style="display: none;">ارسال مجدد کد</a>
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms">با ورود، با کلیه قوانین و مقررات موافقم</label>
                     </div>
+
+                    <input type="hidden" name="scode" value="<?php echo random_int(100000, 999999); ?>">
 
                     <button type="submit" id="submitBtn" class="submit-btn" disabled>
-                        ورود به سیستم
+                        دریافت کد ورود
                     </button>
                 </form>
             </div>
@@ -381,80 +407,42 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const activationCodeInput = document.getElementById('activationCode');
-            const codeError = document.getElementById('codeError');
+            const phoneNumberInput = document.getElementById('phoneNumber');
+            const phoneError = document.getElementById('phoneError');
+            const agreeTermsCheckbox = document.getElementById('agreeTerms');
             const submitButton = document.getElementById('submitBtn');
-            const timerElement = document.getElementById('timer');
-            const resendLink = document.getElementById('resendLink');
             const preloader = document.getElementById('preloader');
-
-            let timeLeft = 120; // 2 minutes = 120 seconds
-            let timerInterval;
 
             // Function to validate form inputs and enable/disable button
             function validateForm() {
-                const codeRegex = /^[0-9]{6}$/;
-                const isCodeValid = codeRegex.test(activationCodeInput.value);
+                const phoneRegex = /^09[0-9]{9}$/;
+                const isPhoneValid = phoneRegex.test(phoneNumberInput.value);
+                const isTermsAgreed = agreeTermsCheckbox.checked;
 
-                if (activationCodeInput.value.length > 0 && !isCodeValid) {
-                    activationCodeInput.classList.remove('is-valid');
-                    activationCodeInput.classList.add('is-invalid');
-                    codeError.style.display = 'block';
-                } else if (isCodeValid) {
-                    activationCodeInput.classList.remove('is-invalid');
-                    activationCodeInput.classList.add('is-valid');
-                    codeError.style.display = 'none';
+                // Update phone input style and error message
+                if (phoneNumberInput.value.length > 0 && !isPhoneValid) {
+                    phoneNumberInput.classList.remove('is-valid');
+                    phoneNumberInput.classList.add('is-invalid');
+                    phoneError.style.display = 'block';
+                } else if (isPhoneValid) {
+                    phoneNumberInput.classList.remove('is-invalid');
+                    phoneNumberInput.classList.add('is-valid');
+                    phoneError.style.display = 'none';
                 } else {
-                    activationCodeInput.classList.remove('is-valid', 'is-invalid');
-                    codeError.style.display = 'none';
+                    phoneNumberInput.classList.remove('is-valid', 'is-invalid');
+                    phoneError.style.display = 'none';
                 }
 
-                submitButton.disabled = !isCodeValid;
+                // Enable/disable submit button
+                submitButton.disabled = !(isPhoneValid && isTermsAgreed);
             }
 
-            // Timer function
-            function startTimer() {
-                timeLeft = 120; // Reset timer
-                resendLink.classList.add('disabled');
-                resendLink.style.display = 'none'; // Hide resend link
-                clearInterval(timerInterval); // Clear any existing timer
+            // Attach event listeners
+            phoneNumberInput.addEventListener('input', validateForm);
+            agreeTermsCheckbox.addEventListener('change', validateForm);
 
-                timerInterval = setInterval(() => {
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
-
-                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-                    if (timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        resendLink.classList.remove('disabled');
-                        resendLink.style.display = 'block'; // Show resend link
-                        timerElement.textContent = '00:00'; // Ensure it shows 00:00
-                        submitButton.disabled = true; // Disable submit button if timer runs out
-                        // Optionally, redirect after a short delay or allow resend
-                        // window.location.href = 'login-user.php'; // Uncomment to redirect
-                    } else {
-                        timeLeft--;
-                    }
-                }, 1000);
-            }
-
-            // Event listeners
-            activationCodeInput.addEventListener('input', validateForm);
-            resendLink.addEventListener('click', function(event) {
-                if (!this.classList.contains('disabled')) {
-                    // Prevent default link action (e.g., if it's a real link)
-                    event.preventDefault(); 
-                    console.log('Resending code...');
-                    // Here you would typically make an AJAX request to resend the code
-                    // On successful resend, restart the timer
-                    startTimer();
-                }
-            });
-
-            // Initial calls on page load
-            validateForm(); // Validate initial state
-            startTimer(); // Start the timer
+            // Initial validation call on page load to set initial button state
+            validateForm();
 
             // Hide preloader after everything is loaded
             window.addEventListener('load', function () {

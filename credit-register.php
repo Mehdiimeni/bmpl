@@ -275,12 +275,7 @@
  </head>
  
  <body>
-  <div class="main-header text-center">
-   <div class="container">
-    <h3 class="mb-3">اعتبار من</h3>
-    <p class="mb-0">با این اعتبار خرید کنید</p>
-   </div>
-  </div>
+
  
   <div class="container flex-grow-1 d-flex align-items-center justify-content-center">
    <div class="login-card">
@@ -306,25 +301,7 @@
    </div>
   </div>
  
-  <div class="bottom-navigation-bar">
-   <div class="container">
-    <ul class="tf-navigation-bar">
-     <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="dashboard.php"
-       aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
-     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#" aria-label="خدمات">
-       <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-     <li>
-      <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#" aria-label="فروشگاه">
-       <i class="fas fa-store-alt"></i>
-       <span class="mt-1">فروشگاه</span>
-      </a>
-     </li>
-     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#" aria-label="سوابق"><i
-        class="fas fa-clock-rotate-left"></i> سوابق</a></li>
-     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
-       aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
-    </ul>
-   </div>
+
   </div>
  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -405,7 +382,7 @@
      console.log("کد ملی ارسال شد:", nationalCode);
  
      // انتقال به صفحه بعد
-     window.location.href = "credit2.php";
+     window.location.href = "credit-status.php";
     }, 2000);
    });
   </script>

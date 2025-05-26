@@ -356,7 +356,10 @@
                 کافیست  روش «پرداخت اعتباری» را انتخاب کنید.
             </p>
 
-            
+            <div class="d-flex justify-content-between mt-4 gap-3">
+                <a href="shop.php" class="btn btn-primary flex-grow-1" aria-label="خرید کالا">خرید کالا</a>
+                <a href="service.php" class="btn btn-outline-secondary flex-grow-1" aria-label="خرید خدمات">خرید خدمات</a>
+            </div>
         </div>
 
         <div class="row w-100 px-3">

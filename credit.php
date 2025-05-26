@@ -363,20 +363,7 @@
         </div>
 
         <div class="row w-100 px-3">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="credit-details.php" class="text-decoration-none" aria-label="افزایش اعتبار">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <i class="fas fa-arrow-up-right-dots"></i>
-                            </div>
-                            <h5 class="card-title">جزئیات اعتبار</h5>
-                            <p class="card-text">با تسویه حساب خود تا قبل از آخر ماه اعتبار خود را افزایش دهید.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
+            
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card feature-card h-100">
                     <a href="credit-debt.php" class="text-decoration-none" aria-label="پرداخت های من">

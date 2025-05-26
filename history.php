@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پروفایل من</title>
+    <title>تاریخچه پرداخت‌ها و سفارشات</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         /* Vazirmatn Font Import */
         @font-face {
@@ -117,14 +116,17 @@
             z-index: 2;
         }
 
-        /* Section Header Styles (Adjusted for general use) */
+        /* Section Header Styles */
         .section-header {
             background-color: var(--primary-color);
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 12px;
+            /* More rounded */
             margin: 2.5rem 0 1.5rem 0;
+            /* Adjusted margins */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            /* Softer shadow */
             display: flex;
             align-items: center;
         }
@@ -137,89 +139,9 @@
 
         .section-header i {
             margin-left: 0.75rem;
+            /* Adjusted margin for RTL */
             font-size: 1.4rem;
         }
-
-        /* New: Profile Header Styles */
-        .profile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            margin-bottom: 1.5rem;
-        }
-
-        .profile-header .status {
-            background-color: var(--warning-color);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-            display: inline-block;
-        }
-
-        /* New: Menu Item Styles */
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            color: var(--text-dark);
-            text-decoration: none; /* Ensure links don't have underlines */
-        }
-
-        .menu-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .menu-item .menu-label {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .menu-item .menu-label i {
-            margin-left: 1rem;
-            font-size: 1.4rem;
-            width: 28px; /* Fixed width for icon to prevent text shifting */
-            text-align: center;
-        }
-
-        .menu-item .bi-chevron-left {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-        }
-
-        .menu-item.logout {
-            color: var(--danger-color);
-        }
-
-        .menu-item.logout .menu-label i {
-            color: var(--danger-color);
-        }
-
-        /* Version Text */
-        .version-text {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 2rem;
-            opacity: 0.7;
-        }
-
 
         /* Payment Table Styles */
         .payment-table {
@@ -493,76 +415,110 @@
 </head>
 
 <body>
+    <div class="main-header text-center">
+        <div class="container">
+           <h1 class="mb-3">تاریخچه خرید</h1>
+            <p class="mb-0">مشاهده تمام  خریدهای شما</p>
+        </div>
+    </div>
 
-    <div class="container mt-3">
-
-        <div class="profile-header">
-            <div>
-                <div class="text-muted small">09199990467</div>
-                <div class="status">احراز نشده</div>
-            </div>
-            <i class="bi bi-person-circle fs-1"></i>
+    <div class="container">
+        <div class="section-header">
+            <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i>تاریخچه خرید</h4>
         </div>
 
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-gift-fill text-warning"></i>
-                <span>کارت هدیه </span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
+        <div class="search-box">
+            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="جستجو در تراکنش‌ها..." aria-label="جستجو در تراکنش‌ها">
+            <i class="fas fa-search"></i>
+        </div>
 
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-key-fill text-primary"></i>
-                <span>تغییر رمز عبور</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-wallet-fill text-primary"></i>
-                <span>مدیریت کیف‌ها</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-phone-fill text-primary"></i>
-                <span>دستگاه‌های متصل</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-life-preserver text-primary"></i>
-                <span>پشتیبانی</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-info-circle-fill text-primary"></i>
-                <span>درباره ما</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="index.php" class="menu-item logout">
-            <div class="menu-label">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>خروج از حساب</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <div class="version-text">نسخه 1.0.4</div>
-
+        <div class="table-responsive payment-table">
+            <table class="table table-hover mb-0" id="paymentTable">
+                <thead>
+                    <tr>
+                        <th>تاریخ</th>
+                        <th>وضعیت</th>
+                        <th>مبلغ</th>
+                        <th>نوع</th>
+                        <th>کد </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>۱۴۰۴/۰۱/۰۴</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۲۸۹,۰۰۰</td>
+                        <td>گوشی تلفن همراه</td>
+                        <td>۱۶۷۳۳۴</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۴/۰۱/۰۴</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۳۰۰,۰۰۰</td>
+                        <td>شارژ کیف پول</td>
+                        <td>۷۶۵۴۳۲</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۸/۲۸</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۱۸۷,۹۶۰</td>
+                        <td> خدمات رستوران </td>
+                        <td>۸۹۰۱۲۳</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۷/۱۰</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۴۵۰,۰۰۰</td>
+                        <td>کتاب دیجیتال</td>
+                        <td>۴۵۶۷۸۹</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۶/۲۰</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۱,۵۰۰,۰۰۰</td>
+                        <td>لباس ورزشی</td>
+                        <td>۲۳۴۵۶۷</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۵/۰۵</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۷۵,۰۰۰</td>
+                        <td>قهوه</td>
+                        <td>۹۸۷۶۵۴</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۴/۱۲</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۲,۰۰۰,۰۰۰</td>
+                        <td>تعمیر لپ‌تاپ</td>
+                        <td>۱۳۵۷۹۰</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۳/۰۱</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۱۲۵,۰۰۰</td>
+                        <td>بلیت سینما</td>
+                        <td>۲۴۶۸۰۰</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۲/۱۵</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۹۵۰,۰۰۰</td>
+                        <td>کفش ورزشی</td>
+                        <td>۳۶۹۱۵۹</td>
+                    </tr>
+                    <tr>
+                        <td>۱۴۰۳/۰۱/۳۰</td>
+                        <td><span class="status-paid">پرداخت شده</span></td>
+                        <td>۶۰۰,۰۰۰</td>
+                        <td>اشتراک نرم‌افزار</td>
+                        <td>۷۸۹۰۱۲</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
@@ -578,9 +534,9 @@
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column "
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
                         href="history.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> سوابق</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="profile.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>

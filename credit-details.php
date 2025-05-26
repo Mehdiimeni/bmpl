@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لیست پرداخت ها</title>
+    <title>جزئیات اعتبار</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -55,20 +55,17 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 80px;
             /* Ensures space for bottom navigation bar */
+            padding-bottom: 80px; 
         }
 
-        .container {
-            max-width: 600px;
-        }
-
-        /* Club Header Styles */
         .club-header {
+            /* Smaller padding */
             padding: 1.5rem 0;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border-radius: 0 0 25px 25px;
+            /* More subtle shadow */
             box-shadow: 0 8px 25px rgba(78, 115, 223, 0.2);
             position: relative;
             overflow: hidden;
@@ -99,7 +96,7 @@
             filter: blur(3px);
         }
 
-        .club-header h3 {
+        .main-title {
             font-weight: 800;
             margin-bottom: 0.5rem;
             font-size: 2.2rem;
@@ -108,121 +105,153 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .club-header p {
+        .sub-title {
             font-weight: 400;
             opacity: 0.9;
-            margin-bottom: 0; /* Changed to 0 as per your structure */
+            margin-bottom: 1.5rem;
             font-size: 1.1rem;
             position: relative;
             z-index: 2;
         }
 
+        .container {
+            max-width: 600px;
+        }
 
-        /* Main Content Card Styles */
+        /* Credit Card Container Styles */
         .credit-card {
             background: white;
             border-radius: 1.5rem;
             box-shadow: var(--card-shadow);
             overflow: hidden;
-            margin-top: -3rem; /* Lift the card to overlap with header slightly */
-            margin-bottom: 2rem;
-            position: relative; /* For z-index to work */
-            z-index: 10; /* Bring card to front */
+            margin-top: 2rem;
+            margin-bottom: 2rem; /* Adjusted to fit the general content flow better */
         }
 
-        /* Debt Item Styles */
-        .debt-item {
-            background-color: white;
-            border-bottom: 1px solid var(--border-light); /* Only bottom border */
-            padding: 1.25rem 1.5rem;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-        }
-
-        .debt-item:first-child {
-            border-top-left-radius: 1.5rem; /* Match parent card radius */
-            border-top-right-radius: 1.5rem;
-        }
-
-        .debt-item:last-of-type {
-            border-bottom: none; /* No border for the last item */
-        }
-
-        .debt-item:hover {
-            background-color: #f8faff; /* Lighter background on hover */
-            transform: translateY(-3px); /* Slight lift effect */
-            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.06); /* More pronounced shadow */
-            z-index: 1; /* Ensure hover item is on top */
+        /* Credit Header Styles */
+        .credit-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
         }
 
-        .debt-title {
+        .credit-header h4 {
+            margin: 0;
             font-weight: 700;
-            font-size: 1.15rem;
-            color: var(--primary-color); /* Highlight title */
+            font-size: 1.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SVG Pattern for header background */
+        .credit-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="15" fill="%23ffffff" opacity="0.1"/><circle cx="80" cy="80" r="20" fill="%23ffffff" opacity="0.05"/><circle cx="50" cy="50" r="10" fill="%23ffffff" opacity="0.15"/></svg>') repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        /* Balance Box Styles */
+        .balance-box {
+            background-color: #e9f0f7;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            box-shadow: inset 0 0 0.5rem rgba(0, 0, 0, 0.05);
+            border: 1px solid #d0d8e2;
+        }
+
+        .balance-box div:first-child {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 1rem;
+        }
+
+        .balance-box .text-muted {
+            font-size: 0.9rem;
+            color: var(--text-muted) !important;
             margin-bottom: 0.25rem;
         }
 
-        .debt-meta {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        .balance-box .text-success {
+            color: var(--success-color) !important;
+            font-weight: 700;
+            font-size: 2.25rem !important;
         }
 
-        .debt-item .amount {
+        .balance-box .fw-bold {
+            font-weight: 700 !important;
+        }
+
+        /* Installment Box Styles */
+        .installment-box {
+            background-color: white;
+            border: 1px solid var(--border-light);
+            border-radius: 1rem;
+            padding: 1.75rem;
+            margin-bottom: 1.25rem;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.03);
+            position: relative;
+        }
+
+        .installment-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-color);
+        }
+
+        .installment-box h5 {
+            display: flex;
+            align-items: center;
             font-weight: 700;
-            font-size: 1.25rem;
             color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            font-size: 1.35rem;
         }
 
-        /* Deadline Text */
-        .deadline-text {
-            font-weight: 500;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            text-align: center;
-            padding-top: 1rem;
-        }
-
-        hr {
-            border-top: 1px dashed var(--border-light); /* Dashed line for visual separation */
-            margin-bottom: 1.5rem;
-        }
-
-        /* Payment Section */
-        .payment-section {
-            padding-top: 0.5rem; /* Adjusted padding */
-        }
-
-        .payment-section h5 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            color: var(--text-dark);
-            text-align: center;
-        }
-
-        .payment-section .amount {
-            font-weight: 700;
-            font-size: 1.4rem;
+        .installment-box h5 .icon {
+            margin-left: 0.75rem;
             color: var(--primary-color);
+            font-size: 1.5rem;
         }
 
-        /* Button Styles */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            padding: 0.85rem 1.5rem;
-            font-weight: 700;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
+        .installment-box p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 0.5rem;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3); /* Match primary color */
+        .installment-box p.text-muted {
+            font-size: 0.85rem;
+            color: #888 !important;
+            margin-bottom: 0.5rem;
         }
 
+        /* Alert Info Styles */
+        .alert-info {
+            border-radius: 1rem;
+            font-weight: 500;
+            text-align: center;
+            background-color: var(--info-bg);
+            color: var(--info-text);
+            border-color: var(--info-border);
+            padding: 1rem 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+        }
 
         /* Bottom Navigation Bar Styles */
         .bottom-navigation-bar {
@@ -285,51 +314,57 @@
 
         /* Media Queries for Responsiveness */
         @media (max-width: 768px) {
-            .club-header {
-                padding: 1.2rem 0;
-                border-radius: 0 0 20px 20px;
-            }
-
-            .club-header h3 {
-                font-size: 1.8rem;
-            }
-
-            .club-header p {
-                font-size: 0.95rem;
-            }
-
             .credit-card {
-                margin-top: -2rem;
-                border-radius: 1rem;
+                margin-top: 1.5rem;
             }
 
-            .debt-item {
+            .credit-header {
+                padding: 1.5rem;
+            }
+
+            .credit-header h4 {
+                font-size: 1.5rem;
+            }
+
+            .balance-box {
                 padding: 1rem;
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .debt-title {
-                font-size: 1rem;
+            .balance-box div:first-child {
+                border-left: none;
+                padding-left: 0;
+                margin-bottom: 0.75rem;
             }
 
-            .debt-meta {
-                font-size: 0.8rem;
+            .balance-box .text-end {
+                text-align: start !important;
             }
 
-            .debt-item .amount {
-                font-size: 1.1rem;
+            .balance-box .text-success {
+                font-size: 1.8rem !important;
             }
 
-            .payment-section h5 {
+            .installment-box {
+                padding: 1.25rem;
+            }
+
+            .installment-box h5 {
                 font-size: 1.15rem;
             }
 
-            .payment-section .amount {
-                font-size: 1.2rem;
+            .installment-box h5 .icon {
+                font-size: 1.25rem;
             }
 
-            .btn-primary {
-                padding: 0.75rem;
-                font-size: 0.95rem;
+            .installment-box p {
+                font-size: 0.9rem;
+            }
+
+            .alert-info {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
             }
 
             .bottom-navigation-bar {
@@ -350,61 +385,53 @@
 <body>
     <div class="club-header text-center">
         <div class="container">
-            <h3 class="mb-3">جزئیات پرداختها</h3>
-            <p class="mb-0">جزئیات پرداختها من</p>
+            <h3 class="mb-3"> جزئیات اعتبار</h3>
+            <p class="mb-0">جزئیات اعتبار من</p>
         </div>
     </div>
     <div class="container py-5">
-        <div class="credit-card p-0">
-            <div class="debt-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="debt-title">اعتبار بانکی</div>
-                        <div class="debt-meta">تاریخ: ۱۴۰۳/۰۲/۱۰</div>
-                    </div>
-                    <div class="amount">۱,۲۰۰,۰۰۰ تومان</div>
-                </div>
-            </div>
-
-            <div class="debt-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="debt-title">خدمات اینترنت</div>
-                        <div class="debt-meta">تاریخ: ۱۴۰۳/۰۲/۱۵</div>
-                    </div>
-                    <div class="amount">۵۵۰,۰۰۰ تومان</div>
-                </div>
-            </div>
-
-            <div class="debt-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="debt-title">خرید از فروشگاه</div>
-                        <div class="debt-meta">تاریخ: ۱۴۰۳/۰۲/۲۰</div>
-                    </div>
-                    <div class="amount">۶۷۰,۵۵۰ تومان</div>
-                </div>
-            </div>
-
+        <div class="credit-card">
+            
             <div class="p-4">
-                <p class="deadline-text mb-3">مهلت پرداخت: تا پایان روز ۳۰ ماه</p>
-                <hr>
-
-                <div class="payment-section">
-                    <h5 class="fw-bold mb-3 text-center">پرداخت</h5>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span>مبلغ کل قابل پرداخت:</span>
-                        <span class="amount">۲,۴۲۰,۵۵۰ تومان</span>
+                <div class="balance-box">
+                    <div>
+                        <div class="text-muted">باقی‌مانده اعتبار</div>
+                        <div class="text-success fw-bold fs-4">۱۳,۵۵۷,۹۱۱ تومان</div>
                     </div>
-                    <button class="btn btn-primary w-100 mt-3 py-2">پرداخت آنلاین</button>
+                    <div class="text-end">
+                        <div class="text-muted">کل اعتبار</div>
+                        <div class="fw-bold fs-6">۲۰,۰۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3 fw-bold">چطور از اعتبار BNPL استفاده کنم؟</h5>
+                <p class="text-muted mb-4">می‌توانید با اعتبارتان از فروشگاه‌های حاضر در BNPL به‌صورت آنلاین یا حضوری
+                    خرید کرده و با یکی از روش‌های زیر تسویه کنید:</p>
+
+                <div class="installment-box">
+                    <h5><i class="fas fa-credit-card icon"></i> پرداخت قسطی</h5>
+                    <p class="mb-1 text-muted">تا سقف اعتبار</p>
+                    <p>هزینه خرید شما به ۴ قسط تقسیم می‌شود. یک قسط را هنگام خرید و ۳ قسط دیگر را در ۳ ماه آینده پرداخت
+                        می‌کنید.</p>
+                </div>
+
+                <div class="installment-box">
+                    <h5><i class="fas fa-calendar-alt icon"></i> پرداخت آخر ماه</h5>
+                    <p class="mb-1 text-muted">تا سقف اعتبار</p>
+                    <p>در این روش، مبلغ خریدهایتان را در پایان همان ماه، به‌صورت بدهی ماهانه تسویه می‌کنید.</p>
+                </div>
+
+                <div class="alert alert-info mt-4">
+                    اعتبار شما فقط در فروشگاه‌های عضو BNPL قابل استفاده است.
                 </div>
             </div>
         </div>
     </div>
+
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="dashboard.php"
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active" href="dashboard.php"
                         aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"
                         aria-label="خدمات">
@@ -416,7 +443,7 @@
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> سوابق</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -425,6 +452,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
 
 </html>

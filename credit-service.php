@@ -4,36 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سرویس اعتباری</title>
-    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/css/all.min.css">
-    <link rel="stylesheet" href="./assets/css/animate.min.css">
-    <link rel="stylesheet" href="./assets/fonts.css" />
-    <link rel="stylesheet" href="./assets/icons-alipay.css">
-    <link rel="stylesheet" href="./assets/bootstrap.css">
-    <link rel="stylesheet" href="./assets/swiper-bundle.min.css">
-    <link rel="stylesheet" type="text/css" href="./assets/styles.css" />
+    <title>سرویس اعتباری | اعتبار خرید</title>
+    <!-- فونت‌های جدید -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- آیکون‌های جدید -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- استایل‌های بهینه‌شده -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
         body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
             direction: rtl;
-            text-align: right;
-            font-family: Vazir, Tahoma, sans-serif;
         }
 
         .credit-card {
-            border-radius: 0.75rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
             overflow: hidden;
+            border: none;
+            transition: var(--transition);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .credit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
         }
 
         .credit-header {
-            background-color: #0d6efd;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: white;
-            padding: 1.25rem;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .credit-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .credit-header h4 {
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
 
         .credit-body {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .search-box {
@@ -46,122 +86,280 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #6c757d;
+            color: #adb5bd;
+            font-size: 1.2rem;
         }
 
         .form-control {
-            padding-right: 2.5rem !important;
+            padding: 0.75rem 1.25rem 0.75rem 3rem !important;
+            border-radius: 50px !important;
+            border: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+            border-color: var(--primary-color);
+            background-color: white;
         }
 
         .amount-display {
-            background-color: #f8f9fa;
-            border-radius: 0.5rem;
-            padding: 1rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+        }
+
+        .amount-display:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .amount-display a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .amount {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .payment-info {
-            border-top: 1px dashed #dee2e6;
-            padding-top: 1rem;
-            margin-top: 1rem;
+            border-top: 1px dashed #e9ecef;
+            padding-top: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
         }
 
         .deadline {
-            color: #dc3545;
+            color: var(--danger-color);
             font-weight: 600;
+            position: relative;
+            padding-right: 1.25rem;
         }
+
+        .deadline::before {
+            content: '\F1DA';
+            font-family: 'remixicon';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        /* نویگیشن بار جدید */
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.08);
+            padding: 0.75rem 0;
+            z-index: 1000;
+        }
+
+        .nav-list {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            text-align: center;
+        }
+
+        .nav-link {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .nav-link i {
+            font-size: 1.4rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .nav-link.active i {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* انیمیشن‌ها */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
     </style>
+</head>
 
 <body>
-    <div class="container py-5">
-        <div class="credit-card">
-            <div class="credit-header">
-                <h4 class="mb-0">سرویس اعتباری</h4>
-            </div>
-            <div class="credit-body">
-                <div class="search-box">
-                    <div class="search-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
+    <div class="container py-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="credit-card animate-fade">
+                    <div class="credit-header">
+                        <h4 class="mb-0">
+                            <i class="ri-wallet-3-line align-middle me-2"></i>
+                            سرویس اعتباری
+                        </h4>
                     </div>
-                    <input type="text" class="form-control" placeholder="جست‌وجوی کالا و فروشگاه">
-                </div>
-
-                <div class="amount-display">
-                    <a href="credit-detials.php">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-muted">جزئیات اعتبار</span>
-                            <span class="fw-bold fs-4 text-success">۱۳,۵۵۷,۹۱۱ تومان</span>
+                    <div class="credit-body">
+                        <div class="search-box animate-fade delay-1">
+                            <div class="search-icon">
+                                <i class="ri-search-line"></i>
+                            </div>
+                            <input type="text" class="form-control" placeholder="جست‌وجوی کالا و فروشگاه...">
                         </div>
-                    </a>
-                </div>
 
-                <div class="payment-info">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">پرداخت:</span>
-                        <span class="fw-bold">۲,۴۲۰,۵۵۰ تومان</span>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted">سررسید:</span>
-                        <span class="deadline">پایان روز ۳۰ ماه</span>
+                        <div class="amount-display animate-fade delay-1">
+                            <a href="credit-detials.php">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">
+                                        <i class="ri-information-line align-middle me-1"></i>
+                                        جزئیات اعتبار
+                                    </span>
+                                    <span class="amount">۱۳,۵۵۷,۹۱۱ تومان</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="payment-info animate-fade delay-2">
+                            <div class="payment-item">
+                                <span class="text-muted">
+                                    <i class="ri-money-dollar-circle-line align-middle me-1"></i>
+                                    پرداخت:
+                                </span>
+                                <span class="fw-bold">۲,۴۲۰,۵۵۰ تومان</span>
+                            </div>
+                            <div class="payment-item">
+                                <span class="text-muted">
+                                    <i class="ri-time-line align-middle me-1"></i>
+                                    سررسید:
+                                </span>
+                                <span class="deadline">پایان روز ۳۰ ماه</span>
+                            </div>
+                        </div>
+
+                        <a class="btn btn-primary w-100 mt-4 py-3 animate-fade delay-2" href="credit-debt.php">
+                            <i class="ri-bank-card-line align-middle me-2"></i>
+                            پرداخت آنلاین
+                        </a>
                     </div>
                 </div>
-
-                <a class="btn btn-primary w-100 mt-4 py-2" href="credit-debt.php">پرداخت آنلاین</a>
             </div>
         </div>
     </div>
 
+    <!-- نویگیشن بار جدید -->
+    <nav class="bottom-navigation">
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a href="profile.php" class="nav-link">
+                    <i class="ri-user-line"></i>
+                    <span>پروفایل</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="ri-history-line"></i>
+                    <span>سوابق</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="ri-store-2-line"></i>
+                    <span>فروشگاه</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="ri-customer-service-line"></i>
+                    <span>خدمات</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="dashboard.php" class="nav-link active">
+                    <i class="ri-home-4-line"></i>
+                    <span>خانه</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-    <div class="bottom-navigation-bar">
-        <div class="tf-container">
-            <ul class="tf-navigation-bar">
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"><i
-                            class="icon-user-outline"></i> پروفایل</a> </li>
+    <!-- اسکریپت‌های جدید -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // انیمیشن برای آیتم‌ها
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.animate-fade');
+            items.forEach(item => {
+                item.style.opacity = '0';
+            });
+            
+            setTimeout(() => {
+                items.forEach(item => {
+                    item.style.opacity = '1';
+                });
+            }, 100);
+        });
 
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><i
-                            class="icon-history"></i> سوابق</a> </li>
-                <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11"
-                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
-                            <path
-                                d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7"
-                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
-                            <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11"
-                                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
-                            <circle cx="9" cy="7" r="1" fill="#717171" />
-                            <circle cx="15" cy="7" r="1" fill="#717171" />
-                        </svg>
-                        <span class="mt-1">فروشگاه</span>
-                    </a>
-                </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><svg
-                            width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12.25" cy="12" r="9.5" stroke="#717171" />
-                            <path
-                                d="M17.033 11.5318C17.2298 11.3316 17.2993 11.0377 17.2144 10.7646C17.1293 10.4914 16.9076 10.2964 16.6353 10.255L14.214 9.88781C14.1109 9.87213 14.0218 9.80462 13.9758 9.70702L12.8933 7.41717C12.7717 7.15989 12.525 7 12.2501 7C11.9754 7 11.7287 7.15989 11.6071 7.41717L10.5244 9.70723C10.4784 9.80483 10.3891 9.87234 10.286 9.88802L7.86469 10.2552C7.59257 10.2964 7.3707 10.4916 7.2856 10.7648C7.2007 11.038 7.27018 11.3318 7.46702 11.532L9.2189 13.3144C9.29359 13.3905 9.32783 13.5 9.31021 13.607L8.89692 16.1239C8.86027 16.3454 8.91594 16.5609 9.0533 16.7308C9.26676 16.9956 9.6394 17.0763 9.93735 16.9128L12.1027 15.7244C12.1932 15.6749 12.3072 15.6753 12.3975 15.7244L14.563 16.9128C14.6684 16.9707 14.7807 17 14.8966 17C15.1083 17 15.3089 16.9018 15.4469 16.7308C15.5845 16.5609 15.6399 16.345 15.6033 16.1239L15.1898 13.607C15.1722 13.4998 15.2064 13.3905 15.2811 13.3144L17.033 11.5318Z"
-                                stroke="#717171" stroke-width="1.25" />
-                        </svg>
-                        خدمات</a> </li>
-
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="dashboard.php"><i
-                            class="icon-home"></i> خانه</a> </li>
-            </ul>
-            <!-- <span class="line"></span> -->
-        </div>
-    </div>
-    <script src="./assets/jquery.min.js"></script>
-    <script src="./assets/bootstrap.min.js"></script>
-    <script src="./assets/swiper-bundle.min.js"></script>
-    <script src="./assets/swiper.js"></script>
-    <script src="./assets/main.js"></script>
-    <script src="./assets/js/qrcode.min.js"></script>
-    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+        // تغییر فعال بودن آیتم‌های نویگیشن
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
 </body>
 
 </html>

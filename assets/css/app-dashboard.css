@@ -1,0 +1,768 @@
+/*
+ * app-dashboard.css
+ * This file contains custom styles for the dashboard,
+ * consolidating and extending base Bootstrap styles for a modern look.
+ */
+
+/* General Layout & Fonts (Duplicated from inline style for clarity, should be here) */
+body {
+    /* ... (rest of body styles as in the HTML <style> tag) ... */
+    background-color: var(--background-light);
+    font-family: 'Vazirmatn', sans-serif;
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    margin: 0;
+    padding-bottom: 70px; /* Space for bottom navigation */
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Preloader */
+#preloader {
+    /* ... (rest of preloader styles) ... */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+    opacity: 1;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#preloader .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+    color: var(--primary-color) !important;
+}
+
+/* Header Styles */
+.app-header {
+    background-color: var(--primary-color);
+    padding: 1.5rem 1rem;
+    color: white;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    animation: slideInFromTop 0.7s ease-out forwards;
+}
+
+.tf-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.user-info img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-left: 15px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.user-info .content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.user-info .content p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0;
+}
+
+.icon-notification1 {
+    position: relative;
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.icon-notification1 span {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--error-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    line-height: 1;
+    font-weight: bold;
+}
+
+/* Credit Offer Card */
+.credit-offer {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); /* Using primary colors */
+    border-radius: 20px;
+    padding: 2rem;
+    color: #fff;
+    margin-top: -30px; /* Overlap with header */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    z-index: 10; /* Ensure it's above other elements */
+    animation: fadeInScale 0.8s ease-out 0.3s forwards; /* Add delay */
+    opacity: 0; /* Hidden initially */
+}
+
+.credit-offer::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.08); /* Stronger shine */
+    top: -25%;
+    left: -25%;
+    transform: rotate(45deg);
+    animation: shine 6s linear infinite; /* Faster shine */
+    border-radius: 50%; /* Softer shine shape */
+}
+
+@keyframes shine {
+    0% { transform: rotate(45deg) translateX(-100%); }
+    100% { transform: rotate(45deg) translateX(100%); }
+}
+
+.btn-credit {
+    background-color: #fff;
+    color: var(--primary-dark); /* Match primary color */
+    padding: 14px 40px;
+    border-radius: 40px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-decoration: none; /* Remove underline */
+}
+
+.btn-credit:hover {
+    background: #e3e3e3;
+    transform: translateY(-4px);
+}
+
+/* Wallet Footer (Services below credit card) */
+.tf-balance-box {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    animation: fadeInUp 0.8s ease-out 0.5s forwards;
+    opacity: 0;
+}
+.wallet-footer ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.wallet-card-item {
+    text-align: center;
+    flex: 1;
+    padding: 0.5rem;
+}
+
+.wallet-card-item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 0.9rem; /* Smaller text for service items */
+    font-weight: 500;
+}
+
+.wallet-card-item a:hover {
+    color: var(--primary-color);
+    transform: translateY(-5px);
+}
+
+.wallet-card-item .icon {
+    font-size: 2.2rem; /* Larger icons for these main actions */
+    margin-bottom: 0.5rem;
+    color: var(--primary-color); /* Primary color for icons */
+    transition: color 0.3s ease;
+}
+
+.wallet-card-item a:hover .icon {
+    color: var(--primary-dark);
+}
+
+/* Titles for sections */
+.tf-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.tf-title h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+}
+
+.tf-title a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.tf-title a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Services Section (box-service) */
+.box-service {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Responsive grid */
+    gap: 1rem;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out 0.7s forwards;
+    opacity: 0;
+}
+
+.box-service li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    background-color: var(--card-background);
+    padding: 1rem 0.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow-light);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.box-service li a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-medium);
+    color: var(--primary-color);
+}
+
+.box-service .icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.7rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    /* Specific background colors for service icons - these should be handled dynamically or specifically */
+}
+
+/* Specific background colors for service icons (based on your original SVG colors) */
+.box-service .bg_color_1 { background-color: rgba(40, 62, 180, 0.1); }
+.box-service .bg_color_2 { background-color: rgba(30, 144, 255, 0.1); }
+.box-service .bg_color_3 { background-color: rgba(254, 204, 14, 0.1); }
+.box-service .bg_color_7 { background-color: rgba(247, 195, 49, 0.1); } /* Adjusted based on your SVG colors */
+
+.box-service .icon-box i { /* Styling for Font Awesome icons inside icon-box */
+    font-size: 1.8rem; /* Size for Font Awesome icons */
+    color: var(--primary-dark); /* Default icon color */
+}
+/* Override specific Font Awesome icon colors if needed */
+.box-service .bg_color_1 i { color: #283EB4; } /* Charger icon */
+.box-service .bg_color_2 i { color: #1E90FF; } /* Internet icon */
+.box-service .bg_color_3 i { color: #DA9B00; } /* Bills icon */
+.box-service .bg_color_7 i { color: #F7C331; } /* Other icon */
+
+
+.box-service li a:hover .icon-box {
+    transform: scale(1.1);
+}
+
+/* Swiper Carousel for Shops and Banners */
+.swiper-container {
+    padding: 0 10px; /* Add padding to prevent items from sticking to edges */
+    margin-top: 1rem;
+}
+.recipient-tes .swiper-slide, .banner-tes .swiper-slide {
+    width: auto !important; /* Allow content to define width in recipient-tes */
+    margin-left: 15px; /* Spacing between slides */
+}
+.recipient-tes .swiper-slide:last-child {
+     margin-left: 0;
+}
+
+.recipient-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.recipient-box img {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px; /* Rounded images */
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 10px var(--shadow-light);
+    transition: transform 0.3s ease;
+}
+
+.recipient-box:hover {
+    color: var(--primary-color);
+}
+
+.recipient-box:hover img {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-medium);
+}
+
+.banner-tes .swiper-slide img {
+    width: 100%;
+    height: 150px; /* Fixed height for banners */
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px var(--shadow-light);
+    transition: transform 0.3s ease;
+}
+.banner-tes .swiper-slide img:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px var(--shadow-medium);
+}
+
+/* Bottom Navigation Bar */
+.bottom-navigation-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-background);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    padding: 10px 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.tf-navigation-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tf-navigation-bar li {
+    flex: 1;
+    text-align: center;
+}
+
+.tf-navigation-bar li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-color-light);
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.2s ease;
+    padding: 5px 0;
+}
+
+.tf-navigation-bar li a i {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.tf-navigation-bar li a:hover {
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+.tf-navigation-bar li a:hover i {
+    color: var(--primary-color);
+}
+/* Active state for bottom navigation */
+.tf-navigation-bar li a.active,
+.tf-navigation-bar li:last-child a { /* "خانه" is the last item and usually active */
+    color: var(--primary-color);
+    font-weight: 600;
+}
+.tf-navigation-bar li a.active i,
+.tf-navigation-bar li:last-child a i {
+    color: var(--primary-color);
+}
+
+
+/* Modal Styles (QR Modal example) */
+.modal-content {
+    border-radius: 15px;
+    background-color: var(--card-background);
+    color: var(--text-color-dark);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+.modal-header {
+    border-bottom: none;
+}
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+.btn-close {
+    filter: invert(var(--text-color-dark-filter, 0)); /* Adjust color for dark mode */
+}
+#qrcode {
+    padding: 10px;
+    background-color: white; /* QR code generator might need a white background */
+    border-radius: 8px;
+    display: inline-block; /* Center the QR code */
+    margin: 0 auto;
+}
+/* Panel Styles (for noti-panel, transaction-panel, card-panel) */
+.tf-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-light); /* Or a translucent overlay */
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.tf-panel.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tf-panel .panel-box {
+    position: absolute;
+    width: 100%;
+    background-color: var(--card-background);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+/* Panel from top */
+.tf-panel.up .panel-box {
+    top: 0;
+    transform: translateY(-100%);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+.tf-panel.up.active .panel-box {
+    transform: translateY(0);
+}
+
+/* Panel from bottom */
+.tf-panel.down .panel-box {
+    bottom: 0;
+    transform: translateY(100%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.tf-panel.down.active .panel-box {
+    transform: translateY(0);
+}
+
+.tf-panel .header {
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.tf-panel.down .header { /* Override for bottom panels to match card background */
+    background-color: var(--card-background);
+    color: var(--text-color-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tf-panel .tf-statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tf-panel .tf-statusbar h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: inherit; /* Inherit color from parent (.header) */
+}
+.tf-panel.down .tf-statusbar h3 {
+    color: var(--text-color-dark); /* Specific color for bottom panels */
+}
+
+.tf-panel .tf-statusbar a {
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.tf-panel.down .tf-statusbar a {
+    color: var(--text-color-light);
+}
+
+.tf-panel .tf-statusbar a:hover {
+    opacity: 0.7;
+}
+
+/* Panel Content Styling */
+.tf-panel .panel-content,
+.tf-panel .wrap-transfer,
+.tf-panel .content-card {
+    padding: 1.5rem 0; /* Add padding for content inside panels */
+    overflow-y: auto; /* Enable scrolling for long content */
+    max-height: calc(100vh - 70px); /* Adjust max-height based on header/footer */
+}
+
+/* Notification panel specific */
+.noti-box {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.noti-box .icon-box {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+}
+.noti-box .title h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.noti-box .badge {
+    font-size: 0.75rem;
+    padding: 0.3em 0.6em;
+}
+.noti-box .desc p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+.noti-box .desc span {
+    font-size: 0.8rem;
+    color: var(--text-color-light);
+}
+
+/* Transaction panel specific */
+.action-sheet-transfer {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: var(--text-color-dark);
+    display: flex; /* Ensure flex behavior */
+    align-items: center; /* Vertically align content */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.action-sheet-transfer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+}
+.action-sheet-transfer .icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px; /* Spacing from text */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+.action-sheet-transfer .content h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+.action-sheet-transfer .content p {
+    font-size: 0.85rem;
+    color: var(--text-color-light);
+}
+
+/* Card panel specific (tf-card-list, tf-btn) */
+.tf-card-list {
+    background-color: var(--background-light); /* Lighter background for card list item */
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Inner shadow for a softer look */
+}
+
+.tf-card-list .info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.tf-card-list .info p {
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+}
+
+.auth-line {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--text-color-light);
+}
+
+.tf-btn {
+    text-decoration: none;
+    font-weight: 600;
+}
+.tf-btn i {
+    font-size: 1rem;
+}
+
+/* Basic .tf-container (if not already defined) */
+.tf-container {
+    max-width: 960px; /* Or a suitable max-width for your app */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 1rem;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+    .user-info img {
+        width: 45px;
+        height: 45px;
+    }
+    .user-info .content h4 {
+        font-size: 1.1rem;
+    }
+    .user-info .content p {
+        font-size: 0.8rem;
+    }
+    .icon-notification1 {
+        font-size: 1.3rem;
+    }
+    .credit-offer {
+        padding: 1.5rem;
+        margin-top: -20px;
+    }
+    .btn-credit {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    .tf-balance-box {
+        padding: 1rem;
+    }
+    .wallet-card-item .icon {
+        font-size: 1.8rem;
+    }
+    .wallet-card-item a {
+        font-size: 0.8rem;
+    }
+    .tf-title {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .tf-title h3 {
+        font-size: 1.3rem;
+    }
+    .tf-title a {
+        font-size: 0.85rem;
+    }
+    .box-service {
+        gap: 0.8rem;
+    }
+    .box-service li a {
+        padding: 0.8rem 0.3rem;
+        border-radius: 10px;
+        font-size: 0.8rem;
+    }
+    .box-service .icon-box {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 0.5rem;
+    }
+    .box-service .icon-box i {
+        font-size: 1.5rem;
+    }
+
+    .recipient-box img {
+        width: 70px;
+        height: 70px;
+    }
+    .banner-tes .swiper-slide img {
+        height: 120px;
+    }
+    .bottom-navigation-bar {
+        padding: 8px 0;
+    }
+    .tf-navigation-bar li a {
+        font-size: 0.75rem;
+    }
+    .tf-navigation-bar li a i {
+        font-size: 1.2rem;
+    }
+
+    /* Panel adjustments for mobile */
+    .tf-panel .panel-content,
+    .tf-panel .wrap-transfer,
+    .tf-panel .content-card {
+        padding: 1rem 0;
+    }
+    .noti-box, .action-sheet-transfer {
+        padding: 0.8rem;
+        border-radius: 10px;
+    }
+    .noti-box .icon-box, .action-sheet-transfer .icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    .noti-box .title h3, .action-sheet-transfer .content h4 {
+        font-size: 1rem;
+    }
+    .noti-box .desc p, .action-sheet-transfer .content p {
+        font-size: 0.8rem;
+    }
+}

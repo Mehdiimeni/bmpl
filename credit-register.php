@@ -405,7 +405,7 @@
      console.log("کد ملی ارسال شد:", nationalCode);
  
      // انتقال به صفحه بعد
-     window.location.href = "credit.php";
+     window.location.href = "credit2.php";
     }, 2000);
    });
   </script>

@@ -348,60 +348,22 @@
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="credit-card">
-            <h5 class="text-center mb-3">اعتبار مانده شما:</h5>
+            <h5 class="text-center mb-3">اعتبار قابل استفاده شما:</h5>
             <div class="credit-amount" id="creditAmount"></div>
+            <div class="text-secondary">اعتبار از ما دریافت کردید</div>
 
             <p class="credit-desc">
                 می‌توانید برای خرید کالا یا خدمات از این اعتبار استفاده کنید.
-                کافیست  روش «پرداخت اعتباری» را انتخاب کنید.
+                کافیست از ما اعتبار بگیرید و بعد از سفارش، روش «پرداخت اعتباری» را انتخاب کنید.
             </p>
 
-            
-        </div>
-
-        <div class="row w-100 px-3">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="credit-details.php" class="text-decoration-none" aria-label="افزایش اعتبار">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <i class="fas fa-arrow-up-right-dots"></i>
-                            </div>
-                            <h5 class="card-title">جزئیات اعتبار</h5>
-                            <p class="card-text">با تسویه حساب خود تا قبل از آخر ماه اعتبار خود را افزایش دهید.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="credit-debt.php" class="text-decoration-none" aria-label="پرداخت های من">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <i class="fas fa-receipt"></i>
-                            </div>
-                            <h5 class="card-title">پرداخت‌های من</h5>
-                            <p class="card-text">مشاهده و مدیریت تمامی پرداخت‌های اقساطی شما.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="history.php" class="text-decoration-none" aria-label="تاریخچه خرید">
-                        <div class="card-body text-center">
-                            <div class="feature-icon">
-                                <i class="fas fa-clock-rotate-left"></i>
-                            </div>
-                            <h5 class="card-title">تاریخچه خرید</h5>
-                            <p class="card-text">مشاهده تمام تراکنش‌ها و خریدهای انجام شده.</p>
-                        </div>
-                    </a>
-                </div>
+            <div class="d-flex justify-content-between mt-4 gap-3">
+                <a href="shop.php" class="btn btn-primary flex-grow-1" aria-label="خرید کالا">خرید کالا</a>
+                <a href="service.php" class="btn btn-outline-secondary flex-grow-1" aria-label="خرید خدمات">خرید خدمات</a>
             </div>
         </div>
+
+        
     </div>
 
     <div class="bottom-navigation-bar">

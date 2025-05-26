@@ -788,394 +788,390 @@
     </div>
 
 
-
-
     <div class="mt-5 mb-5">
-        <div class="container mt-4">
-        <div class="section-header mb-4">
-            <h4><i class="fas fa-hand-holding-dollar"></i> خدمات اعتباری</h4>
+        <div class="container">
+            <div class="tf-title d-flex justify-content-between">
+                <h3 class="fw_6">خدمات شما</h3>
+            </div>
+            <ul class="box-service mt-3">
+                <li>
+                    <a href="#" aria-label="شارژ">
+                        <div class="icon-box bg_color_1">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <span>شارژ</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" aria-label="اینترنت">
+                        <div class="icon-box bg_color_2">
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <span>اینترنت</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" aria-label="قبوض">
+                        <div class="icon-box bg_color_3">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <span>قبوض</span>
+                    </a>
+                </li>
+
+            </ul>
         </div>
-
-        <ul class="box-service">
-            <li>
-                <a href="credit-register.php" aria-label="ثبت نام اعتبار جدید">
-                    <div class="icon-box bg_color_1">
-                        <i class="fas fa-user-plus"></i> </div>
-                    <span>ثبت نام جدید</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="credit.php" aria-label="ورود به حساب اعتبار">
-                    <div class="icon-box bg_color_3">
-                        <i class="fas fa-sign-in-alt"></i> </div>
-                    <span>ورود به حساب</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="credit-status.php" aria-label="استعلام وضعیت اعتبار">
-                    <div class="icon-box bg_color_2">
-                        <i class="fas fa-info-circle"></i> </div>
-                    <span>استعلام وضعیت</span>
-                </a>
-            </li>
-
-            
-        </ul>
     </div>
 
 
-        <div class="bottom-navigation-bar">
-            <div class="container">
-                <ul class="tf-navigation-bar">
-                    <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                            href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
-                    <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
-                            aria-label="خدمات">
-                            <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                    <li>
-                        <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
-                            aria-label="فروشگاه">
-                            <i class="fas fa-store-alt"></i>
-                            <span class="mt-1">فروشگاه</span>
-                        </a>
-                    </li>
-                    <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                            href="credit-debt.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i>
-                            پرداخت</a></li>
-                    <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
-                            aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
-                </ul>
-            </div>
+    <div class="bottom-navigation-bar">
+        <div class="container">
+            <ul class="tf-navigation-bar">
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column "
+                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="service.php"
+                        aria-label="خدمات">
+                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
+                <li>
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                        aria-label="فروشگاه">
+                        <i class="fas fa-store-alt"></i>
+                        <span class="mt-1">فروشگاه</span>
+                    </a>
+                </li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                        aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
+                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
+            </ul>
         </div>
+    </div>
 
 
-        <div class="tf-panel up" id="notificationPanel">
-            <div class="panel_overlay"></div>
-            <div class="panel-box panel-up panel-noti">
-                <div class="header is-fixed">
-                    <div class="container">
-                        <div class="tf-statusbar d-flex justify-content-between align-items-center">
-                            <a href="#" class="clear-panel" data-dismiss-panel="#notificationPanel"> <i
-                                    class="fas fa-chevron-left"></i> </a>
-                            <h3>پیام ها</h3>
-                            <span></span>
-                        </div>
+    <div class="tf-panel up" id="notificationPanel">
+        <div class="panel_overlay"></div>
+        <div class="panel-box panel-up panel-noti">
+            <div class="header is-fixed">
+                <div class="container">
+                    <div class="tf-statusbar d-flex justify-content-between align-items-center">
+                        <a href="#" class="clear-panel" data-dismiss-panel="#notificationPanel"> <i
+                                class="fas fa-chevron-left"></i> </a>
+                        <h3>پیام ها</h3>
+                        <span></span>
                     </div>
                 </div>
-                <div class="app-wrap style1" style="padding-top: 70px;">
-                    <div class="container">
-                        <div class="tf-tab mt-3">
-                            <div class="swiper tes-noti">
-                                <ul class="swiper-wrapper menu-tabs">
-                                    <li class="swiper-slide nav-tab active"><a href="#">سیستم</a></li>
-                                    <li class="swiper-slide nav-tab"><a href="#">امتیاز</a></li>
-                                    <li class="swiper-slide nav-tab"><a href="#">مالی</a></li>
-                                    <li class="swiper-slide nav-tab"><a href="#">خدمات</a></li>
-                                </ul>
-                            </div>
-                            <div class="content-tab mt-5">
-                                <div class="noti-box">
-                                    <div class="noti-list">
-                                        <div class="icon-box bg_service-5">
-                                            <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div class="content-right">
-                                            <div class="title">
-                                                <h3>به روزرسانی سامانه</h3>
-                                                <span class="text-info">اطلاعیه</span>
-                                            </div>
-                                            <div class="desc">
-                                                <p>نسخه جدید اپلیکیشن منتشر شد. لطفاً بروزرسانی کنید</p>
-                                                <span class="time">2 روز پیش</span>
-                                                <i class="dot"></i>
-                                            </div>
-                                        </div>
+            </div>
+            <div class="app-wrap style1" style="padding-top: 70px;">
+                <div class="container">
+                    <div class="tf-tab mt-3">
+                        <div class="swiper tes-noti">
+                            <ul class="swiper-wrapper menu-tabs">
+                                <li class="swiper-slide nav-tab active"><a href="#">سیستم</a></li>
+                                <li class="swiper-slide nav-tab"><a href="#">امتیاز</a></li>
+                                <li class="swiper-slide nav-tab"><a href="#">مالی</a></li>
+                                <li class="swiper-slide nav-tab"><a href="#">خدمات</a></li>
+                            </ul>
+                        </div>
+                        <div class="content-tab mt-5">
+                            <div class="noti-box">
+                                <div class="noti-list">
+                                    <div class="icon-box bg_service-5">
+                                        <i class="fas fa-mobile-alt"></i>
                                     </div>
-                                </div>
-                                <div class="noti-box">
-                                    <div class="noti-list">
-                                        <div class="icon-box bg_service-3">
-                                            <i class="fas fa-star"></i>
+                                    <div class="content-right">
+                                        <div class="title">
+                                            <h3>به روزرسانی سامانه</h3>
+                                            <span class="text-info">اطلاعیه</span>
                                         </div>
-                                        <div class="content-right">
-                                            <div class="title">
-                                                <h3>امتیاز جدید</h3>
-                                                <span class="text-warning">پاداش</span>
-                                            </div>
-                                            <div class="desc">
-                                                <p>برای خرید قبلی ۱۵۰ امتیاز دریافت کردید</p>
-                                                <span class="time">دیروز</span>
-                                                <i class="dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="noti-box">
-                                    <div class="noti-list">
-                                        <div class="icon-box bg_service-1">
-                                            <i class="fas fa-money-bill-transfer"></i>
-                                        </div>
-                                        <div class="content-right">
-                                            <div class="title">
-                                                <h3>واریز وجه موفق</h3>
-                                                <span class="text-success">جدید</span>
-                                            </div>
-                                            <div class="desc">
-                                                <p>مبلغ ۲۵۰,۰۰۰ تومان به حساب شما واریز شد</p>
-                                                <span class="time">10 دقیقه پیش</span>
-                                                <i class="dot"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="noti-box">
-                                    <div class="noti-list">
-                                        <div class="icon-box bg_service-2">
-                                            <i class="fas fa-calendar-check"></i>
-                                        </div>
-                                        <div class="content-right">
-                                            <div class="title">
-                                                <h3>نوبت شما رسید</h3>
-                                                <span class="text-primary">مهم</span>
-                                            </div>
-                                            <div class="desc">
-                                                <p>نوبت خدمات فنی شما برای فردا ساعت ۱۰ صبح تنظیم شد</p>
-                                                <span class="time">1 ساعت پیش</span>
-                                                <i class="dot"></i>
-                                            </div>
+                                        <div class="desc">
+                                            <p>نسخه جدید اپلیکیشن منتشر شد. لطفاً بروزرسانی کنید</p>
+                                            <span class="time">2 روز پیش</span>
+                                            <i class="dot"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="noti-box">
+                                <div class="noti-list">
+                                    <div class="icon-box bg_service-3">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="content-right">
+                                        <div class="title">
+                                            <h3>امتیاز جدید</h3>
+                                            <span class="text-warning">پاداش</span>
+                                        </div>
+                                        <div class="desc">
+                                            <p>برای خرید قبلی ۱۵۰ امتیاز دریافت کردید</p>
+                                            <span class="time">دیروز</span>
+                                            <i class="dot"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="noti-box">
+                                <div class="noti-list">
+                                    <div class="icon-box bg_service-1">
+                                        <i class="fas fa-money-bill-transfer"></i>
+                                    </div>
+                                    <div class="content-right">
+                                        <div class="title">
+                                            <h3>واریز وجه موفق</h3>
+                                            <span class="text-success">جدید</span>
+                                        </div>
+                                        <div class="desc">
+                                            <p>مبلغ ۲۵۰,۰۰۰ تومان به حساب شما واریز شد</p>
+                                            <span class="time">10 دقیقه پیش</span>
+                                            <i class="dot"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="noti-box">
+                                <div class="noti-list">
+                                    <div class="icon-box bg_service-2">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="content-right">
+                                        <div class="title">
+                                            <h3>نوبت شما رسید</h3>
+                                            <span class="text-primary">مهم</span>
+                                        </div>
+                                        <div class="desc">
+                                            <p>نوبت خدمات فنی شما برای فردا ساعت ۱۰ صبح تنظیم شد</p>
+                                            <span class="time">1 ساعت پیش</span>
+                                            <i class="dot"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="tf-panel down" id="transactionPanel">
-            <div class="panel_overlay"></div>
-            <div class="panel-box panel-down">
-                <div class="header bg_white_color">
-                    <div class="container">
-                        <div class="tf-statusbar d-flex justify-content-between align-items-center">
-                            <a href="#" class="clear-panel" data-dismiss-panel="#transactionPanel"> <i
-                                    class="fas fa-times"></i> </a>
-                            <h3>تراکنش</h3>
-                            <a href="#" class="action-right" data-bs-toggle="modal" data-bs-target="#qrModal"><i
-                                    class="fas fa-qrcode"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="wrap-transfer mb-5" style="padding-top: 20px;">
-                    <div class="container">
-                        <a href="#" class="action-sheet-transfer">
-                            <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
-                            <div class="content">
-                                <h4 class="fw_6">پرداخت قسط</h4>
-                                <p>مدیریت اقساط پرداختی</p>
-                            </div>
-                        </a>
-                        <a href="#" class="action-sheet-transfer">
-                            <div class="icon"><i class="fas fa-triangle-exclamation"></i></div>
-                            <div class="content">
-                                <h4 class="fw_6">معوقه</h4>
-                                <p>بررسی بدهی‌های سررسید گذشته</p>
-                            </div>
-                        </a>
-                        <a href="#" class="action-sheet-transfer">
-                            <div class="icon"><i class="fas fa-gift"></i></div>
-                            <div class="content">
-                                <h4 class="fw_6">پاداش</h4>
-                                <p>دریافت جوایز و امتیازات</p>
-                            </div>
-                        </a>
-                        <a href="#" class="action-sheet-transfer">
-                            <div class="icon"><i class="fas fa-cart-shopping"></i></div>
-                            <div class="content">
-                                <h4 class="fw_6">خرید</h4>
-                                <p>سوابق خریدهای انجام‌شده</p>
-                            </div>
-                        </a>
-                        <a href="#" class="action-sheet-transfer">
-                            <div class="icon"><i class="fas fa-rotate-left"></i></div>
-                            <div class="content">
-                                <h4 class="fw_6">بازگشت پول</h4>
-                                <p>مشاهده مبالغ برگشتی</p>
-                            </div>
-                        </a>
+    <div class="tf-panel down" id="transactionPanel">
+        <div class="panel_overlay"></div>
+        <div class="panel-box panel-down">
+            <div class="header bg_white_color">
+                <div class="container">
+                    <div class="tf-statusbar d-flex justify-content-between align-items-center">
+                        <a href="#" class="clear-panel" data-dismiss-panel="#transactionPanel"> <i
+                                class="fas fa-times"></i> </a>
+                        <h3>تراکنش</h3>
+                        <a href="#" class="action-right" data-bs-toggle="modal" data-bs-target="#qrModal"><i
+                                class="fas fa-qrcode"></i></a>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="tf-panel down" id="cardPanel">
-            <div class="panel_overlay"></div>
-            <div class="panel-box panel-down">
-                <div class="header">
-                    <div class="container">
-                        <div class="tf-statusbar d-flex justify-content-between align-items-center">
-                            <a href="#" class="clear-panel" data-dismiss-panel="#cardPanel"> <i
-                                    class="fas fa-times"></i>
-                            </a>
-                            <h3>مدیریت کارت ها</h3>
+            <div class="wrap-transfer mb-5" style="padding-top: 20px;">
+                <div class="container">
+                    <a href="#" class="action-sheet-transfer">
+                        <div class="icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <div class="content">
+                            <h4 class="fw_6">پرداخت قسط</h4>
+                            <p>مدیریت اقساط پرداختی</p>
                         </div>
-                    </div>
-                </div>
-                <div class="content-card mt-3 mb-5" style="padding-top: 20px;">
-                    <div class="container">
-                        <div class="tf-card-list bg_surface_color large out-line">
-                            <div class="info">
-                                <h4 class="fw_6"><a href="#">صادرات</a></h4>
-                                <p>**** **** **** 7576</p>
-                            </div>
-                            <input type="checkbox" class="tf-checkbox form-check-input" checked>
+                    </a>
+                    <a href="#" class="action-sheet-transfer">
+                        <div class="icon"><i class="fas fa-triangle-exclamation"></i></div>
+                        <div class="content">
+                            <h4 class="fw_6">معوقه</h4>
+                            <p>بررسی بدهی‌های سررسید گذشته</p>
                         </div>
-                        <p class="auth-line text-center mt-3 text-secondary">انتخاب کارت های دیگر</p>
-
-                        <div class="tf-spacing-20" style="height: 20px;"></div>
-                        <a href="#" class="btn btn-primary w-100 py-3">افزودن کارت <i class="fas fa-plus ms-2"></i> </a>
-                    </div>
+                    </a>
+                    <a href="#" class="action-sheet-transfer">
+                        <div class="icon"><i class="fas fa-gift"></i></div>
+                        <div class="content">
+                            <h4 class="fw_6">پاداش</h4>
+                            <p>دریافت جوایز و امتیازات</p>
+                        </div>
+                    </a>
+                    <a href="#" class="action-sheet-transfer">
+                        <div class="icon"><i class="fas fa-cart-shopping"></i></div>
+                        <div class="content">
+                            <h4 class="fw_6">خرید</h4>
+                            <p>سوابق خریدهای انجام‌شده</p>
+                        </div>
+                    </a>
+                    <a href="#" class="action-sheet-transfer">
+                        <div class="icon"><i class="fas fa-rotate-left"></i></div>
+                        <div class="content">
+                            <h4 class="fw_6">بازگشت پول</h4>
+                            <p>مشاهده مبالغ برگشتی</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
 
-
-        <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content text-center p-4">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title w-100" id="qrModalLabel"> QR </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="qrcode"></div>
+    <div class="tf-panel down" id="cardPanel">
+        <div class="panel_overlay"></div>
+        <div class="panel-box panel-down">
+            <div class="header">
+                <div class="container">
+                    <div class="tf-statusbar d-flex justify-content-between align-items-center">
+                        <a href="#" class="clear-panel" data-dismiss-panel="#cardPanel"> <i class="fas fa-times"></i>
+                        </a>
+                        <h3>مدیریت کارت ها</h3>
                     </div>
                 </div>
             </div>
+            <div class="content-card mt-3 mb-5" style="padding-top: 20px;">
+                <div class="container">
+                    <div class="tf-card-list bg_surface_color large out-line">
+                        <div class="info">
+                            <h4 class="fw_6"><a href="#">صادرات</a></h4>
+                            <p>**** **** **** 7576</p>
+                        </div>
+                        <input type="checkbox" class="tf-checkbox form-check-input" checked>
+                    </div>
+                    <p class="auth-line text-center mt-3 text-secondary">انتخاب کارت های دیگر</p>
+
+                    <div class="tf-spacing-20" style="height: 20px;"></div>
+                    <a href="#" class="btn btn-primary w-100 py-3">افزودن کارت <i class="fas fa-plus ms-2"></i> </a>
+                </div>
+            </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    </div>
 
 
-        <script>
-            // Preloader script (Optional, you can remove this if not needed)
-            // This is a basic example, you might need a more robust solution
-            window.addEventListener('load', function () {
-                const preload = document.querySelector('.preload');
-                if (preload) {
-                    preload.style.display = 'none'; // Hide preloader after content loads
-                }
+    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title w-100" id="qrModalLabel"> QR </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+
+    <script>
+        // Preloader script (Optional, you can remove this if not needed)
+        // This is a basic example, you might need a more robust solution
+        window.addEventListener('load', function () {
+            const preload = document.querySelector('.preload');
+            if (preload) {
+                preload.style.display = 'none'; // Hide preloader after content loads
+            }
+        });
+
+        // Initialize Swiper for recipient (shop) carousel
+        var recipientSwiper = new Swiper(".recipient-tes", {
+            slidesPerView: "auto",
+            spaceBetween: 15,
+            freeMode: true,
+            // To prevent issues when there are not enough slides
+            watchOverflow: true,
+        });
+
+        // Initialize Swiper for banner carousel
+        var bannerSwiper = new Swiper(".banner-tes", {
+            slidesPerView: 1.2,
+            spaceBetween: 15,
+            centeredSlides: true,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            // To prevent issues when there are not enough slides
+            watchOverflow: true,
+        });
+
+        // Initialize Swiper for notification tabs
+        var notiSwiper = new Swiper(".tes-noti", {
+            slidesPerView: "auto",
+            spaceBetween: 10,
+            freeMode: true,
+            // To prevent issues when there are not enough slides
+            watchOverflow: true,
+        });
+
+
+        // Handle panel (modal-like) open/close
+        $(document).ready(function () {
+            // Function to open a panel
+            function openPanel(panelId) {
+                $(panelId).addClass('active');
+            }
+
+            // Function to close all panels
+            function closePanels() {
+                $('.tf-panel').removeClass('active');
+            }
+
+            // Open notification panel
+            $('#btn-popup-up').on('click', function (e) {
+                e.preventDefault();
+                openPanel('#notificationPanel');
             });
 
-            // Initialize Swiper for recipient (shop) carousel
-            var recipientSwiper = new Swiper(".recipient-tes", {
-                slidesPerView: "auto",
-                spaceBetween: 15,
-                freeMode: true,
-                // To prevent issues when there are not enough slides
-                watchOverflow: true,
+            // Open transaction panel
+            $('#btn-popup-down').on('click', function (e) {
+                e.preventDefault();
+                openPanel('#transactionPanel');
             });
 
-            // Initialize Swiper for banner carousel
-            var bannerSwiper = new Swiper(".banner-tes", {
-                slidesPerView: 1.2,
-                spaceBetween: 15,
-                centeredSlides: true,
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-                // To prevent issues when there are not enough slides
-                watchOverflow: true,
+            // Open card panel
+            $('.btn-card-popup').on('click', function (e) {
+                e.preventDefault();
+                openPanel('#cardPanel');
             });
 
-            // Initialize Swiper for notification tabs
-            var notiSwiper = new Swiper(".tes-noti", {
-                slidesPerView: "auto",
-                spaceBetween: 10,
-                freeMode: true,
-                // To prevent issues when there are not enough slides
-                watchOverflow: true,
+            // Close panels
+            $('.clear-panel, .panel_overlay').on('click', function (e) {
+                e.preventDefault();
+                closePanels();
             });
+        });
 
-
-            // Handle panel (modal-like) open/close
-            $(document).ready(function () {
-                // Function to open a panel
-                function openPanel(panelId) {
-                    $(panelId).addClass('active');
-                }
-
-                // Function to close all panels
-                function closePanels() {
-                    $('.tf-panel').removeClass('active');
-                }
-
-                // Open notification panel
-                $('#btn-popup-up').on('click', function (e) {
-                    e.preventDefault();
-                    openPanel('#notificationPanel');
-                });
-
-                // Open transaction panel
-                $('#btn-popup-down').on('click', function (e) {
-                    e.preventDefault();
-                    openPanel('#transactionPanel');
-                });
-
-                // Open card panel
-                $('.btn-card-popup').on('click', function (e) {
-                    e.preventDefault();
-                    openPanel('#cardPanel');
-                });
-
-                // Close panels
-                $('.clear-panel, .panel_overlay').on('click', function (e) {
-                    e.preventDefault();
-                    closePanels();
-                });
-            });
-
-            // QR Modal functionality
-            document.addEventListener('DOMContentLoaded', function () {
-                var qrModalElement = document.getElementById('qrModal');
-                if (qrModalElement) {
-                    qrModalElement.addEventListener('shown.bs.modal', function () {
-                        document.getElementById('qrcode').innerHTML = ""; // Clear previous QR
-                        var qrData = "https://example.com/user/12345"; // Dynamic QR data
-                        new QRCode(document.getElementById("qrcode"), {
-                            text: qrData,
-                            width: 200,
-                            height: 200
-                        });
+        // QR Modal functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            var qrModalElement = document.getElementById('qrModal');
+            if (qrModalElement) {
+                qrModalElement.addEventListener('shown.bs.modal', function () {
+                    document.getElementById('qrcode').innerHTML = ""; // Clear previous QR
+                    var qrData = "https://example.com/user/12345"; // Dynamic QR data
+                    new QRCode(document.getElementById("qrcode"), {
+                        text: qrData,
+                        width: 200,
+                        height: 200
                     });
-                }
-            });
-
-            // Placeholder for PWA push notification script (from original, simplified)
-            if ('serviceWorker' in navigator && 'PushManager' in window) {
-                navigator.serviceWorker.ready.then(function (registration) {
-                    // This part is for welcome notification, typically handled once after first subscription
-                    // For demonstration, simplified. In a real app, manage subscriptions carefully.
-                    // You might want to remove showNotification on every page load.
-                    // registration.showNotification('خوش‌آمدید!', {
-                    //     body: 'به داشبورد خوش آمدید.',
-                    //     icon: './',
-                    //     badge: './',
-                    //     data: { url: '/' },
-                    // });
-                }).catch(function (error) {
-                    console.error('Service Worker registration failed:', error);
                 });
             }
-        </script>
+        });
+
+        // Placeholder for PWA push notification script (from original, simplified)
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.ready.then(function (registration) {
+                // This part is for welcome notification, typically handled once after first subscription
+                // For demonstration, simplified. In a real app, manage subscriptions carefully.
+                // You might want to remove showNotification on every page load.
+                // registration.showNotification('خوش‌آمدید!', {
+                //     body: 'به داشبورد خوش آمدید.',
+                //     icon: './',
+                //     badge: './',
+                //     data: { url: '/' },
+                // });
+            }).catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
+        }
+    </script>
 </body>
 
 </html>

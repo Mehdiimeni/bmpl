@@ -566,21 +566,21 @@
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="dashboard.php"
-                        aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
+                        href="dashboard.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column "
-                        href="history.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> سوابق</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="profile.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                        aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>

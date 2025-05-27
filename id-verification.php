@@ -554,7 +554,7 @@
 
                 <div class="user-info-box">
                     <p>نام و نام خانوادگی: <strong><span id="userName">نام نام خانوادگی</span></strong></p>
-                    <p>شمare ملی: <strong><span id="nationalCodeDisplay">---</span></strong></p>
+                    <p> کد ملی: <strong><span id="nationalCodeDisplay">---</span></strong></p>
                 </div>
 
                 <div class="camera-section">

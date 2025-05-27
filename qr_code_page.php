@@ -853,9 +853,9 @@
             payNowBtn.addEventListener('click', () => {
                 const selectedOption = document.querySelector('input[name="paymentType"]:checked');
                 if (selectedOption) {
-                    alert(`شما مبلغ ${formatCurrency(enteredAmount)} را به صورت ${selectedOption.value === 'full' ? 'تسویه کامل' : '4 قسط ماهانه'} انتخاب کردید. نحوه پرداخت اعتباری شما ثبت شد.`);
-                    // Here you would typically send data to the server for final processing
-                    // e.g., window.location.href = 'payment_confirmation.php?amount=' + enteredAmount + '&type=' + selectedOption.value;
+                    // بجای نمایش alert، کاربر را به صفحه رسید هدایت می‌کنیم
+                    // مبلغ تراکنش را به عنوان پارامتر 'amount' به URL اضافه می‌کنیم
+                    window.location.href = `bank-receipt.php?amount=${enteredAmount}`;
                 } else {
                     alert('لطفاً یک گزینه پرداخت را انتخاب کنید.');
                 }

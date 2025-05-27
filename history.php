@@ -5,204 +5,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تاریخچه پرداخت‌ها و سفارشات</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
+        rel="stylesheet" type="text/css" />
+
     <style>
-        /* Vazirmatn Font Import */
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        /* Root Variables for consistent theming */
         :root {
-            --primary-color: #007bff;
-            /* Bootstrap primary blue */
-            --secondary-color: #0056b3;
-            /* Darker blue for gradients */
+            --primary-color: #5b86e5;
+            --secondary-color: #3656a8;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color-light: #6c757d;
             --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
-            --background-light: #f0f2f5;
-            /* Light gray background */
-            --text-dark: #333;
-            /* Dark gray for main text */
-            --text-muted: #6c757d;
-            /* Muted gray for secondary text */
-            --card-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.08);
-            /* Soft, large shadow */
-            --border-light: #e0e0e0;
-            /* Light border color */
+            --card-shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.05);
+            --card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: var(--background-light);
-            color: var(--text-dark);
+            background-color: var(--light-color);
+            color: var(--dark-color);
             line-height: 1.6;
             padding-bottom: 80px;
-            /* Ensures space for bottom navigation bar */
         }
 
         .container {
-            max-width: 600px;
+            max-width: 700px; /* Slightly wider container for better card display */
         }
 
-        /* Main Header Styles */
+        /* Header Styles */
         .main-header {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            /* Using var(--secondary-color) for consistency */
             color: white;
             padding: 2rem 0;
             border-radius: 0 0 25px 25px;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
-            /* Adjust shadow color */
+            box-shadow: 0 8px 25px rgba(78, 115, 223, 0.2);
             position: relative;
             overflow: hidden;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .main-header::before,
+        .main-header::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(3px);
+            z-index: 0;
         }
 
         .main-header::before {
-            content: '';
-            position: absolute;
             top: -40px;
             right: -40px;
             width: 150px;
             height: 150px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            filter: blur(3px);
         }
 
         .main-header::after {
-            content: '';
-            position: absolute;
             bottom: -60px;
             left: -20px;
             width: 200px;
             height: 200px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            filter: blur(3px);
         }
 
+        .main-header h1,
+        .main-header p {
+            position: relative;
+            z-index: 1;
+        }
 
         .main-header h1 {
             font-weight: 800;
-            margin-bottom: 0.5rem;
             font-size: 2.2rem;
-            position: relative;
-            z-index: 2;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
         }
 
         .main-header p {
             font-weight: 400;
             opacity: 0.9;
-            margin-bottom: 0;
             font-size: 1.1rem;
-            position: relative;
-            z-index: 2;
         }
 
-        /* Section Header Styles */
-        .section-header {
+        /* Section Header Styles (for "تسویه ماهانه" and "اقساطی") */
+        .section-category-header {
             background-color: var(--primary-color);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 12px;
-            /* More rounded */
-            margin: 2.5rem 0 1.5rem 0;
-            /* Adjusted margins */
+            margin: 2.5rem 0 1rem 0;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            /* Softer shadow */
             display: flex;
             align-items: center;
-        }
-
-        .section-header h4 {
-            margin-bottom: 0;
+            justify-content: space-between; /* To push icon and text apart */
             font-weight: 700;
             font-size: 1.3rem;
         }
 
-        .section-header i {
-            margin-left: 0.75rem;
-            /* Adjusted margin for RTL */
+        .section-category-header i {
+            margin-left: 0.75rem; /* Space from icon in RTL */
             font-size: 1.4rem;
         }
 
-        /* Payment Table Styles */
-        .payment-table {
+        /* Search Box */
+        .search-box {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            padding-right: 3.5rem; /* Space for icon */
+            border: 1px solid var(--text-color-light);
             border-radius: 12px;
-            /* More rounded */
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            font-size: 1rem;
+            transition: all 0.3s ease;
             background-color: white;
+            color: var(--dark-color);
         }
 
-        .payment-table thead th {
-            background-color: #e9f0f7;
-            /* Lighter header background */
-            font-weight: 700;
-            border-bottom: 2px solid #c8d3e0;
-            /* Matching border */
-            padding: 1rem 0.75rem;
-            color: var(--text-dark);
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(91, 134, 229, 0.25);
+            outline: none;
         }
 
-        .payment-table tbody tr {
-            transition: all 0.2s ease;
+        .search-box i {
+            position: absolute;
+            left: 1.2rem; /* Position icon on the left in RTL */
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-light);
+            font-size: 1.2rem;
+            pointer-events: none; /* Make icon non-clickable */
         }
 
-        .payment-table tbody tr:hover {
-            background-color: rgba(0, 123, 255, 0.03);
-            /* Lighter hover effect */
-        }
-
-        .payment-table tbody td {
-            padding: 0.75rem;
-            vertical-align: middle;
-            border-top: 1px solid var(--border-light);
-            color: #555;
-            font-size: 0.95rem;
-        }
-
-        .status-paid {
-            color: var(--success-color);
-            font-weight: 600;
-            background-color: rgba(40, 167, 69, 0.1);
-            padding: 0.25rem 0.6rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            display: inline-block;
-        }
-
-        /* Order Card Styles */
+        /* Order Card Styles (General for both types) */
         .order-card {
+            background-color: white;
             border: none;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--card-shadow-soft);
             margin-bottom: 1rem;
             overflow: hidden;
             transition: all 0.3s ease;
-            background-color: white;
         }
 
         .order-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .order-card-header {
@@ -214,7 +173,6 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             cursor: pointer;
             border-radius: 12px 12px 0 0;
-            /* Match card radius */
         }
 
         .order-card-header:hover {
@@ -224,53 +182,12 @@
         .order-title {
             font-weight: 700;
             font-size: 1.15rem;
-            color: var(--text-dark);
+            color: var(--dark-color);
         }
 
-        .order-card-body {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-            /* Smooth transition */
-            background-color: #fcfdfe;
-            /* Very light background for body */
-        }
-
-        .order-card.active .order-card-body {
-            padding: 1.5rem;
-            max-height: 500px;
-            /* Sufficiently large height */
-        }
-
-        .status-badge {
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 0.5rem;
-        }
-
-        .status-delivered {
-            background-color: rgba(40, 167, 69, 0.1);
-            color: var(--success-color);
-        }
-
-        .status-processing {
-            background-color: rgba(255, 193, 7, 0.1);
-            color: var(--warning-color);
-        }
-
-        .status-cancelled {
-            background-color: rgba(220, 53, 69, 0.1);
-            color: var(--danger-color);
-        }
-
-        .order-details {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
+        .order-details-summary {
+            font-size: 0.95rem;
+            color: var(--text-color-light);
         }
 
         .accordion-icon {
@@ -281,7 +198,100 @@
             transform: rotate(180deg);
         }
 
-        /* Bottom Navigation Bar Styles (Copied from previous examples for consistency) */
+        .order-card-body {
+            padding: 0 1.5rem; /* Initial horizontal padding */
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: #fcfdfe;
+        }
+
+        .order-card.active .order-card-body {
+            padding: 1.5rem;
+            max-height: 500px; /* Adjust as needed for content */
+        }
+
+        .order-detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-color-light);
+        }
+
+        .order-detail-item span:first-child {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .status-paid {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-failed {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        /* Summary Totals */
+        .summary-totals {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow-soft);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--border-light);
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding-top: 1rem;
+        }
+
+        .summary-item span:last-child {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* No transactions message */
+        .no-transactions-message {
+            text-align: center;
+            color: var(--text-color-light);
+            padding: 2rem;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: var(--card-shadow-soft);
+            margin-top: 1rem;
+        }
+
+        /* Bottom Navigation Bar - Consistent with previous pages */
         .bottom-navigation-bar {
             position: fixed;
             bottom: 0;
@@ -356,31 +366,26 @@
                 font-size: 0.95rem;
             }
 
-            .section-header {
-                padding: 0.75rem 1rem;
+            .section-category-header {
+                padding: 0.6rem 1rem;
                 font-size: 1.1rem;
-                margin: 2rem 0 1rem 0;
+                margin: 1.5rem 0 0.8rem 0;
             }
 
-            .section-header h4 {
-                font-size: 1.1rem;
-            }
-
-            .section-header i {
+            .section-category-header i {
                 font-size: 1.2rem;
                 margin-left: 0.5rem;
             }
 
-            .payment-table thead th,
-            .payment-table tbody td {
-                padding: 0.6rem;
-                font-size: 0.85rem;
+            .search-box input {
+                padding: 0.7rem 1rem;
+                padding-right: 3rem;
+                font-size: 0.9rem;
             }
 
-            .status-paid,
-            .status-badge {
-                font-size: 0.75rem;
-                padding: 0.2rem 0.5rem;
+            .search-box i {
+                left: 1rem;
+                font-size: 1.1rem;
             }
 
             .order-card-header {
@@ -391,12 +396,36 @@
                 font-size: 1rem;
             }
 
+            .order-details-summary {
+                font-size: 0.85rem;
+            }
+
             .order-card-body {
                 padding: 1rem !important;
             }
 
-            .order-details {
+            .order-detail-item {
                 font-size: 0.85rem;
+            }
+
+            .status-badge {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .summary-totals {
+                padding: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .summary-item {
+                font-size: 1rem;
+                padding: 0.3rem 0;
+            }
+
+            .summary-item:last-child {
+                font-size: 1.1rem;
+                padding-top: 0.8rem;
             }
 
             .bottom-navigation-bar {
@@ -417,106 +446,50 @@
 <body>
     <div class="main-header text-center">
         <div class="container">
-            <h1 class="mb-3">تاریخچه خرید</h1>
-            <p class="mb-0">مشاهده تمام خریدهای شما</p>
+            <h1>تاریخچه پرداخت‌ها</h1>
+            <p>مشاهده تمام خریدهای شما</p>
         </div>
     </div>
 
     <div class="container">
-        <div class="section-header">
-            <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i>تاریخچه خرید</h4>
-        </div>
-
         <div class="search-box">
-            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="جستجو در تراکنش‌ها..."
+            <input type="text" id="searchInput" onkeyup="filterOrders()" placeholder="جستجو در تراکنش‌ها..."
                 aria-label="جستجو در تراکنش‌ها">
             <i class="fas fa-search"></i>
         </div>
 
-        <div class="table-responsive payment-table">
-            <table class="table table-hover mb-0" id="paymentTable">
-                <thead>
-                    <tr>
-                        <th>تاریخ</th>
-                        <th>وضعیت</th>
-                        <th>مبلغ</th>
-                        <th>نوع</th>
-                        <th>کد </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>۱۴۰۴/۰۱/۰۴</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۲۸۹,۰۰۰</td>
-                        <td>گوشی تلفن همراه</td>
-                        <td>۱۶۷۳۳۴</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۴/۰۱/۰۴</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۳۰۰,۰۰۰</td>
-                        <td>شارژ کیف پول</td>
-                        <td>۷۶۵۴۳۲</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۸/۲۸</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۱۸۷,۹۶۰</td>
-                        <td> خدمات رستوران </td>
-                        <td>۸۹۰۱۲۳</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۷/۱۰</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۴۵۰,۰۰۰</td>
-                        <td>کتاب دیجیتال</td>
-                        <td>۴۵۶۷۸۹</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۶/۲۰</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۱,۵۰۰,۰۰۰</td>
-                        <td>لباس ورزشی</td>
-                        <td>۲۳۴۵۶۷</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۵/۰۵</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۷۵,۰۰۰</td>
-                        <td>قهوه</td>
-                        <td>۹۸۷۶۵۴</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۴/۱۲</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۲,۰۰۰,۰۰۰</td>
-                        <td>تعمیر لپ‌تاپ</td>
-                        <td>۱۳۵۷۹۰</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۳/۰۱</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۱۲۵,۰۰۰</td>
-                        <td>بلیت سینما</td>
-                        <td>۲۴۶۸۰۰</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۲/۱۵</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۹۵۰,۰۰۰</td>
-                        <td>کفش ورزشی</td>
-                        <td>۳۶۹۱۵۹</td>
-                    </tr>
-                    <tr>
-                        <td>۱۴۰۳/۰۱/۳۰</td>
-                        <td><span class="status-paid">پرداخت شده</span></td>
-                        <td>۶۰۰,۰۰۰</td>
-                        <td>اشتراک نرم‌افزار</td>
-                        <td>۷۸۹۰۱۲</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="section-category-header">
+            <span><i class="fas fa-calendar-alt me-2"></i>تسویه تا ۳۰ ام ماه</span>
+        </div>
+        <div id="fullPaymentOrdersList">
+            <div class="no-transactions-message" id="noFullPayments" style="display: none;">
+                تراکنشی برای تسویه تا ۳۰ ام ماه یافت نشد.
+            </div>
+        </div>
+
+        <div class="section-category-header">
+            <span><i class="fas fa-handshake me-2"></i>اقساط ۴ ماهه</span>
+        </div>
+        <div id="installmentOrdersList">
+            <div class="no-transactions-message" id="noInstallments" style="display: none;">
+                تراکنشی برای اقساط ۴ ماهه یافت نشد.
+            </div>
+        </div>
+
+        <div class="summary-totals">
+            <h4 class="text-center mb-3">جمع کل خریدها</h4>
+            <div class="summary-item">
+                <span>جمع خریدهای تسویه ماهانه:</span>
+                <span id="totalFullPayments">۰ تومان</span>
+            </div>
+            <div class="summary-item">
+                <span>جمع خریدهای اقساطی:</span>
+                <span id="totalInstallments">۰ تومان</span>
+            </div>
+            <div class="summary-item">
+                <span>جمع کل خریدها:</span>
+                <span id="grandTotal">۰ تومان</span>
+            </div>
         </div>
     </div>
 
@@ -535,7 +508,7 @@
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="credit-debt.php"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -544,12 +517,155 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
+        // Sample data - In a real application, this would come from a backend (PHP)
+        const allOrders = [
+            { id: 'O1001', date: '۱۴۰۴/۰۱/۰۴', status: 'paid', amount: 289000, type: 'گوشی تلفن همراه', code: '۱۶۷۳۳۴', paymentType: 'full', description: 'خرید یک عدد گوشی هوشمند جدید', installmentDetails: '' },
+            { id: 'O1002', date: '۱۴۰۴/۰۱/۰۴', status: 'paid', amount: 300000, type: 'شارژ کیف پول', code: '۷۶۵۴۳۲', paymentType: 'full', description: 'افزایش موجودی کیف پول اعتباری', installmentDetails: '' },
+            { id: 'O1003', date: '۱۴۰۳/۱۲/۱۰', status: 'pending', amount: 1200000, type: 'لوازم خانگی', code: '۲۲۳۴۵۶', paymentType: 'installment', description: 'خرید ماشین لباسشویی', installmentDetails: '۴ قسط ماهیانه ۳۱۵,۰۰۰ تومان' },
+            { id: 'O1004', date: '۱۴۰۳/۱۱/۲۰', status: 'paid', amount: 500000, type: 'کتاب دیجیتال', code: '۴۵۶۷۸۹', paymentType: 'full', description: 'خرید مجموعه کتاب‌های آموزشی', installmentDetails: '' },
+            { id: 'O1005', date: '۱۴۰۳/۱۰/۱۵', status: 'paid', amount: 800000, type: 'خدمات رستوران', code: '۸۹۰۱۲۳', paymentType: 'full', description: 'پرداخت صورتحساب رستوران', installmentDetails: '' },
+            { id: 'O1006', date: '۱۴۰۳/۰۹/۰۵', status: 'pending', amount: 1800000, type: 'بلیت هواپیما', code: '۹۹۸۷۶۵', paymentType: 'installment', description: 'بلیت رفت و برگشت به مشهد', installmentDetails: '۴ قسط ماهیانه ۴۷۲,۵۰۰ تومان' },
+            { id: 'O1007', date: '۱۴۰۳/۰۸/۲۸', status: 'paid', amount: 187960, type: 'خدمات اینترنت', code: '۸۹۰۱۲۳', paymentType: 'full', description: 'تمدید اشتراک اینترنت پرسرعت', installmentDetails: '' },
+            { id: 'O1008', date: '۱۴۰۳/۰۷/۱۰', status: 'paid', amount: 450000, type: 'کتاب دیجیتال', code: '۴۵۶۷۸۹', paymentType: 'full', description: 'خرید کتاب الکترونیکی', installmentDetails: '' },
+            { id: 'O1009', date: '۱۴۰۳/۰۶/۲۰', status: 'paid', amount: 1500000, type: 'لباس ورزشی', code: '۲۳۴۵۶۷', paymentType: 'full', description: 'خرید لباس و کفش ورزشی', installmentDetails: '' },
+            { id: 'O1010', date: '۱۴۰۳/۰۵/۰۵', status: 'paid', amount: 75000, type: 'قهوه', code: '۹۸۷۶۵۴', paymentType: 'full', description: 'خرید از کافه', installmentDetails: '' },
+            { id: 'O1011', date: '۱۴۰۳/۰۴/۱۲', status: 'paid', amount: 2000000, type: 'تعمیر لپ‌تاپ', code: '۱۳۵۷۹۰', paymentType: 'full', description: 'تعمیرات تخصصی لپ‌تاپ', installmentDetails: '' },
+            { id: 'O1012', date: '۱۴۰۳/۰۳/۰۱', status: 'paid', amount: 125000, type: 'بلیت سینما', code: '۲۴۶۸۰۰', paymentType: 'full', description: 'خرید بلیت فیلم', installmentDetails: '' },
+            { id: 'O1013', date: '۱۴۰۳/۰۲/۱۵', status: 'paid', amount: 950000, type: 'کفش ورزشی', code: '۳۶۹۱۵۹', paymentType: 'full', description: 'خرید کفش ورزشی جدید', installmentDetails: '' },
+            { id: 'O1014', date: '۱۴۰۳/۰۱/۳۰', status: 'paid', amount: 600000, type: 'اشتراک نرم‌افزار', code: '۷۸۹۰۱۲', paymentType: 'full', description: 'تمدید اشتراک سالانه نرم‌افزار', installmentDetails: '' },
+            { id: 'O1015', date: '۱۴۰۳/۰۱/۲۵', status: 'pending', amount: 2500000, type: 'لوازم الکترونیک', code: '۱۱۱۵۵۵', paymentType: 'installment', description: 'خرید هدفون بی‌سیم', installmentDetails: '۴ قسط ماهیانه ۶۵۶,۲۵۰ تومان' }
+        ];
+
+        function formatCurrency(amount) {
+            return amount.toLocaleString('fa-IR') + ' تومان';
+        }
+
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'paid':
+                    return '<span class="status-badge status-paid">پرداخت شده</span>';
+                case 'pending':
+                    return '<span class="status-badge status-pending">در انتظار پرداخت</span>';
+                case 'failed':
+                    return '<span class="status-badge status-failed">ناموفق</span>';
+                default:
+                    return '';
+            }
+        }
+
+        function createOrderCard(order) {
+            const card = document.createElement('div');
+            card.className = 'order-card';
+            card.setAttribute('data-search-terms', `${order.date} ${order.type} ${order.amount} ${order.code} ${order.description} ${order.installmentDetails}`);
+
+            card.innerHTML = `
+                <div class="order-card-header" onclick="toggleOrderCard(this)">
+                    <div>
+                        <div class="order-title">${order.type}</div>
+                        <div class="order-details-summary">${formatCurrency(order.amount)} - ${order.date}</div>
+                    </div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="order-card-body">
+                    <div class="order-detail-item">
+                        <span>تاریخ:</span>
+                        <span>${order.date}</span>
+                    </div>
+                    <div class="order-detail-item">
+                        <span>مبلغ:</span>
+                        <span>${formatCurrency(order.amount)}</span>
+                    </div>
+                    <div class="order-detail-item">
+                        <span>نوع پرداخت:</span>
+                        <span>${order.paymentType === 'full' ? 'تسویه تا ۳۰ام ماه' : '۴ قسط ماهانه'}</span>
+                    </div>
+                    ${order.paymentType === 'installment' ? `
+                    <div class="order-detail-item">
+                        <span>جزئیات اقساط:</span>
+                        <span>${order.installmentDetails}</span>
+                    </div>
+                    ` : ''}
+                    <div class="order-detail-item">
+                        <span>وضعیت:</span>
+                        <span>${getStatusBadge(order.status)}</span>
+                    </div>
+                    <div class="order-detail-item">
+                        <span>کد پیگیری:</span>
+                        <span>${order.code}</span>
+                    </div>
+                    <div class="order-detail-item">
+                        <span>توضیحات:</span>
+                        <span>${order.description}</span>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function renderOrders(orders) {
+            const fullPaymentList = document.getElementById('fullPaymentOrdersList');
+            const installmentList = document.getElementById('installmentOrdersList');
+            const noFullPaymentsMsg = document.getElementById('noFullPayments');
+            const noInstallmentsMsg = document.getElementById('noInstallments');
+
+            fullPaymentList.innerHTML = ''; // Clear previous content
+            installmentList.innerHTML = '';
+            noFullPaymentsMsg.style.display = 'none';
+            noInstallmentsMsg.style.display = 'none';
+
+            let totalFullPayments = 0;
+            let totalInstallments = 0;
+            let fullCount = 0;
+            let installmentCount = 0;
+
+            orders.forEach(order => {
+                const card = createOrderCard(order);
+                if (order.paymentType === 'full') {
+                    fullPaymentList.appendChild(card);
+                    totalFullPayments += order.amount;
+                    fullCount++;
+                } else if (order.paymentType === 'installment') {
+                    installmentList.appendChild(card);
+                    totalInstallments += order.amount;
+                    installmentCount++;
+                }
+            });
+
+            if (fullCount === 0) {
+                fullPaymentList.appendChild(noFullPaymentsMsg);
+                noFullPaymentsMsg.style.display = 'block';
+            }
+            if (installmentCount === 0) {
+                installmentList.appendChild(noInstallmentsMsg);
+                noInstallmentsMsg.style.display = 'block';
+            }
+
+            // Update summary totals
+            document.getElementById('totalFullPayments').textContent = formatCurrency(totalFullPayments);
+            document.getElementById('totalInstallments').textContent = formatCurrency(totalInstallments);
+            document.getElementById('grandTotal').textContent = formatCurrency(totalFullPayments + totalInstallments);
+        }
+
         function toggleOrderCard(header) {
-            const card = header.parentElement;
+            const card = header.closest('.order-card');
             card.classList.toggle('active');
         }
+
+        function filterOrders() {
+            const searchInput = document.getElementById('searchInput');
+            const filter = searchInput.value.toLowerCase();
+            const filteredOrders = allOrders.filter(order => {
+                const searchTerms = `${order.date} ${order.type} ${order.amount} ${order.code} ${order.description} ${order.installmentDetails} ${order.status === 'paid' ? 'پرداخت شده' : order.status === 'pending' ? 'در انتظار پرداخت' : 'ناموفق'}`;
+                return searchTerms.toLowerCase().includes(filter);
+            });
+            renderOrders(filteredOrders);
+        }
+
+        // Initial rendering on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrders(allOrders);
+        });
     </script>
 </body>
 

@@ -48,6 +48,18 @@
             /* Light green for badges */
             --blue-badge: #e6f7ff;
             /* Light blue for badges */
+            --purple-badge: #f2e6ff;
+            /* Light purple for badges */
+            --purple-color: #6f42c1;
+            /* Dark purple */
+            --orange-badge: #fff5e6;
+            /* Light orange for badges */
+            --orange-color: #fd7e14;
+            /* Dark orange */
+            --red-badge: #ffe6e6;
+            /* Light red for badges */
+            --red-color: #dc3545;
+            /* Dark red */
         }
 
         body {
@@ -55,8 +67,10 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 120px; /* Space for the fixed footer */
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            padding-bottom: 120px;
+            /* Space for the fixed footer */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
 
         .club-header {
@@ -137,7 +151,7 @@
             padding: 0.5rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             margin: 1rem auto;
-            max-width: 350px;
+            max-width: 450px;
         }
 
         .tab-nav-item {
@@ -170,7 +184,8 @@
         }
 
         .tab-nav-item:not(.active) span.badge {
-            background-color: var(--primary-color); /* Matches images */
+            background-color: var(--primary-color);
+            /* Matches images */
             color: white;
         }
 
@@ -226,24 +241,39 @@
             flex-shrink: 0;
         }
 
-        .debt-card .icon-box.snapp {
-            background-color: #e8ffe8; /* Light green */
-            color: #28a745; /* Dark green */
+        .debt-card .icon-box.green-theme {
+            background-color: #e8ffe8;
+            color: #28a745;
         }
 
-        .debt-card .icon-box.shap {
-            background-color: #ffe6f2; /* Light pink */
-            color: #cc0066; /* Dark pink */
+        .debt-card .icon-box.pink-theme {
+            background-color: #ffe6f2;
+            color: #cc0066;
         }
 
-        .debt-card .icon-box.market {
-            background-color: #e6f2ff; /* Light blue */
-            color: #007bff; /* Dark blue */
+        .debt-card .icon-box.blue-theme {
+            background-color: #e6f2ff;
+            color: #007bff;
         }
 
-        .debt-card .icon-box.gallery {
-            background-color: #fffacd; /* Light yellow */
-            color: #d4a700; /* Dark yellow */
+        .debt-card .icon-box.yellow-theme {
+            background-color: #fffacd;
+            color: #d4a700;
+        }
+
+        .debt-card .icon-box.purple-theme {
+            background-color: var(--purple-badge);
+            color: var(--purple-color);
+        }
+
+        .debt-card .icon-box.orange-theme {
+            background-color: var(--orange-badge);
+            color: var(--orange-color);
+        }
+
+        .debt-card .icon-box.red-theme {
+            background-color: var(--red-badge);
+            color: var(--red-color);
         }
 
 
@@ -273,7 +303,8 @@
             font-weight: 700;
             font-size: 1.15rem;
             color: var(--text-dark);
-            white-space: nowrap; /* Prevent wrapping */
+            white-space: nowrap;
+            /* Prevent wrapping */
         }
 
         .debt-card .amount-badge {
@@ -295,8 +326,14 @@
             background-color: var(--blue-badge);
             color: var(--primary-color);
         }
-        
-        .debt-card .amount-badge.installment i {
+
+        .debt-card .amount-badge.bank-credit {
+            background-color: var(--orange-badge);
+            color: var(--orange-color);
+        }
+
+        .debt-card .amount-badge.installment i,
+        .debt-card .amount-badge.bank-credit i {
             font-size: 0.6rem;
             margin-left: 0.3rem;
             vertical-align: middle;
@@ -331,7 +368,7 @@
             transition: all 0.2s ease;
         }
 
-        .debt-card .checkbox-container input:checked ~ .checkmark {
+        .debt-card .checkbox-container input:checked~.checkmark {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
         }
@@ -351,7 +388,7 @@
             transform: rotate(45deg);
         }
 
-        .debt-card .checkbox-container input:checked ~ .checkmark:after {
+        .debt-card .checkbox-container input:checked~.checkmark:after {
             display: block;
         }
 
@@ -363,9 +400,10 @@
             padding: 0.75rem 1rem;
             margin-top: 1.5rem;
             margin-bottom: 0.75rem;
-            background-color: white; /* Matches image background */
+            background-color: white;
+            /* Matches image background */
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
         .month-header h5 {
@@ -419,7 +457,8 @@
         }
 
         .bottom-payment-bar button {
-            width: calc(100% - 3rem); /* Adjust based on padding */
+            width: calc(100% - 3rem);
+            /* Adjust based on padding */
             padding: 0.8rem 1.5rem;
             border-radius: 12px;
             font-size: 1.1rem;
@@ -441,7 +480,7 @@
         }
 
         /* Hide future month content by default */
-        .future-months-content {
+        .tab-content:not(.active) {
             display: none;
         }
 
@@ -461,7 +500,7 @@
 
             .tab-nav {
                 padding: 0.3rem;
-                max-width: 600px;
+                max-width: 100%;
             }
 
             .tab-nav-item {
@@ -539,10 +578,10 @@
 
 <body>
 
-        <div class="club-header text-center">
+    <div class="club-header text-center">
         <div class="container">
-            <h3 class="mb-3">پرداخت های من</h3>
-            <p class="mb-0">پرداختی های من </p>
+            <h3 class="mb-3">پرداخت‌های من</h3>
+            <p class="mb-0">مدیریت آسان پرداخت‌های شما</p>
         </div>
     </div>
 
@@ -550,15 +589,15 @@
         <div class="tab-nav mb-12">
             <div class="tab-nav-item active" data-tab="this-month">
                 این ماه
-                <span class="badge">۴</span>
+                <span class="badge" id="this-month-badge">6</span>
             </div>
             <div class="tab-nav-item" data-tab="future-months">
                 ماه‌های آینده
-                <span class="badge">۴</span>
+                <span class="badge" id="future-months-badge">5</span>
             </div>
             <div class="tab-nav-item" data-tab="bank-credit">
                 اعتبار بانکی
-                <span class="badge">۰</span>
+                <span class="badge" id="bank-credit-badge">3</span>
             </div>
         </div>
 
@@ -566,15 +605,15 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" checked data-amount="45000">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box snapp">
-                    <i class="fa-solid fa-exclamation"></i>
+                <div class="icon-box green-theme">
+                    <i class="fa-solid fa-car"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">تاکسی آنلاین (تپسی)</div>
+                    <div class="subtitle">خدمات حمل و نقل</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۴۵,۰۰۰ تومان</div>
@@ -584,15 +623,15 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" checked data-amount="1750325">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box shap">
-                    <i class="fa-solid fa-bag-shopping"></i>
+                <div class="icon-box pink-theme">
+                    <i class="fa-solid fa-mobile-alt"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ شاپ</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">فروشگاه موبایل (دیجی‌فروش)</div>
+                    <div class="subtitle">خرید اقساطی گوشی</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۱,۷۵۰,۳۲۵ تومان</div>
@@ -602,46 +641,82 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" checked data-amount="186900">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box shap">
-                    <i class="fa-solid fa-bag-shopping"></i>
+                <div class="icon-box blue-theme">
+                    <i class="fa-solid fa-utensils"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ شاپ</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">کافه رستوران (بامبو)</div>
+                    <div class="subtitle">صورتحساب رستوران</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۱۸۶,۹۰۰ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط چهارم</div>
+                    <div class="amount-badge monthly">هزینه ثابت</div>
                 </div>
             </div>
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" checked data-amount="327825">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box shap">
-                    <i class="fa-solid fa-bag-shopping"></i>
+                <div class="icon-box yellow-theme">
+                    <i class="fa-solid fa-home"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ شاپ</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">خدمات خانه (پاکسان)</div>
+                    <div class="subtitle">نظافت منزل</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۳۲۷,۸۲۵ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط چهارم</div>
+                    <div class="amount-badge monthly">هزینه سرویس</div>
+                </div>
+            </div>
+
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" checked data-amount="200000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box purple-theme">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="details">
+                    <div class="title">آموزشگاه زبان (گاما)</div>
+                    <div class="subtitle">شهریه ماهانه</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۲۰۰,۰۰۰ تومان</div>
+                    <div class="amount-badge monthly">بدهی ماهانه</div>
+                </div>
+            </div>
+
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" checked data-amount="500000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box orange-theme">
+                    <i class="fa-solid fa-heartbeat"></i>
+                </div>
+                <div class="details">
+                    <div class="title">کلینیک پزشکی (سلامت)</div>
+                    <div class="subtitle">ویزیت پزشک</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۵۰۰,۰۰۰ تومان</div>
+                    <div class="amount-badge monthly">خدمات درمانی</div>
                 </div>
             </div>
 
         </div>
 
-        <div id="future-months-content" class="tab-content future-months-content">
+        <div id="future-months-content" class="tab-content">
             <div class="credit-balance">
                 <i class="bi bi-list-columns"></i>
-                <span>مجموع : ۲,۸۱۴,۳۰ تومان</span>
+                <span>مجموع بدهی‌های آینده: <span id="future-total-amount"></span></span>
             </div>
 
             <div class="month-header">
@@ -651,15 +726,15 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox">
+                    <input type="checkbox" data-amount="768830">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box market">
+                <div class="icon-box market blue-theme">
                     <i class="fa-solid fa-basket-shopping"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ مارکت</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">سوپرمارکت آنلاین (اکالا)</div>
+                    <div class="subtitle">خرید خواربار</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۷۶۸,۸۳۰ تومان</div>
@@ -669,15 +744,15 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox">
+                    <input type="checkbox" data-amount="2045500">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box gallery">
-                    <i class="fa-solid fa-building-columns"></i>
+                <div class="icon-box gallery yellow-theme">
+                    <i class="fa-solid fa-chair"></i>
                 </div>
                 <div class="details">
-                    <div class="title">الی گالری</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">فروشگاه مبلمان (آرام چوب)</div>
+                    <div class="subtitle">قسط خرید مبل</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۲,۰۴۵,۵۰۰ تومان</div>
@@ -692,15 +767,15 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox">
+                    <input type="checkbox" data-amount="768830">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box market">
+                <div class="icon-box market blue-theme">
                     <i class="fa-solid fa-basket-shopping"></i>
                 </div>
                 <div class="details">
-                    <div class="title">اسنپ مارکت</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">سوپرمارکت آنلاین (اکالا)</div>
+                    <div class="subtitle">خرید خواربار</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۷۶۸,۸۳۰ تومان</div>
@@ -710,25 +785,101 @@
 
             <div class="debt-card">
                 <label class="checkbox-container">
-                    <input type="checkbox">
+                    <input type="checkbox" data-amount="2045500">
                     <span class="checkmark"></span>
                 </label>
-                <div class="icon-box gallery">
-                    <i class="fa-solid fa-building-columns"></i>
+                <div class="icon-box gallery yellow-theme">
+                    <i class="fa-solid fa-chair"></i>
                 </div>
                 <div class="details">
-                    <div class="title">الی گالری</div>
-                    <div class="subtitle">خرید آنلاین</div>
+                    <div class="title">فروشگاه مبلمان (آرام چوب)</div>
+                    <div class="subtitle">قسط خرید مبل</div>
                 </div>
                 <div class="amount-section">
                     <div class="amount">۲,۰۴۵,۵۰۰ تومان</div>
                     <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط سوم</div>
                 </div>
             </div>
+            
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" data-amount="150000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box red-theme">
+                    <i class="fa-solid fa-dumbbell"></i>
+                </div>
+                <div class="details">
+                    <div class="title">باشگاه ورزشی (فیت‌لند)</div>
+                    <div class="subtitle">حق عضویت</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۱۵۰,۰۰۰ تومان</div>
+                    <div class="amount-badge monthly">بدهی ماهانه</div>
+                </div>
+            </div>
+
         </div>
 
-        <div id="bank-credit-content" class="tab-content future-months-content">
-            <p class="text-center text-muted mt-5">محتوایی برای اعتبار بانکی وجود ندارد.</p>
+        <div id="bank-credit-content" class="tab-content">
+            <div class="credit-balance">
+                <i class="bi bi-bank"></i>
+                <span>مجموع اعتبار موجود: <span id="bank-credit-total-amount"></span></span>
+            </div>
+
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" data-amount="5000000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box purple-theme">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                </div>
+                <div class="details">
+                    <div class="title">وام ازدواج (بانک ملی)</div>
+                    <div class="subtitle">تاریخ سررسید: ۲۰ شهریور ۱۴۰۴</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۵,۰۰۰,۰۰۰ تومان</div>
+                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
+                </div>
+            </div>
+
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" data-amount="2000000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box orange-theme">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div class="details">
+                    <div class="title">تسهیلات خرید کالا (بانک سامان)</div>
+                    <div class="subtitle">تاریخ سررسید: ۱۰ مرداد ۱۴۰۴</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۲,۰۰۰,۰۰۰ تومان</div>
+                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
+                </div>
+            </div>
+
+            <div class="debt-card">
+                <label class="checkbox-container">
+                    <input type="checkbox" data-amount="1500000">
+                    <span class="checkmark"></span>
+                </label>
+                <div class="icon-box red-theme">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                </div>
+                <div class="details">
+                    <div class="title">کارت اعتباری (بانک پاسارگاد)</div>
+                    <div class="subtitle">تاریخ سررسید: ۰۵ تیر ۱۴۰۴</div>
+                </div>
+                <div class="amount-section">
+                    <div class="amount">۱,۵۰۰,۰۰۰ تومان</div>
+                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -736,7 +887,7 @@
     <div class="bottom-payment-bar">
         <div class="total-info">
             <span>مبلغ قابل پرداخت:</span>
-            <span id="total-payment-amount">۳,۰۷۸,۸۸۰ تومان</span>
+            <span id="total-payment-amount"></span>
         </div>
         <button id="pay-button">پرداخت</button>
         <div class="total-info d-none" id="future-months-info">
@@ -753,23 +904,63 @@
             const tabItems = document.querySelectorAll('.tab-nav-item');
             const tabContents = document.querySelectorAll('.tab-content');
             const payButton = document.getElementById('pay-button');
-            const totalPaymentAmount = document.getElementById('total-payment-amount');
+            const totalPaymentAmountSpan = document.getElementById('total-payment-amount');
             const futureMonthsInfo = document.getElementById('future-months-info');
+            const thisMonthBadge = document.getElementById('this-month-badge');
+            const futureMonthsBadge = document.getElementById('future-months-badge');
+            const bankCreditBadge = document.getElementById('bank-credit-badge');
 
-            function updatePaymentBar(activeTab) {
-                if (activeTab === 'this-month') {
-                    totalPaymentAmount.textContent = '۳,۰۷۸,۸۸۰ تومان';
+            function formatCurrency(amount) {
+                return amount.toLocaleString('fa-IR') + ' تومان';
+            }
+
+            function calculateAndDisplayTotal() {
+                const activeTabId = document.querySelector('.tab-nav-item.active').dataset.tab;
+                const activeContent = document.getElementById(activeTabId + '-content');
+                let total = 0;
+
+                // Select all checkboxes within the *active* tab
+                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]');
+
+                // For "this-month" and "future-months", sum checked items
+                if (activeTabId === 'this-month' || activeTabId === 'future-months') {
+                    const checkedCheckboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
+                    checkedCheckboxes.forEach(checkbox => {
+                        total += parseInt(checkbox.dataset.amount);
+                    });
+                    totalPaymentAmountSpan.textContent = formatCurrency(total);
+                    // Enable pay button if any item is checked, otherwise disable
+                    payButton.disabled = total === 0;
+
+                    if (activeTabId === 'future-months') {
+                        // Display total for future debts in the header of that section
+                        let futureTotalSum = 0;
+                        checkboxes.forEach(checkbox => {
+                            futureTotalSum += parseInt(checkbox.dataset.amount);
+                        });
+                        document.getElementById('future-total-amount').textContent = formatCurrency(futureTotalSum);
+                        futureMonthsInfo.classList.remove('d-none');
+                    } else {
+                        futureMonthsInfo.classList.add('d-none');
+                    }
+
+                } else if (activeTabId === 'bank-credit') {
+                    // For "bank-credit" tab, sum all items to show total credit available
+                    let bankTotalSum = 0;
+                    checkboxes.forEach(checkbox => {
+                        bankTotalSum += parseInt(checkbox.dataset.amount);
+                    });
+                    document.getElementById('bank-credit-total-amount').textContent = formatCurrency(bankTotalSum);
+                    totalPaymentAmountSpan.textContent = '۰ تومان'; // No direct payment from here
+                    payButton.disabled = true; // Always disabled for bank credit as it's not a direct payment
                     futureMonthsInfo.classList.add('d-none');
-                    payButton.disabled = false; // Enable button for this month
-                } else if (activeTab === 'future-months') {
-                    totalPaymentAmount.textContent = '۰ تومان'; // As per the image for future months
-                    futureMonthsInfo.classList.remove('d-none');
-                    payButton.disabled = true; // Disable button for future months as shown in image
-                } else if (activeTab === 'bank-credit') {
-                    totalPaymentAmount.textContent = '۰ تومان'; // Or appropriate amount
-                    futureMonthsInfo.classList.add('d-none');
-                    payButton.disabled = true; // Disable or enable as needed
                 }
+            }
+
+            function updateBadgeCounts() {
+                thisMonthBadge.textContent = document.querySelectorAll('#this-month-content .debt-card').length;
+                futureMonthsBadge.textContent = document.querySelectorAll('#future-months-content .debt-card').length;
+                bankCreditBadge.textContent = document.querySelectorAll('#bank-credit-content .debt-card').length;
             }
 
             tabItems.forEach(item => {
@@ -777,7 +968,7 @@
                     // Remove active class from all tabs and hide all content
                     tabItems.forEach(t => t.classList.remove('active'));
                     tabContents.forEach(c => c.classList.remove('active'));
-                    tabContents.forEach(c => c.style.display = 'none'); // Hide physically
+                    tabContents.forEach(c => c.style.display = 'none');
 
                     // Add active class to clicked tab
                     this.classList.add('active');
@@ -786,15 +977,20 @@
                     const targetTab = this.dataset.tab;
                     const targetContent = document.getElementById(targetTab + '-content');
                     targetContent.classList.add('active');
-                    targetContent.style.display = 'block'; // Show physically
+                    targetContent.style.display = 'block';
 
-                    updatePaymentBar(targetTab);
+                    calculateAndDisplayTotal(); // Recalculate total based on new active tab
                 });
             });
 
-            // Initial load: set up payment bar for the default active tab
-            const initialActiveTab = document.querySelector('.tab-nav-item.active').dataset.tab;
-            updatePaymentBar(initialActiveTab);
+            // Add event listeners to all checkboxes in all tabs
+            document.querySelectorAll('.debt-card input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', calculateAndDisplayTotal);
+            });
+
+            // Initial calculations on page load
+            updateBadgeCounts();
+            calculateAndDisplayTotal();
         });
     </script>
 </body>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داشبورد</title>
+    <title>فروشگاه ها</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
@@ -484,17 +484,7 @@
     <div class="app-header">
         <div class="container">
             <div class="tf-topbar d-flex justify-content-between align-items-center">
-                <a class="user-info d-flex justify-content-between align-items-center" href="profile.php">
-                    <img src="./images/user1.jpg" alt="تصویر کاربر">
-                    <div class="content">
-                        <h4>کاربر</h4>
-                        <p>BMPL</p>
-                    </div>
-                </a>
-                <a href="#" id="btn-popup-up" class="icon-notification1" aria-label="اعلانات">
-                    <i class="fas fa-bell"></i>
-                    <span>1</span>
-                </a>
+                
             </div>
         </div>
     </div>

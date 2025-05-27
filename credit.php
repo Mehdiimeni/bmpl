@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
         rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <style>
         :root {
@@ -19,14 +20,16 @@
             --secondary-color: #3656a8;
             /* Darker secondary for gradient */
             --accent-color: #ff6b6b;
+            /* Accent color for QR promo */
             --light-color: #f8f9fa;
             --dark-color: #343a40;
+            --text-color-light: #6c757d;
         }
 
         body {
             font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f2f5;
-            color: #333;
+            color: var(--dark-color);
             line-height: 1.6;
             padding-bottom: 80px;
             display: flex;
@@ -34,136 +37,237 @@
             min-height: 100vh;
         }
 
+        /* Header Styles */
         .club-header {
-            /* Smaller padding */
             padding: 1.5rem 0;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border-radius: 0 0 25px 25px;
-            /* More subtle shadow */
             box-shadow: 0 8px 25px rgba(78, 115, 223, 0.2);
             position: relative;
             overflow: hidden;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        .club-header::before {
+        .club-header::before,
+        .club-header::after {
             content: '';
             position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(3px);
+            z-index: 0;
+        }
+
+        .club-header::before {
             top: -40px;
             right: -40px;
             width: 150px;
             height: 150px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            filter: blur(3px);
         }
 
         .club-header::after {
-            content: '';
-            position: absolute;
             bottom: -60px;
             left: -20px;
             width: 200px;
             height: 200px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            filter: blur(3px);
         }
 
-        .main-title {
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            font-size: 2.2rem;
+        .club-header h3,
+        .club-header p {
             position: relative;
-            z-index: 2;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1;
         }
 
-        .sub-title {
+        .club-header h3 {
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .club-header p {
             font-weight: 400;
             opacity: 0.9;
-            margin-bottom: 1.5rem;
             font-size: 1.1rem;
+        }
+
+        /* Credit Offer Section */
+        .credit-offer {
+            background: var(--light-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: -60px auto 3rem auto;
+            max-width: 600px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
             position: relative;
             z-index: 2;
         }
 
-        .credit-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 0 auto 3rem auto;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transform: translateY(-30px);
-            /* Lift card slightly for visual appeal */
-            transition: transform 0.3s ease-out;
+        .credit-offer:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
 
-        .credit-card:hover {
-            transform: translateY(-35px);
-            /* Slightly more lift on hover */
+        .credit-offer h5 {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
         }
 
-
-        .credit-amount {
-            font-size: 2.2rem;
-            /* Larger font for amount */
+        .main-credit-amount {
+            font-size: 2.8rem;
             font-weight: 800;
-            /* Bolder font */
             color: var(--primary-color);
-            /* Primary color for emphasis */
             text-align: center;
-            margin-bottom: 0.5rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.08);
         }
 
-        .text-secondary {
-            text-align: center;
-            color: #6c757d;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
+        .credit-summary-details {
+            margin-top: 2rem;
+            border-top: 1px dashed #e0e0e0;
+            padding-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
+
+        .credit-summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            color: var(--text-color-light);
+        }
+
+        .credit-summary-item strong {
+            color: var(--dark-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
 
         .credit-desc {
-            color: #6c757d;
+            color: var(--text-color-light);
             text-align: center;
-            margin: 1.5rem 0;
+            margin: 1.5rem 0 2.5rem 0;
             line-height: 1.8;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
-        .btn-primary {
+        /* Call to Action Buttons (Shop, Service) */
+        .credit-offer .btn {
+            padding: 0.9rem 1.8rem;
+            font-weight: 700;
+            border-radius: 15px;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .credit-offer .btn-credit {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
-            padding: 0.85rem 1.5rem;
-            /* More padding */
-            font-weight: 700;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
+            color: white;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(91, 134, 229, 0.3);
-            /* Adjust shadow color */
+        .credit-offer .btn-credit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(91, 134, 229, 0.4);
         }
 
-        .btn-outline-secondary {
+        .credit-offer .btn-outline-light {
             border: 2px solid #dee2e6;
-            padding: 0.85rem 1.5rem;
-            font-weight: 600;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
+            color: var(--dark-color) !important;
         }
 
-        .btn-outline-secondary:hover {
-            background-color: #f8f9fa;
-            border-color: #adb5bd;
+        .credit-offer .btn-outline-light:hover {
+            background-color: var(--light-color);
+            border-color: var(--primary-color);
+            color: var(--primary-color) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* QR Promo Card Styles (outside credit card) */
+        .qr-promo-card {
+            background: linear-gradient(45deg, var(--accent-color) 0%, #EEB4B4 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 1;
+        }
+
+        .qr-promo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(255, 107, 107, 0.6);
+        }
+
+        .qr-promo-card::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: rotate(30deg);
+            filter: blur(15px);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .qr-promo-card .qr-promo-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .qr-promo-card h4 {
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            font-size: 1.6rem;
+        }
+
+        .qr-promo-card p {
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .qr-promo-card .btn-light {
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-promo-card .btn-light:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            color: #d15c5c;
+        }
+
+        /* Feature Cards */
+        .feature-section {
+            padding: 2rem 0;
         }
 
         .feature-card {
@@ -177,6 +281,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             position: relative;
             z-index: 1;
+            padding-top: 5px;
         }
 
         .feature-card::before {
@@ -187,6 +292,7 @@
             width: 100%;
             height: 5px;
             background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            z-index: 0;
         }
 
         .feature-card:hover {
@@ -195,17 +301,19 @@
         }
 
         .feature-icon {
-            font-size: 2.8rem;
+            font-size: 3rem;
             margin-bottom: 1.5rem;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .feature-card:hover .feature-icon {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .card-body {
@@ -217,15 +325,16 @@
             font-weight: 700;
             margin-bottom: 1rem;
             color: var(--dark-color);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .card-text {
-            color: #6c757d;
+            color: var(--text-color-light);
             font-size: 0.95rem;
             line-height: 1.7;
         }
 
+        /* Bottom Navigation Bar */
         .bottom-navigation-bar {
             position: fixed;
             bottom: 0;
@@ -254,7 +363,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, background-color 0.2s ease;
             font-weight: 500;
             padding: 0.5rem;
             border-radius: 10px;
@@ -270,7 +379,6 @@
         .tf-navigation-bar li a.active {
             color: var(--primary-color);
             background-color: rgba(91, 134, 229, 0.08);
-            /* Adjusted active background color */
             font-weight: 700;
         }
 
@@ -282,7 +390,6 @@
         .tf-navigation-bar li a:hover {
             color: var(--primary-color);
             background-color: rgba(91, 134, 229, 0.05);
-            /* Adjusted hover background color */
         }
 
         .tf-navigation-bar li a:hover i,
@@ -290,7 +397,77 @@
             color: var(--primary-color);
         }
 
+        /* Call to Action Buttons (Shop, Service, Payment Page) */
+        .credit-offer .btn {
+            padding: 1rem 1.5rem;
+            /* پدینگ یکسان برای همه دکمه‌ها */
+            font-weight: 700;
+            border-radius: 15px;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+            /* اطمینان از اینکه دکمه‌ها فضای موجود را به اشتراک می‌گذارند */
+            min-width: 120px;
+            /* حداقل عرض برای دکمه‌ها */
+            text-align: center;
+            /* تراز متن در مرکز */
+            display: inline-flex;
+            /* استفاده از فلکس برای تراز عمودی و افقی محتوا */
+            align-items: center;
+            /* تراز عمودی آیکون و متن */
+            justify-content: center;
+            /* تراز افقی آیکون و متن */
+        }
 
+        .credit-offer .btn-primary-gradient {
+            /* نام کلاس جدید برای دکمه اصلی (خرید کالا) */
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+        }
+
+        .credit-offer .btn-primary-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(91, 134, 229, 0.4);
+        }
+
+        .credit-offer .btn-outline-primary-custom {
+            /* نام کلاس جدید برای دکمه‌های outline */
+            border: 2px solid var(--primary-color);
+            /* رنگ حاشیه مطابق با primary-color */
+            color: var(--primary-color);
+            /* رنگ متن مطابق با primary-color */
+            background-color: transparent;
+            /* پس‌زمینه شفاف */
+        }
+
+        .credit-offer .btn-outline-primary-custom:hover {
+            background-color: var(--primary-color);
+            /* پر شدن با primary-color در هاور */
+            color: white !important;
+            /* رنگ متن سفید در هاور */
+            border-color: var(--primary-color);
+            /* حفظ رنگ حاشیه در هاور */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive Adjustments for buttons */
+        @media (max-width: 768px) {
+            .credit-offer .btn {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+                min-width: unset;
+                /* حذف حداقل عرض در موبایل */
+            }
+
+            .d-flex.justify-content-between.mt-4.gap-3 {
+                flex-direction: column;
+                /* چیدمان دکمه‌ها به صورت ستونی در موبایل */
+            }
+        }
+
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
             body {
                 padding-bottom: 70px;
@@ -299,40 +476,117 @@
             .club-header {
                 padding: 1.2rem 0;
                 border-radius: 0 0 20px 20px;
-                margin-bottom: 1.5rem;
             }
 
-            .main-title {
+            .club-header h3 {
                 font-size: 1.8rem;
             }
 
-            .sub-title {
+            .club-header p {
                 font-size: 0.9rem;
             }
 
-            .credit-card {
-                padding: 1.5rem;
-                margin-bottom: 2rem;
-                transform: translateY(-20px);
+            .credit-offer {
+                padding: 1.8rem;
+                margin: -40px auto 2rem auto;
+                transform: translateY(0);
             }
 
-            .credit-amount {
-                font-size: 1.8rem;
+            .credit-offer:hover {
+                transform: translateY(0);
             }
 
-            .btn-primary,
-            .btn-outline-secondary {
-                padding: 0.75rem;
+
+            .main-credit-amount {
+                font-size: 2.2rem;
+            }
+
+            .credit-summary-details {
+                margin-top: 1.5rem;
+                padding-top: 1rem;
+            }
+
+            .credit-summary-item {
+                font-size: 0.9rem;
+            }
+
+            .credit-summary-item strong {
+                font-size: 1rem;
+            }
+
+
+            .credit-desc {
+                font-size: 0.9rem;
+                margin: 1rem 0 2rem 0;
+            }
+
+            .credit-offer .btn {
+                padding: 0.8rem 1.2rem;
                 font-size: 0.95rem;
             }
 
+            .qr-promo-card {
+                padding: 2rem 1.5rem;
+                margin-top: 1.5rem;
+                transform: translateY(0);
+            }
+
+            .qr-promo-card:hover {
+                transform: translateY(0);
+            }
+
+            .qr-promo-card .qr-promo-icon {
+                font-size: 4rem;
+                margin-bottom: 1rem;
+            }
+
+            .qr-promo-card h4 {
+                font-size: 1.4rem;
+            }
+
+            .qr-promo-card p {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .qr-promo-card .btn-light {
+                padding: 0.8rem 2rem;
+                font-size: 1rem;
+            }
+
+            .feature-card {
+                padding-top: 0;
+            }
+
+            .feature-card::before {
+                height: 3px;
+            }
+
+            .feature-card:hover {
+                transform: translateY(0);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            }
+
+            .feature-icon {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .card-text {
+                font-size: 0.85rem;
+            }
+
             .tf-navigation-bar li a {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
 
             .tf-navigation-bar li a i,
             .tf-navigation-bar li a svg {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -341,30 +595,68 @@
 <body>
     <div class="club-header text-center">
         <div class="container">
-            <h3 class="mb-3">اعتبار من</h3>
-            <p class="mb-0">با این اعتبار خرید کنید</p>
+            <h3>اعتبار من</h3>
+            <p>با این اعتبار خرید کنید</p>
         </div>
     </div>
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-        <div class="credit-card">
-            <h5 class="text-center mb-3">اعتبار مانده شما:</h5>
-            <div class="credit-amount" id="creditAmount"></div>
+        <div class="credit-offer text-center">
+            <h5 class="mb-3">اعتبار باقی‌مانده شما:</h5>
+            <div class="main-credit-amount" id="creditAmount">۵,۰۰۰,۰۰۰ تومان</div>
 
-            <p class="credit-desc">
+            <div class="credit-summary-details">
+                <div class="credit-summary-item">
+                    <span>موارد اضافه مانده اعتبار شما:</span>
+                    <strong>۲,۵۰۰,۰۰۰ تومان</strong>
+                </div>
+                <div class="credit-summary-item">
+                    <span>جمع پرداختی تا آخر ماه:</span>
+                    <strong>۷۵۰,۰۰۰ تومان</strong>
+                </div>
+                <div class="credit-summary-item">
+                    <span>مبلغ اقساط ماهانه باقی‌مانده:</span>
+                    <strong>۱,۷۵۰,۰۰۰ تومان</strong>
+                </div>
+            </div>
+
+            <p class="credit-desc mt-4">
                 می‌توانید برای خرید کالا یا خدمات از این اعتبار استفاده کنید.
-                کافیست  روش «پرداخت اعتباری» را انتخاب کنید.
+                کافیست روش «پرداخت اعتباری» را انتخاب کنید و یا مستقیماً از QR Code خرید کنید.
             </p>
 
             <div class="d-flex justify-content-between mt-4 gap-3">
-                <a href="shop.php" class="btn btn-primary flex-grow-1" aria-label="خرید کالا">خرید کالا</a>
-                <a href="service.php" class="btn btn-outline-secondary flex-grow-1" aria-label="خرید خدمات">خرید خدمات</a>
+                <a href="credit-debt.php" class="btn btn-primary-gradient" aria-label="صفحه پرداخت">
+                    <i class="fas fa-credit-card me-2"></i> صفحه پرداخت
+                </a>
+                <a href="shop.php" class="btn btn-outline-primary-custom" aria-label="خرید کالا">
+                    <i class="fas fa-shopping-bag me-2"></i> خرید کالا
+                </a>
+                <a href="service.php" class="btn btn-outline-primary-custom" aria-label="خرید خدمات">
+                    <i class="fas fa-handshake me-2"></i> خرید خدمات
+                </a>
+                
             </div>
         </div>
 
-        <div class="row w-100 px-3">
-            
-            <div class="col-lg-4 col-md-6 mb-4">
+        <div class="container">
+            <div class="qr-promo-card animate__animated animate__fadeInUp">
+                <div class="qr-promo-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="qr-promo-content">
+                    <h4 class="mb-2">پرداخت سریع با QR Code</h4>
+                    <p>با اسکن QR Code، خریدهای خود را به سادگی و سرعت انجام دهید.</p>
+                    <a href="qr_code_page.php" class="btn btn-light btn-lg" aria-label="پرداخت با QR Code">
+                        <i class="fas fa-arrow-left ms-2"></i> شروع پرداخت
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row w-100 px-3 mt-4 feature-section">
+            <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card feature-card h-100">
                     <a href="credit-debt.php" class="text-decoration-none" aria-label="پرداخت های من">
                         <div class="card-body">
@@ -378,7 +670,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6 mb-4">
+            <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card feature-card h-100">
                     <a href="history.php" class="text-decoration-none" aria-label="تاریخچه خرید">
                         <div class="card-body text-center">

@@ -16,13 +16,18 @@
     <style>
         :root {
             --primary-color: #5b86e5;
+            /* Lighter primary color */
             --secondary-color: #3656a8;
+            /* Darker secondary for gradient */
             --accent-color: #ff6b6b;
+            /* Accent color for QR promo */
             --light-color: #f8f9fa;
             --dark-color: #343a40;
             --text-color-light: #6c757d;
             --success-color: #28a745;
+            /* Green for success */
             --danger-color: #dc3545;
+            /* Red for errors */
         }
 
         body {
@@ -102,20 +107,36 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
         }
 
-        /* QR Scanner Placeholder */
-        .qr-scanner-placeholder {
+        /* QR Scanner Placeholder and product details */
+        .qr-section {
             width: 100%;
-            height: 250px;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .qr-scanner-placeholder {
             background-color: #f0f0f0;
             border-radius: 15px;
             display: flex;
+            flex-direction: column;
+            /* Stack children vertically */
             justify-content: center;
             align-items: center;
             font-size: 1.2rem;
             color: var(--text-color-light);
             border: 2px dashed #ccc;
-            margin-bottom: 2rem;
-            flex-direction: column;
+            height: 250px;
+            /* Fixed height for consistent layout */
+            cursor: pointer;
+            /* Indicates it's clickable */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .qr-scanner-placeholder:hover {
+            background-color: #e6e6e6;
+            border-color: var(--primary-color);
         }
 
         .qr-scanner-placeholder i {
@@ -123,6 +144,41 @@
             margin-bottom: 0.5rem;
             color: var(--primary-color);
         }
+
+        .product-details {
+            display: none;
+            /* Hidden by default */
+            text-align: right;
+            /* Align text to the right for RTL */
+            margin-top: 0;
+            /* Adjusted margin */
+            padding: 1.5rem;
+            /* Padding for spacing */
+            /* border: 1px solid #e9ecef; Remove border as it's part of the placeholder */
+            border-radius: 10px;
+            background-color: transparent;
+            /* Make background transparent */
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .product-details p {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .product-details p strong {
+            color: var(--primary-color);
+        }
+
+        .scan-success-message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 0.5s ease-out;
+        }
+
 
         /* Input Field */
         .form-label {
@@ -206,7 +262,8 @@
             justify-content: space-between;
             font-weight: 600;
             color: var(--dark-color);
-            text-align: right; /* Ensure text aligns right in RTL */
+            text-align: right;
+            /* Ensure text aligns right in RTL */
         }
 
         .payment-option-card:hover {
@@ -222,8 +279,10 @@
         }
 
         .payment-option-card input[type="radio"] {
-            margin-left: 10px; /* Space from radio button */
-            transform: scale(1.3); /* Larger radio button */
+            margin-left: 10px;
+            /* Space from radio button */
+            transform: scale(1.3);
+            /* Larger radio button */
             cursor: pointer;
         }
 
@@ -342,6 +401,61 @@
             }
         }
 
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Style for Rescan Button */
+        .btn-rescan {
+            background-color: var(--primary-color);
+            /* استفاده از رنگ اصلی تم */
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: 600;
+            border-radius: 10px;
+            /* کمی گردتر */
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            /* برای قرار گرفتن آیکون و متن در کنار هم */
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            /* فاصله بین آیکون و متن */
+        }
+
+        .btn-rescan:hover {
+            background-color: var(--secondary-color);
+            /* تغییر رنگ در هاور */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+            /* اطمینان از سفید ماندن متن در هاور */
+        }
+
+        .btn-rescan i {
+            font-size: 1.1rem;
+            /* اندازه آیکون */
+        }
+
+        /* Responsive adjustment for rescan button */
+        @media (max-width: 768px) {
+            .btn-rescan {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             body {
@@ -417,11 +531,21 @@
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="main-card animate__animated animate__fadeInUp">
-            <div class="qr-scanner-placeholder text-center">
-                <i class="fas fa-qrcode"></i>
-                <span>برای شروع اسکن QR Code اینجا کلیک کنید</span>
-                <small>(فعلا شبیه سازی شده)</small>
-                <div id="qr-reader" style="width:100%; display:none;"></div>
+            <div class="qr-section">
+                <div class="qr-scanner-placeholder text-center" id="qrScannerPlaceholder">
+                    <i class="fas fa-qrcode"></i>
+                    <span id="qrInitialText">برای شروع اسکن QR Code اینجا کلیک کنید</span>
+                </div>
+
+                <div class="product-details" id="productDetails">
+                    <p class="scan-success-message">اسکن با موفقیت انجام شد!</p>
+                    <p>کد کالا: <strong id="productCode"></strong></p>
+                    <p>نام کالا: <strong id="productName"></strong></p>
+                    <p>شرح: <strong id="productDescription"></strong></p>
+                    <button type="button" class="btn btn-rescan mt-3" id="rescanBtn">
+                        <i class="fas fa-redo-alt"></i> اسکن مجدد
+                    </button>
+                </div>
             </div>
 
             <form id="paymentForm">
@@ -458,7 +582,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-pay-now w-100 mt-4" id="payNowBtn" disabled>پرداخت نهایی</button>
+                <button type="button" class="btn btn-pay-now w-100 mt-4" id="payNowBtn" disabled>ثبت</button>
             </div>
         </div>
     </div>
@@ -499,12 +623,173 @@
             const paymentOptionCards = document.querySelectorAll('.payment-option-card');
             const radioButtons = document.querySelectorAll('input[name="paymentType"]');
 
+            const qrScannerPlaceholder = document.getElementById('qrScannerPlaceholder');
+            const qrInitialText = document.getElementById('qrInitialText');
+            const productDetailsDiv = document.getElementById('productDetails');
+            const productCodeSpan = document.getElementById('productCode');
+            const productNameSpan = document.getElementById('productName');
+            const productDescriptionSpan = document.getElementById('productDescription');
+            const qrIcon = qrScannerPlaceholder.querySelector('i');
+            const rescanBtn = document.getElementById('rescanBtn');
+
             let enteredAmount = 0; // Global variable to store the entered amount
+
+            // Array of sample products
+            const sampleProducts = [
+                {
+                    code: 'PROD-101',
+                    name: 'لپ‌تاپ گیمینگ قدرتمند',
+                    description: 'لپ‌تاپی مناسب برای بازی و کارهای سنگین با کارت گرافیک RTX.',
+                    amount: 35000000
+                },
+                {
+                    code: 'PROD-102',
+                    name: 'هدفون بی‌سیم نویز کنسلینگ',
+                    description: 'تجربه‌ای بی‌نظیر از صدا با حذف نویز فعال و باتری طولانی.',
+                    amount: 4200000
+                },
+                {
+                    code: 'PROD-103',
+                    name: 'ماشین لباسشویی هوشمند',
+                    description: 'ماشین لباسشویی کم‌مصرف با برنامه‌های متنوع شستشو و قابلیت هوشمند.',
+                    amount: 18000000
+                },
+                {
+                    code: 'PROD-104',
+                    name: 'ساعت هوشمند ورزشی',
+                    description: 'همراهی ایده‌آل برای تمرینات ورزشی و پایش سلامتی روزانه.',
+                    amount: 2800000
+                },
+                {
+                    code: 'PROD-105',
+                    name: 'قهوه‌ساز اتوماتیک',
+                    description: 'تهیه قهوه‌ای لذیذ تنها با یک دکمه، دارای آسیاب داخلی.',
+                    amount: 7500000
+                },
+                {
+                    code: 'PROD-106',
+                    name: 'تلفن همراه هوشمند مدل Z',
+                    description: 'جدیدترین مدل گوشی هوشمند با دوربین فوق‌العاده و عملکرد بی‌نقص.',
+                    amount: 22000000
+                },
+                {
+                    code: 'PROD-107',
+                    name: 'تلویزیون هوشمند 4K',
+                    description: 'تصویری خیره‌کننده با کیفیت 4K و قابلیت‌های هوشمند برای سرگرمی بیشتر.',
+                    amount: 12000000
+                },
+                {
+                    code: 'PRO0-108',
+                    name: 'اسپیکر بلوتوثی قابل حمل',
+                    description: 'صدای قوی و شفاف در یک طراحی جمع‌وجور، مناسب برای هر مکان.',
+                    amount: 1500000
+                },
+                {
+                    code: 'PROD-109',
+                    name: 'پکیج آموزشی آنلاین زبان انگلیسی',
+                    description: 'دوره جامع آموزش زبان انگلیسی از مبتدی تا پیشرفته با پشتیبانی مدرس.',
+                    amount: 900000
+                },
+                {
+                    code: 'PROD-110',
+                    name: 'دوچرخه کوهستان حرفه‌ای',
+                    description: 'دوچرخه‌ای مقاوم و سبک برای مسیرهای دشوار کوهستانی.',
+                    amount: 11000000
+                },
+                {
+                    code: 'PROD-111',
+                    name: 'فر توکار برقی',
+                    description: 'فری با قابلیت‌های پخت متنوع و صفحه نمایش لمسی.',
+                    amount: 9500000
+                },
+                {
+                    code: 'PROD-112',
+                    name: 'جاروبرقی رباتیک هوشمند',
+                    description: 'خانه‌ای تمیز با جاروبرقی خودکار و قابلیت کنترل از راه دور.',
+                    amount: 5500000
+                },
+                {
+                    code: 'PROD-113',
+                    name: 'کنسول بازی نسل جدید',
+                    description: 'تجربه بازی‌های هیجان‌انگیز با گرافیک بالا و سرعت بی‌نظیر.',
+                    amount: 16000000
+                },
+                {
+                    code: 'PROD-114',
+                    name: 'دوربین عکاسی DSLR',
+                    description: 'برای علاقه‌مندان به عکاسی، با لنز قابل تعویض و کیفیت تصویر عالی.',
+                    amount: 14000000
+                },
+                {
+                    code: 'PROD-115',
+                    name: 'یخچال ساید بای ساید',
+                    description: 'فضای بزرگ و طراحی مدرن، همراه با سیستم خنک‌کننده پیشرفته.',
+                    amount: 28000000
+                }
+            ];
 
             // Helper to format currency
             function formatCurrency(amount) {
                 return amount.toLocaleString('fa-IR') + ' تومان';
             }
+
+            // Function to reset the QR scan section to its initial state
+            function resetQrScanSection() {
+                qrScannerPlaceholder.style.display = 'flex';
+                qrScannerPlaceholder.style.pointerEvents = 'auto'; // Enable clicks
+                qrScannerPlaceholder.style.opacity = '1';
+                qrScannerPlaceholder.style.border = '2px dashed #ccc';
+                qrScannerPlaceholder.style.backgroundColor = '#f0f0f0';
+                qrScannerPlaceholder.style.height = '250px'; // Reset fixed height
+
+                qrIcon.classList.remove('fa-check-circle', 'text-success');
+                qrIcon.classList.add('fa-qrcode');
+                qrInitialText.textContent = 'برای شروع اسکن QR Code اینجا کلیک کنید';
+
+                productDetailsDiv.style.display = 'none'; // Hide product details
+                productDetailsDiv.classList.remove('animate__animated', 'animate__fadeIn'); // Remove animation classes
+
+                amountInput.value = ''; // Clear amount input
+                amountInput.classList.remove('is-valid', 'is-invalid'); // Clear validation styles
+                amountError.style.display = 'none';
+
+                paymentOptionsDiv.classList.add('d-none'); // Hide payment options
+                paymentOptionsDiv.style.opacity = '0';
+            }
+
+            // Simulate QR scan and display product details
+            qrScannerPlaceholder.addEventListener('click', () => {
+                // Get a random product from the array
+                const randomIndex = Math.floor(Math.random() * sampleProducts.length);
+                const scannedData = sampleProducts[randomIndex];
+
+                // Hide QR placeholder content and display product details
+                qrScannerPlaceholder.style.display = 'none'; // Hide the initial placeholder entirely
+
+                productCodeSpan.textContent = scannedData.code;
+                productNameSpan.textContent = scannedData.name;
+                productDescriptionSpan.textContent = scannedData.description;
+
+                productDetailsDiv.style.display = 'block'; // Show product details
+                productDetailsDiv.classList.add('animate__animated', 'animate__fadeIn');
+
+                // Set the amount input value from scanned data
+                amountInput.value = scannedData.amount;
+                amountInput.dispatchEvent(new Event('input')); // Trigger input event for validation and calculations
+
+                // Scroll to payment options if already open, or to product details
+                if (!paymentOptionsDiv.classList.contains('d-none')) {
+                    paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    productDetailsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+
+            // Handle rescan button click
+            rescanBtn.addEventListener('click', () => {
+                location.reload(); // Reload the page to reset everything
+            });
+
 
             // Validate amount input
             amountInput.addEventListener('input', () => {
@@ -529,7 +814,7 @@
                     enteredAmount = value;
                     paymentOptionsDiv.classList.remove('d-none');
                     paymentOptionsDiv.style.animation = 'fadeIn 0.8s ease-out forwards';
-                    
+
                     // Reset radio buttons and pay button state
                     radioButtons.forEach(radio => radio.checked = false);
                     payNowBtn.disabled = true;
@@ -568,27 +853,12 @@
             payNowBtn.addEventListener('click', () => {
                 const selectedOption = document.querySelector('input[name="paymentType"]:checked');
                 if (selectedOption) {
-                    alert(`شما مبلغ ${formatCurrency(enteredAmount)} را به صورت ${selectedOption.value === 'full' ? 'تسویه کامل' : '4 قسط ماهانه'} انتخاب کردید. عملیات پرداخت نهایی خواهد شد.`);
+                    alert(`شما مبلغ ${formatCurrency(enteredAmount)} را به صورت ${selectedOption.value === 'full' ? 'تسویه کامل' : '4 قسط ماهانه'} انتخاب کردید. نحوه پرداخت اعتباری شما ثبت شد.`);
                     // Here you would typically send data to the server for final processing
                     // e.g., window.location.href = 'payment_confirmation.php?amount=' + enteredAmount + '&type=' + selectedOption.value;
                 } else {
                     alert('لطفاً یک گزینه پرداخت را انتخاب کنید.');
                 }
-            });
-        });
-
-        // Placeholder for QR scanner initialization (real implementation would go here)
-        document.addEventListener('DOMContentLoaded', () => {
-            const qrScannerPlaceholder = document.querySelector('.qr-scanner-placeholder');
-            qrScannerPlaceholder.addEventListener('click', () => {
-                alert('قابلیت اسکن QR Code در این نسخه فقط شبیه‌سازی شده است. در نسخه نهایی، با کلیک بر روی این قسمت، دوربین فعال شده و QR Code اسکن می‌شود.');
-                // Here you would initialize your QR scanner library
-                // Example:
-                // const qrReader = document.getElementById('qr-reader');
-                // qrReader.style.display = 'block';
-                // const html5QrcodeScanner = new Html5QrcodeScanner(
-                //     "qr-reader", { fps: 10, qrbox: 250 });
-                // html5QrcodeScanner.render(onScanSuccess, onScanError);
             });
         });
     </script>

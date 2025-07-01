@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -20,7 +21,8 @@
             --dark-color: #343a40;
             --text-color-light: #fefefe;
             --text-color-dark: #333;
-            --background-light: #f0f2f5; /* Added for consistency with previous designs */
+            --background-light: #f0f2f5;
+            /* Added for consistency with previous designs */
         }
 
         body {
@@ -28,11 +30,13 @@
             font-family: 'Vazirmatn', sans-serif;
             line-height: 1.6;
             color: var(--text-color-dark);
-            padding-bottom: 80px; /* Space for the fixed bottom navigation */
+            padding-bottom: 80px;
+            /* Space for the fixed bottom navigation */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
         }
 
         .app-header {
@@ -125,7 +129,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-            margin-top: 1.5rem; /* Added margin-top to separate from header */
+            margin-top: 1.5rem;
+            /* Added margin-top to separate from header */
         }
 
         .tf-title h4 {
@@ -136,8 +141,10 @@
 
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns, equal width */
-            gap: 15px; /* Space between grid items */
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 columns, equal width */
+            gap: 15px;
+            /* Space between grid items */
             list-style: none;
             padding: 0;
             margin: 0;
@@ -150,7 +157,8 @@
         .shop-grid li a {
             background-color: white;
             border-radius: 15px;
-            padding: 0.75rem; /* Adjusted padding */
+            padding: 0.75rem;
+            /* Adjusted padding */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -158,7 +166,8 @@
             color: var(--text-color-dark);
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
             transition: all 0.2s ease;
-            height: 100%; /* Ensure uniform height for cards */
+            height: 100%;
+            /* Ensure uniform height for cards */
         }
 
         .shop-grid li a:hover {
@@ -167,9 +176,12 @@
         }
 
         .shop-grid .shop-img {
-            width: 80px; /* Larger image size */
-            height: 80px; /* Larger image size */
-            border-radius: 15px; /* More rounded corners for images */
+            width: 80px;
+            /* Larger image size */
+            height: 80px;
+            /* Larger image size */
+            border-radius: 15px;
+            /* More rounded corners for images */
             object-fit: cover;
             margin-bottom: 0.5rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -177,17 +189,23 @@
         }
 
         .shop-grid li a:hover .shop-img {
-            transform: scale(1.05); /* Slight scale on image hover */
+            transform: scale(1.05);
+            /* Slight scale on image hover */
         }
 
         .shop-grid li a span {
             font-weight: 600;
             font-size: 0.9rem;
-            padding-top: 0.25rem; /* Space between image and text */
-            white-space: nowrap; /* Prevent text wrapping */
-            overflow: hidden; /* Hide overflow */
-            text-overflow: ellipsis; /* Add ellipsis if text overflows */
-            max-width: 100%; /* Ensure text respects its container */
+            padding-top: 0.25rem;
+            /* Space between image and text */
+            white-space: nowrap;
+            /* Prevent text wrapping */
+            overflow: hidden;
+            /* Hide overflow */
+            text-overflow: ellipsis;
+            /* Add ellipsis if text overflows */
+            max-width: 100%;
+            /* Ensure text respects its container */
         }
 
 
@@ -265,7 +283,8 @@
             z-index: 1050;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Aligned to top for notifications */
+            align-items: flex-start;
+            /* Aligned to top for notifications */
             visibility: hidden;
             opacity: 0;
             transition: visibility 0s, opacity 0.3s ease-in-out;
@@ -281,11 +300,13 @@
             background: white;
             width: 100%;
             max-width: 500px;
-            transform: translateY(-100%); /* Starts off-screen at the top */
+            transform: translateY(-100%);
+            /* Starts off-screen at the top */
             transition: transform 0.3s ease-in-out;
             max-height: 90vh;
             overflow-y: auto;
-            border-radius: 0; /* No border-radius for top panel */
+            border-radius: 0;
+            /* No border-radius for top panel */
         }
 
         .tf-panel.active .panel-box {
@@ -395,10 +416,21 @@
         }
 
         /* Specific background colors for notification icons (if kept) */
-        .bg_service-5 { background-color: #9C27B0; }
-        .bg_service-3 { background-color: #FF9800; }
-        .bg_service-1 { background-color: #4CAF50; }
-        .bg_service-2 { background-color: #2196F3; }
+        .bg_service-5 {
+            background-color: #9C27B0;
+        }
+
+        .bg_service-3 {
+            background-color: #FF9800;
+        }
+
+        .bg_service-1 {
+            background-color: #4CAF50;
+        }
+
+        .bg_service-2 {
+            background-color: #2196F3;
+        }
 
 
         @media (max-width: 768px) {
@@ -439,7 +471,8 @@
             }
 
             .shop-grid {
-                grid-template-columns: repeat(3, 1fr); /* Still 3 columns on smaller screens */
+                grid-template-columns: repeat(3, 1fr);
+                /* Still 3 columns on smaller screens */
                 gap: 10px;
             }
 
@@ -448,12 +481,14 @@
             }
 
             .shop-grid .shop-img {
-                width: 60px; /* Adjust image size for mobile */
+                width: 60px;
+                /* Adjust image size for mobile */
                 height: 60px;
             }
 
             .shop-grid li a span {
-                font-size: 0.75rem; /* Smaller text for mobile */
+                font-size: 0.75rem;
+                /* Smaller text for mobile */
             }
 
             .tf-navigation-bar li a {
@@ -484,97 +519,63 @@
     <div class="app-header">
         <div class="container">
             <div class="tf-topbar d-flex justify-content-between align-items-center">
-                
+
             </div>
         </div>
     </div>
+
+    <?php
+    
+    // دریافت داده از API
+    $api_url = 'http://192.168.50.15:7475/api/BNPL/GetAllMerchants';
+    $response = file_get_contents($api_url);
+    $merchants = json_decode($response, true);
+
+    // آرایه تصاویر فروشگاه‌ها
+    $shop_images = [
+        './images/shop (1).jpg',
+        './images/shop (1)11.jpg',
+        './images/shop (144).jpg',
+        './images/shop (2).jpg',
+        './images/shop (69872).jpg',
+        './images/shop (2222).jpg',
+        './images/shop (2df).jpg',
+        './images/shop (3).jpg',
+        './images/shop (3).png',
+        './images/shop (3777).jpg',
+        './images/shop (44441).jpg',
+        './images/shop (4543).jpg'
+    ];
+    ?>
 
     <div class="container">
         <div class="tf-title">
             <h4 class="fw_6">لیست فروشگاه هایی که می توانید با اعتبار خود خرید کنید</h4>
         </div>
         <ul class="shop-grid mb-4">
-            <li>
-                <a href="#" aria-label="فروشگاه 1">
-                    <img class="shop-img" src="./images/shop (1).jpg" alt="فروشگاه 1">
-                    <span>فروشگاه 1</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 2">
-                    <img class="shop-img" src="./images/shop (1)11.jpg" alt="فروشگاه 2">
-                    <span>فروشگاه 2</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 3">
-                    <img class="shop-img" src="./images/shop (144).jpg" alt="فروشگاه 3">
-                    <span>فروشگاه 3</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 4">
-                    <img class="shop-img" src="./images/shop (2).jpg" alt="فروشگاه 4">
-                    <span>فروشگاه 4</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 5">
-                    <img class="shop-img" src="./images/shop (69872).jpg" alt="فروشگاه 5">
-                    <span>فروشگاه 5</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 6">
-                    <img class="shop-img" src="./images/shop (2222).jpg" alt="فروشگاه 6">
-                    <span>فروشگاه 6</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 7">
-                    <img class="shop-img" src="./images/shop (2df).jpg" alt="فروشگاه 7">
-                    <span>فروشگاه 7</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 8">
-                    <img class="shop-img" src="./images/shop (3).jpg" alt="فروشگاه 8">
-                    <span>فروشگاه 8</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 9">
-                    <img class="shop-img" src="./images/shop (3).png" alt="فروشگاه 9">
-                    <span>فروشگاه 9</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 10">
-                    <img class="shop-img" src="./images/shop (3777).jpg" alt="فروشگاه 10">
-                    <span>فروشگاه 10</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 11">
-                    <img class="shop-img" src="./images/shop (44441).jpg" alt="فروشگاه 11">
-                    <span>فروشگاه 11</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" aria-label="فروشگاه 12">
-                    <img class="shop-img" src="./images/shop (4543).jpg" alt="فروشگاه 12">
-                    <span>فروشگاه 12</span>
-                </a>
-            </li>
-            
+            <?php foreach ($merchants as $index => $merchant):
+                // انتخاب تصویر متناظر یا تصویر پیش‌فرض اگر تعداد تصاویر کمتر از فروشگاه‌ها باشد
+                $image_index = $index % count($shop_images);
+                $shop_image = $shop_images[$image_index];
+                if ($merchant['merchantName'] == $_SESSION['merchantName'])
+                    continue;
+                ?>
+                <li>
+                    <a href="shop_detail.php?mobileNumber=<?= $merchant['mobileNumber'] ?>" aria-label="<?php echo htmlspecialchars($merchant['merchantName']); ?>">
+                        <img class="shop-img" src="<?php echo $shop_image; ?>"
+                            alt="<?php echo htmlspecialchars($merchant['merchantName']); ?>">
+                        <span><?php echo htmlspecialchars($merchant['merchantName']); ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </div>
 
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column "
-                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                        aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
@@ -593,147 +594,12 @@
         </div>
     </div>
 
-    <div class="tf-panel" id="notificationPanel">
-        <div class="panel_overlay"></div>
-        <div class="panel-box panel-noti">
-            <div class="header is-fixed">
-                <div class="container">
-                    <div class="tf-statusbar d-flex justify-content-between align-items-center">
-                        <a href="#" class="clear-panel" data-dismiss-panel="#notificationPanel"> <i
-                                class="fas fa-chevron-left"></i> </a>
-                        <h3>پیام ها</h3>
-                        <span></span>
-                    </div>
-                </div>
-            </div>
-            <div class="app-wrap style1" style="padding-top: 70px;">
-                <div class="container">
-                    <div class="tf-tab mt-3">
-                        <ul class="menu-tabs d-flex justify-content-around">
-                            <li class="nav-tab active"><a href="#">سیستم</a></li>
-                            <li class="nav-tab"><a href="#">امتیاز</a></li>
-                            <li class="nav-tab"><a href="#">مالی</a></li>
-                            <li class="nav-tab"><a href="#">خدمات</a></li>
-                        </ul>
-                        <div class="content-tab mt-5">
-                            <div class="noti-box">
-                                <div class="noti-list">
-                                    <div class="icon-box bg_service-5">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <div class="content-right">
-                                        <div class="title">
-                                            <h3>به روزرسانی سامانه</h3>
-                                            <span class="text-info">اطلاعیه</span>
-                                        </div>
-                                        <div class="desc">
-                                            <p>نسخه جدید اپلیکیشن منتشر شد. لطفاً بروزرسانی کنید</p>
-                                            <span class="time">2 روز پیش</span>
-                                            <i class="dot"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="noti-box">
-                                <div class="noti-list">
-                                    <div class="icon-box bg_service-3">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <div class="content-right">
-                                        <div class="title">
-                                            <h3>امتیاز جدید</h3>
-                                            <span class="text-warning">پاداش</span>
-                                        </div>
-                                        <div class="desc">
-                                            <p>برای خرید قبلی ۱۵۰ امتیاز دریافت کردید</p>
-                                            <span class="time">دیروز</span>
-                                            <i class="dot"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="noti-box">
-                                <div class="noti-list">
-                                    <div class="icon-box bg_service-1">
-                                        <i class="fas fa-money-bill-transfer"></i>
-                                    </div>
-                                    <div class="content-right">
-                                        <div class="title">
-                                            <h3>واریز وجه موفق</h3>
-                                            <span class="text-success">جدید</span>
-                                        </div>
-                                        <div class="desc">
-                                            <p>مبلغ ۲۵۰,۰۰۰ تومان به حساب شما واریز شد</p>
-                                            <span class="time">10 دقیقه پیش</span>
-                                            <i class="dot"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="noti-box">
-                                <div class="noti-list">
-                                    <div class="icon-box bg_service-2">
-                                        <i class="fas fa-calendar-check"></i>
-                                    </div>
-                                    <div class="content-right">
-                                        <div class="title">
-                                            <h3>نوبت شما رسید</h3>
-                                            <span class="text-primary">مهم</span>
-                                        </div>
-                                        <div class="desc">
-                                            <p>نوبت خدمات فنی شما برای فردا ساعت ۱۰ صبح تنظیم شد</p>
-                                            <span class="time">1 ساعت پیش</span>
-                                            <i class="dot"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Panel (Modal) Open/Close Logic
-        $(document).ready(function () {
-            function openPanel(panelId) {
-                $(panelId).addClass('active');
-                $('body').addClass('overflow-hidden'); // Prevent body scroll when panel is open
-            }
-
-            function closePanels() {
-                $('.tf-panel').removeClass('active');
-                $('body').removeClass('overflow-hidden');
-            }
-
-            $('#btn-popup-up').on('click', function (e) {
-                e.preventDefault();
-                openPanel('#notificationPanel');
-            });
-
-            $('.clear-panel, .panel_overlay').on('click', function (e) {
-                e.preventDefault();
-                closePanels();
-            });
-
-            // Handle notification tabs (simple click effect)
-            $('.menu-tabs .nav-tab').on('click', function(e) {
-                e.preventDefault();
-                $('.menu-tabs .nav-tab').removeClass('active');
-                $(this).addClass('active');
-                // You can add logic here to load content based on the clicked tab
-            });
-        });
-
-        // Removed all Swiper initializations
-        // Removed QR Modal functionality
-        // Removed PWA push notification script
-    </script>
+    
 </body>
 
 </html>

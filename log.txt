@@ -1,0 +1,3 @@
+HTTP: 200
+Response:
+{"success":true,"data":"تسویه با موفقیت انجام شد."}

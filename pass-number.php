@@ -12,24 +12,37 @@
     <title>BNPL | تأیید کد فعال‌سازی</title>
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload" href="./assets/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload"
+        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2"
+        as="font" type="font/woff2" crossorigin="anonymous">
 
     <link href="./assets/css/bootstrap.rtl.min.css" rel="stylesheet">
 
     <style>
         /* CSS Variables for theming */
         :root {
-            --primary-color: #2196F3; /* Bright Blue */
-            --primary-dark: #1976D2; /* Darker Blue for hover/active */
-            --secondary-color: #4CAF50; /* Green for success/positive feedback */
-            --error-color: #F44336; /* Red for errors */
-            --background-light: #f0f2f5; /* Light grey background */
-            --card-background: #ffffff; /* White card background */
-            --text-color-dark: #333; /* Dark grey text */
-            --text-color-light: #777; /* Lighter grey text */
-            --shadow-light: rgba(0, 0, 0, 0.08); /* Light shadow */
-            --shadow-medium: rgba(0, 0, 0, 0.15); /* Medium shadow */
-            --border-color: #e0e0e0; /* Light border */
+            --primary-color: #2196F3;
+            /* Bright Blue */
+            --primary-dark: #1976D2;
+            /* Darker Blue for hover/active */
+            --secondary-color: #4CAF50;
+            /* Green for success/positive feedback */
+            --error-color: #F44336;
+            /* Red for errors */
+            --background-light: #f0f2f5;
+            /* Light grey background */
+            --card-background: #ffffff;
+            /* White card background */
+            --text-color-dark: #333;
+            /* Dark grey text */
+            --text-color-light: #777;
+            /* Lighter grey text */
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            /* Light shadow */
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            /* Medium shadow */
+            --border-color: #e0e0e0;
+            /* Light border */
         }
 
         /* Dark mode adjustments */
@@ -48,7 +61,7 @@
         /* Vazirmatn Font Import (ensure font files are in ./assets/fonts/) */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -56,7 +69,7 @@
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
             font-display: swap;
@@ -110,8 +123,10 @@
             background-color: var(--card-background);
             max-width: 450px;
             width: 100%;
-            border-radius: 20px; /* More rounded corners */
-            box-shadow: 0 12px 30px var(--shadow-medium); /* Deeper, softer shadow */
+            border-radius: 20px;
+            /* More rounded corners */
+            box-shadow: 0 12px 30px var(--shadow-medium);
+            /* Deeper, softer shadow */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -137,7 +152,8 @@
         }
 
         h2 {
-            font-size: 2.2rem; /* Larger title */
+            font-size: 2.2rem;
+            /* Larger title */
             font-weight: 700;
             color: var(--primary-dark);
             margin-bottom: 0.8rem;
@@ -176,19 +192,23 @@
             padding: 14px 18px;
             border: 2px solid var(--border-color);
             border-radius: 12px;
-            font-size: 1.5rem; /* Larger font for code input */
+            font-size: 1.5rem;
+            /* Larger font for code input */
             text-align: center;
-            letter-spacing: 0.5rem; /* More spacing for digits */
+            letter-spacing: 0.5rem;
+            /* More spacing for digits */
             transition: all 0.3s ease;
             background-color: var(--card-background);
             color: var(--text-color-dark);
-            font-weight: 700; /* Bold numbers */
+            font-weight: 700;
+            /* Bold numbers */
         }
 
         /* Adjust placeholder for better visual */
         .input-field input::placeholder {
             color: var(--text-color-light);
-            letter-spacing: normal; /* Reset for placeholder */
+            letter-spacing: normal;
+            /* Reset for placeholder */
         }
 
         .input-field input:focus {
@@ -228,7 +248,8 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
             animation: fadeInUp 0.7s ease-out forwards;
-            animation-delay: 0.5s; /* Adjusted delay */
+            animation-delay: 0.5s;
+            /* Adjusted delay */
             opacity: 0;
         }
 
@@ -247,21 +268,27 @@
 
         .timer-container {
             text-align: center;
-            margin: 1.5rem 0 2rem 0; /* More margin bottom */
+            margin: 1.5rem 0 2rem 0;
+            /* More margin bottom */
             color: var(--text-color-light);
             font-size: 1rem;
             animation: fadeInUp 0.7s ease-out forwards;
-            animation-delay: 0.6s; /* Adjusted delay */
+            animation-delay: 0.6s;
+            /* Adjusted delay */
             opacity: 0;
         }
 
         .timer {
             font-weight: 700;
             color: var(--primary-dark);
-            font-size: 1.2rem; /* Larger timer text */
-            direction: ltr; /* Ensure timer displays LTR */
-            display: inline-block; /* For proper spacing with text */
-            margin-left: 5px; /* Space between text and timer */
+            font-size: 1.2rem;
+            /* Larger timer text */
+            direction: ltr;
+            /* Ensure timer displays LTR */
+            display: inline-block;
+            /* For proper spacing with text */
+            margin-left: 5px;
+            /* Space between text and timer */
         }
 
         .resend-link {
@@ -269,17 +296,21 @@
             text-decoration: none;
             cursor: pointer;
             font-weight: 600;
-            display: block; /* Make it block to take full width */
+            display: block;
+            /* Make it block to take full width */
             margin-top: 1rem;
-            opacity: 0; /* Hidden initially */
+            opacity: 0;
+            /* Hidden initially */
             animation: fadeIn 0.5s ease-out forwards;
             animation-delay: 0.7s;
             transition: color 0.2s ease;
         }
+
         .resend-link:hover {
             text-decoration: underline;
             color: var(--primary-dark);
         }
+
         .resend-link.disabled {
             color: var(--text-color-light);
             cursor: not-allowed;
@@ -288,23 +319,49 @@
 
         /* General Animations */
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideInFromTop {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* Responsive adjustments */
@@ -313,24 +370,30 @@
                 margin: 1rem auto;
                 border-radius: 15px;
             }
+
             .form-container {
                 padding: 1.5rem;
             }
+
             h2 {
                 font-size: 1.8rem;
             }
+
             p.text-muted {
                 font-size: 1rem;
             }
+
             .input-field input {
                 padding: 12px 15px;
                 font-size: 1.2rem;
                 letter-spacing: 0.4rem;
             }
+
             .submit-btn {
                 padding: 12px;
                 font-size: 1.1rem;
             }
+
             .timer {
                 font-size: 1rem;
             }
@@ -366,7 +429,8 @@
                     <div class="timer-container">
                         <span>زمان باقی‌مانده: </span>
                         <span id="timer" class="timer">02:00</span>
-                        <a href="javascript:void(0);" id="resendLink" class="resend-link disabled" style="display: none;">ارسال مجدد کد</a>
+                        <a href="javascript:void(0);" id="resendLink" class="resend-link disabled"
+                            style="display: none;">ارسال مجدد کد</a>
                     </div>
 
                     <button type="submit" id="submitBtn" class="submit-btn" disabled>
@@ -441,10 +505,10 @@
 
             // Event listeners
             activationCodeInput.addEventListener('input', validateForm);
-            resendLink.addEventListener('click', function(event) {
+            resendLink.addEventListener('click', function (event) {
                 if (!this.classList.contains('disabled')) {
                     // Prevent default link action (e.g., if it's a real link)
-                    event.preventDefault(); 
+                    event.preventDefault();
                     console.log('Resending code...');
                     // Here you would typically make an AJAX request to resend the code
                     // On successful resend, restart the timer

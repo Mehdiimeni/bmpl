@@ -34,12 +34,18 @@
     <style>
         /* تعریف متغیرهای CSS برای تم و رنگ‌ها */
         :root {
-            --primary-color: #2196F3; /* آبی اصلی */
-            --primary-dark: #1976D2; /* آبی تیره برای هاور/اکتیو */
-            --background-light: #f0f2f5; /* پس‌زمینه روشن */
-            --card-background: #ffffff; /* پس‌زمینه کارت */
-            --text-color-dark: #333; /* رنگ متن تیره */
-            --text-color-light: #777; /* رنگ متن روشن‌تر */
+            --primary-color: #2196F3;
+            /* آبی اصلی */
+            --primary-dark: #1976D2;
+            /* آبی تیره برای هاور/اکتیو */
+            --background-light: #f0f2f5;
+            /* پس‌زمینه روشن */
+            --card-background: #ffffff;
+            /* پس‌زمینه کارت */
+            --text-color-dark: #333;
+            /* رنگ متن تیره */
+            --text-color-light: #777;
+            /* رنگ متن روشن‌تر */
             --shadow-color: rgba(0, 0, 0, 0.1);
             --gradient-start: #2196F3;
             --gradient-end: #0D47A1;
@@ -65,27 +71,36 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: 'Vazirmatn', sans-serif; /* استفاده از یک فونت مدرن‌تر */
+            font-family: 'Vazirmatn', sans-serif;
+            /* استفاده از یک فونت مدرن‌تر */
             color: var(--text-color-dark);
-            text-rendering: optimizeLegibility; /* بهبود رندرینگ متن */
-            -webkit-font-smoothing: antialiased; /* صاف کردن فونت در WebKit */
-            -moz-osx-font-smoothing: grayscale; /* صاف کردن فونت در Firefox */
+            text-rendering: optimizeLegibility;
+            /* بهبود رندرینگ متن */
+            -webkit-font-smoothing: antialiased;
+            /* صاف کردن فونت در WebKit */
+            -moz-osx-font-smoothing: grayscale;
+            /* صاف کردن فونت در Firefox */
         }
 
         .login-card {
             background-color: var(--card-background);
             max-width: 450px;
-            width: 90%; /* واکنش‌گرا برای عرض */
+            width: 90%;
+            /* واکنش‌گرا برای عرض */
             margin: 2rem auto;
-            border-radius: 18px; /* گردی بیشتر لبه‌ها */
-            box-shadow: 0 10px 30px var(--shadow-color); /* سایه عمیق‌تر و مدرن‌تر */
+            border-radius: 18px;
+            /* گردی بیشتر لبه‌ها */
+            box-shadow: 0 10px 30px var(--shadow-color);
+            /* سایه عمیق‌تر و مدرن‌تر */
             overflow: hidden;
-            animation: fadeInScale 0.8s ease-out forwards; /* انیمیشن ورود کارت */
+            animation: fadeInScale 0.8s ease-out forwards;
+            /* انیمیشن ورود کارت */
         }
 
         .loading-container {
             text-align: center;
-            padding: 3rem 1.5rem; /* پدینگ بیشتر */
+            padding: 3rem 1.5rem;
+            /* پدینگ بیشتر */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -93,44 +108,58 @@
         }
 
         .loading-spinner {
-            width: 3.5rem; /* کمی بزرگتر */
+            width: 3.5rem;
+            /* کمی بزرگتر */
             height: 3.5rem;
-            border-width: 0.3em; /* کمی ضخیم‌تر */
-            border-color: var(--primary-color) transparent var(--primary-color) transparent; /* رنگ‌بندی جذاب‌تر */
+            border-width: 0.3em;
+            /* کمی ضخیم‌تر */
+            border-color: var(--primary-color) transparent var(--primary-color) transparent;
+            /* رنگ‌بندی جذاب‌تر */
             animation: spin 1s linear infinite, fadeIn 0.5s ease-out 0.4s forwards;
-            margin-bottom: 2rem; /* فاصله بیشتر */
+            margin-bottom: 2rem;
+            /* فاصله بیشتر */
         }
 
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
         }
 
         .wallet-icon {
-            width: 6rem; /* بزرگتر */
+            width: 6rem;
+            /* بزرگتر */
             height: 6rem;
-            margin-bottom: 2rem; /* فاصله بیشتر */
+            margin-bottom: 2rem;
+            /* فاصله بیشتر */
             object-fit: contain;
-            animation: bounceIn 0.8s ease-out forwards; /* انیمیشن ورود آیکون */
+            animation: bounceIn 0.8s ease-out forwards;
+            /* انیمیشن ورود آیکون */
         }
 
         h1 {
-            color: var(--primary-dark); /* رنگ تیتر */
-            margin-bottom: 1rem; /* کاهش فاصله */
-            font-size: 2.2rem; /* اندازه بزرگتر */
-            font-weight: 700; /* وزن بیشتر */
+            color: var(--primary-dark);
+            /* رنگ تیتر */
+            margin-bottom: 1rem;
+            /* کاهش فاصله */
+            font-size: 2.2rem;
+            /* اندازه بزرگتر */
+            font-weight: 700;
+            /* وزن بیشتر */
             animation: fadeInUp 0.7s ease-out forwards;
             animation-delay: 0.2s;
             opacity: 0;
         }
 
         p {
-            color: var(--text-color-light); /* رنگ متن توضیحی */
-            font-size: 1.1rem; /* اندازه مناسب‌تر */
+            color: var(--text-color-light);
+            /* رنگ متن توضیحی */
+            font-size: 1.1rem;
+            /* اندازه مناسب‌تر */
             margin-top: 1rem;
             animation: fadeInUp 0.7s ease-out forwards;
             animation-delay: 0.3s;
@@ -138,11 +167,15 @@
         }
 
         .progress {
-            height: 6px; /* ارتفاع کمی بیشتر */
-            width: 90%; /* عرض بیشتر */
-            margin: 1.5rem auto 0 auto; /* فاصله مناسب */
+            height: 6px;
+            /* ارتفاع کمی بیشتر */
+            width: 90%;
+            /* عرض بیشتر */
+            margin: 1.5rem auto 0 auto;
+            /* فاصله مناسب */
             border-radius: 3px;
-            background-color: rgba(var(--primary-color), 0.2); /* پس‌زمینه کمرنگ‌تر */
+            background-color: rgba(var(--primary-color), 0.2);
+            /* پس‌زمینه کمرنگ‌تر */
             overflow: hidden;
             animation: fadeIn 0.7s ease-out forwards;
             animation-delay: 0.4s;
@@ -150,8 +183,10 @@
         }
 
         .progress-bar {
-            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)); /* گرادیانت برای نوار پیشرفت */
-            animation: progressBarGrow 3s linear forwards; /* انیمیشن رشد نوار پیشرفت */
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            /* گرادیانت برای نوار پیشرفت */
+            animation: progressBarGrow 3s linear forwards;
+            /* انیمیشن رشد نوار پیشرفت */
         }
 
         .text-muted {
@@ -163,63 +198,102 @@
 
         /* انیمیشن‌های کلی */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes bounceIn {
-            0%, 20%, 40%, 60%, 80%, 100% {
+
+            0%,
+            20%,
+            40%,
+            60%,
+            80%,
+            100% {
                 animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
             }
+
             0% {
                 opacity: 0;
                 transform: scale3d(0.3, 0.3, 0.3);
             }
+
             20% {
                 transform: scale3d(1.1, 1.1, 1.1);
             }
+
             40% {
                 transform: scale3d(0.9, 0.9, 0.9);
             }
+
             60% {
                 opacity: 1;
                 transform: scale3d(1.03, 1.03, 1.03);
             }
+
             80% {
                 transform: scale3d(0.97, 0.97, 0.97);
             }
+
             100% {
                 opacity: 1;
                 transform: scale3d(1, 1, 1);
             }
         }
-        
+
         @keyframes progressBarGrow {
-            from { width: 0%; }
-            to { width: 100%; }
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
         }
 
         /* فونت (برای استفاده از این فونت، فایل آن را در assets/css یا assets/fonts قرار دهید و در CSS @font-face را تعریف کنید) */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2'); /* مسیر صحیح فونت را اینجا قرار دهید */
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            /* مسیر صحیح فونت را اینجا قرار دهید */
             font-weight: 400;
             font-style: normal;
             font-display: swap;
         }
+
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2'); /* مسیر صحیح فونت را اینجا قرار دهید */
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            /* مسیر صحیح فونت را اینجا قرار دهید */
             font-weight: 700;
             font-style: normal;
             font-display: swap;

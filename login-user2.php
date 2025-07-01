@@ -12,8 +12,9 @@
     <title>BNPL | ورود به سامانه</title>
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload" href="./assets/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2"
-        crossorigin="anonymous">
+    <link rel="preload"
+        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2"
+        as="font" type="font/woff2" crossorigin="anonymous">
 
     <link href="./assets/css/bootstrap.rtl.min.css" rel="stylesheet">
 
@@ -49,7 +50,7 @@
         /* Vazirmatn Font Import (ensure font files are in ./assets/fonts/) */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -57,7 +58,7 @@
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
             font-display: swap;

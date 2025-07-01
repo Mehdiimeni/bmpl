@@ -1,3 +1,52 @@
+<?php session_start();
+
+function convertToPersianNumber($number, $decimals = 0)
+{
+    // تبدیل به عدد با جداکنندهٔ هزارگان و اعشار (در صورت نیاز)
+    $formatted = number_format($number, $decimals);
+
+    // تبدیل ارقام انگلیسی به فارسی
+    $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ','];
+    $fa = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '٬'];
+
+    return strtr($formatted, array_combine($en, $fa));
+}
+
+
+if (isset($_SESSION['mobileNumber'])) {
+    $mobileNumber = $_SESSION['mobileNumber'];
+} else {
+    session_unset();
+    header('Location: login-user.php');
+    exit(); 
+}
+
+// ارسال درخواست به API
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    CURLOPT_POSTFIELDS => json_encode(['mobileNumber' => $mobileNumber])
+));
+
+$response = curl_exec($curl);
+$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+curl_close($curl);
+
+
+// تلاش برای تبدیل به JSON
+$data = json_decode($response, true);
+
+// اگر داده‌ها معتبر بودن و خطا نبود، در سشن ذخیره شود
+if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
+    foreach ($data as $key => $value) {
+        $_SESSION[$key] = $value;
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -5,10 +54,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اعتبار شما</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
         rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -602,22 +651,19 @@
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="credit-offer text-center">
-            <h5 class="mb-3">اعتبار باقی‌مانده شما:</h5>
-            <div class="main-credit-amount" id="creditAmount">۵,۰۰۰,۰۰۰ تومان</div>
+            <h5 class="mb-3">اعتبار باقی‌مانده <?php echo ($_SESSION['merchantName']); ?>:</h5>
+            <div class="main-credit-amount"><?php echo convertToPersianNumber($_SESSION['credit'] ?? 0); ?> تومان</div>
 
             <div class="credit-summary-details">
                 <div class="credit-summary-item">
-                    <span>موارد اضافه مانده اعتبار شما:</span>
-                    <strong>۲,۵۰۰,۰۰۰ تومان</strong>
+                    <span>اعتبار اولیه</span>
+                    <strong><?php echo convertToPersianNumber($_SESSION['initialCredit'] ?? 0); ?> تومان</strong>
                 </div>
                 <div class="credit-summary-item">
-                    <span>جمع پرداختی تا آخر ماه:</span>
-                    <strong>۷۵۰,۰۰۰ تومان</strong>
+                    <span>مانده بدهی</span>
+                    <strong><?php echo convertToPersianNumber($_SESSION['debt'] ?? 0); ?> تومان</strong>
                 </div>
-                <div class="credit-summary-item">
-                    <span>مبلغ اقساط ماهانه باقی‌مانده:</span>
-                    <strong>۱,۷۵۰,۰۰۰ تومان</strong>
-                </div>
+                
             </div>
 
             <p class="credit-desc mt-4">
@@ -635,7 +681,7 @@
                 <a href="service.php" class="btn btn-outline-primary-custom" aria-label="خرید خدمات">
                     <i class="fas fa-handshake me-2"></i> خرید خدمات
                 </a>
-                
+
             </div>
         </div>
 

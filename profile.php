@@ -1,3 +1,5 @@
+<?php
+session_start();  ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -153,7 +155,7 @@
         }
 
         .profile-header .status {
-            background-color: var(--warning-color);
+            background-color: var(--primary-color);
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 15px;
@@ -500,8 +502,8 @@
 
         <div class="profile-header">
             <div>
-                <div class="text-muted small">09199990467</div>
-                <div class="status">احراز نشده</div>
+                <div class="text-muted small"><?php echo ($_SESSION['mobileNumber']); ?> ( <?php echo($_SESSION['merchantName']); ?> )</div>
+                <div class="status">احرازشده</div>
             </div>
             <i class="bi bi-person-circle fs-1"></i>
         </div>

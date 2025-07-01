@@ -1,3 +1,28 @@
+<?php
+session_start();
+
+// تابع تبدیل اعداد به فارسی
+function convertToPersianNumber($number)
+{
+    $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    return str_replace($english, $persian, number_format($number));
+}
+
+// دریافت اطلاعات پرداخت‌ها از API
+$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $_SESSION['merchantNumber'];
+$response = file_get_contents($api_url);
+$payments = json_decode($response, true);
+
+// تفکیک پرداخت‌های تسویه نشده و تسویه شده
+$unsettled_payments = array_filter($payments, function ($payment) {
+    return !isset($payment['settled']) || $payment['settled'] == false;
+});
+
+$settled_payments = array_filter($payments, function ($payment) {
+    return isset($payment['settled']) && $payment['settled'] == true;
+});
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -5,61 +30,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پرداخت‌های من</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
-        integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Vazirmatn Font Import */
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        /* Root Variables for consistent theming */
         :root {
             --primary-color: #007bff;
-            /* Bootstrap primary blue */
             --secondary-color: #0056b3;
-            /* Darker blue for gradients */
             --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
             --background-light: #f0f2f5;
-            /* Light gray background */
             --text-dark: #333;
-            /* Dark gray for main text */
             --text-muted: #6c757d;
-            /* Muted gray for secondary text */
             --card-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.08);
-            /* Soft, large shadow */
             --border-light: #e0e0e0;
-            /* Light border color */
             --green-badge: #e6ffe6;
-            /* Light green for badges */
             --blue-badge: #e6f7ff;
-            /* Light blue for badges */
             --purple-badge: #f2e6ff;
-            /* Light purple for badges */
             --purple-color: #6f42c1;
-            /* Dark purple */
             --orange-badge: #fff5e6;
-            /* Light orange for badges */
             --orange-color: #fd7e14;
-            /* Dark orange */
             --red-badge: #ffe6e6;
-            /* Light red for badges */
             --red-color: #dc3545;
-            /* Dark red */
         }
 
         body {
@@ -67,19 +60,16 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 120px;
-            /* Space for the fixed footer */
+            padding-bottom: 180px;
+            /* افزایش فاصله برای نوار پرداخت */
             overflow-x: hidden;
-            /* Prevent horizontal scroll */
         }
 
         .club-header {
-            /* Smaller padding */
             padding: 1.5rem 0;
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
             border-radius: 0 0 25px 25px;
-            /* More subtle shadow */
             box-shadow: 0 8px 25px rgba(78, 115, 223, 0.2);
             position: relative;
             overflow: hidden;
@@ -562,16 +552,178 @@
                 padding: 0.8rem 0;
             }
 
-            .bottom-payment-bar .total-info {
+            .total-info {
                 font-size: 0.9rem;
                 padding: 0 1rem 0.5rem;
             }
 
-            .bottom-payment-bar button {
+            .total-info button {
                 width: calc(100% - 2rem);
                 padding: 0.7rem 1rem;
                 font-size: 1rem;
             }
+        }
+
+        /* Bottom Navigation Bar - consistent with previous pages */
+        .bottom-navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+            padding: 0.85rem 0;
+            z-index: 1000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .tf-navigation-bar {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tf-navigation-bar li a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: color 0.2s ease;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .tf-navigation-bar li a i,
+        .tf-navigation-bar li a svg {
+            font-size: 1.4rem;
+            margin-bottom: 0.35rem;
+            transition: color 0.2s ease;
+        }
+
+        .tf-navigation-bar li a.active {
+            color: var(--primary-color);
+            background-color: rgba(91, 134, 229, 0.08);
+            font-weight: 700;
+        }
+
+        .tf-navigation-bar li a.active i,
+        .tf-navigation-bar li a.active svg {
+            color: var(--primary-color);
+        }
+
+        .tf-navigation-bar li a:hover {
+            color: var(--primary-color);
+            background-color: rgba(91, 134, 229, 0.05);
+        }
+
+        .tf-navigation-bar li a:hover i,
+        .tf-navigation-bar li a:hover svg {
+            color: var(--primary-color);
+        }
+
+
+        /* Notification Panel (only if needed, otherwise remove) */
+        .tf-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1050;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* Aligned to top for notifications */
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .tf-panel.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tf-panel .panel-box {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            transform: translateY(-100%);
+            /* Starts off-screen at the top */
+            transition: transform 0.3s ease-in-out;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 0;
+            /* No border-radius for top panel */
+        }
+
+        .tf-panel.active .panel-box {
+            transform: translateY(0);
+        }
+
+        .tf-panel .header {
+            padding: 1rem 0;
+            background-color: white;
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tf-panel .tf-statusbar {
+            padding: 0 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tf-panel .tf-statusbar h3 {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin: 0;
+        }
+
+        .tf-panel .tf-statusbar a {
+            color: #555;
+            font-size: 1.2rem;
+            text-decoration: none;
+            padding: 5px;
+        }
+
+        .payment-bar {
+            position: fixed;
+            bottom: 100px;
+            /* قرار گرفتن بالای نوار نویگیشن */
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 1rem;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .bottom-navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.08);
+            padding: 0.85rem 0;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -587,410 +739,236 @@
 
     <div class="container">
         <div class="tab-nav mb-12">
-            <div class="tab-nav-item active" data-tab="this-month">
+            <div class="tab-nav-item active" data-tab="unsettled">
                 این ماه
-                <span class="badge" id="this-month-badge">6</span>
+                <span class="badge" id="unsettled-badge"><?= count($unsettled_payments) ?></span>
             </div>
-            <div class="tab-nav-item" data-tab="future-months">
-                ماه‌های آینده
-                <span class="badge" id="future-months-badge">5</span>
-            </div>
-            <div class="tab-nav-item" data-tab="bank-credit">
-                اعتبار بانکی
-                <span class="badge" id="bank-credit-badge">3</span>
+            <div class="tab-nav-item" data-tab="settled">
+                پرداخت شده
+                <span class="badge" id="settled-badge"><?= count($settled_payments) ?></span>
             </div>
         </div>
 
-        <div id="this-month-content" class="tab-content active">
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="45000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box green-theme">
-                    <i class="fa-solid fa-car"></i>
+        <div id="unsettled-content" class="tab-content active">
+            <?php foreach ($unsettled_payments as $payment): ?>
+                <div class="debt-card">
+                    <label class="checkbox-container">
+                        <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
+                        <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
+                    </div>
+                    <div class="details">
+                        <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
+                        <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
+                    </div>
+                    <div class="amount-section">
+                        <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> تومان</div>
+                        <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
+                            <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="bi bi-dot"></i>قسط' ?>
+                        </div>
+                    </div>
                 </div>
-                <div class="details">
-                    <div class="title">تاکسی آنلاین (تپسی)</div>
-                    <div class="subtitle">خدمات حمل و نقل</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۴۵,۰۰۰ تومان</div>
-                    <div class="amount-badge monthly">بدهی ماهانه</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="1750325">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box pink-theme">
-                    <i class="fa-solid fa-mobile-alt"></i>
-                </div>
-                <div class="details">
-                    <div class="title">فروشگاه موبایل (دیجی‌فروش)</div>
-                    <div class="subtitle">خرید اقساطی گوشی</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۱,۷۵۰,۳۲۵ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط چهارم</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="186900">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box blue-theme">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <div class="details">
-                    <div class="title">کافه رستوران (بامبو)</div>
-                    <div class="subtitle">صورتحساب رستوران</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۱۸۶,۹۰۰ تومان</div>
-                    <div class="amount-badge monthly">هزینه ثابت</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="327825">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box yellow-theme">
-                    <i class="fa-solid fa-home"></i>
-                </div>
-                <div class="details">
-                    <div class="title">خدمات خانه (پاکسان)</div>
-                    <div class="subtitle">نظافت منزل</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۳۲۷,۸۲۵ تومان</div>
-                    <div class="amount-badge monthly">هزینه سرویس</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="200000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box purple-theme">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <div class="details">
-                    <div class="title">آموزشگاه زبان (گاما)</div>
-                    <div class="subtitle">شهریه ماهانه</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۲۰۰,۰۰۰ تومان</div>
-                    <div class="amount-badge monthly">بدهی ماهانه</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" checked data-amount="500000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box orange-theme">
-                    <i class="fa-solid fa-heartbeat"></i>
-                </div>
-                <div class="details">
-                    <div class="title">کلینیک پزشکی (سلامت)</div>
-                    <div class="subtitle">ویزیت پزشک</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۵۰۰,۰۰۰ تومان</div>
-                    <div class="amount-badge monthly">خدمات درمانی</div>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
 
-        <div id="future-months-content" class="tab-content">
-            <div class="credit-balance">
-                <i class="bi bi-list-columns"></i>
-                <span>مجموع بدهی‌های آینده: <span id="future-total-amount"></span></span>
-            </div>
-
-            <div class="month-header">
-                <h5>اقساط تیر ماه</h5>
-                <i class="bi bi-calendar"></i>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="768830">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box market blue-theme">
-                    <i class="fa-solid fa-basket-shopping"></i>
+        <div id="settled-content" class="tab-content">
+            <?php if (!empty($settled_payments)): ?>
+                <?php foreach ($settled_payments as $payment): ?>
+                    <div class="debt-card">
+                        <div class="icon-box success-theme">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div class="details">
+                            <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
+                            <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
+                        </div>
+                        <div class="amount-section">
+                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> تومان</div>
+                            <div class="amount-badge success">
+                                <i class="bi bi-check-circle"></i> پرداخت شده
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="text-center py-4 text-muted">
+                    هیچ پرداخت انجام شده‌ای وجود ندارد
                 </div>
-                <div class="details">
-                    <div class="title">سوپرمارکت آنلاین (اکالا)</div>
-                    <div class="subtitle">خرید خواربار</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۷۶۸,۸۳۰ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط سوم</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="2045500">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box gallery yellow-theme">
-                    <i class="fa-solid fa-chair"></i>
-                </div>
-                <div class="details">
-                    <div class="title">فروشگاه مبلمان (آرام چوب)</div>
-                    <div class="subtitle">قسط خرید مبل</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۲,۰۴۵,۵۰۰ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط دوم</div>
-                </div>
-            </div>
-
-            <div class="month-header">
-                <h5>اقساط مرداد ماه</h5>
-                <i class="bi bi-calendar"></i>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="768830">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box market blue-theme">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                </div>
-                <div class="details">
-                    <div class="title">سوپرمارکت آنلاین (اکالا)</div>
-                    <div class="subtitle">خرید خواربار</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۷۶۸,۸۳۰ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط چهارم</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="2045500">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box gallery yellow-theme">
-                    <i class="fa-solid fa-chair"></i>
-                </div>
-                <div class="details">
-                    <div class="title">فروشگاه مبلمان (آرام چوب)</div>
-                    <div class="subtitle">قسط خرید مبل</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۲,۰۴۵,۵۰۰ تومان</div>
-                    <div class="amount-badge installment"><i class="bi bi-dot"></i>قسط سوم</div>
-                </div>
-            </div>
-            
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="150000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box red-theme">
-                    <i class="fa-solid fa-dumbbell"></i>
-                </div>
-                <div class="details">
-                    <div class="title">باشگاه ورزشی (فیت‌لند)</div>
-                    <div class="subtitle">حق عضویت</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۱۵۰,۰۰۰ تومان</div>
-                    <div class="amount-badge monthly">بدهی ماهانه</div>
-                </div>
-            </div>
-
-        </div>
-
-        <div id="bank-credit-content" class="tab-content">
-            <div class="credit-balance">
-                <i class="bi bi-bank"></i>
-                <span>مجموع اعتبار موجود: <span id="bank-credit-total-amount"></span></span>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="5000000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box purple-theme">
-                    <i class="fa-solid fa-piggy-bank"></i>
-                </div>
-                <div class="details">
-                    <div class="title">وام ازدواج (بانک ملی)</div>
-                    <div class="subtitle">تاریخ سررسید: ۲۰ شهریور ۱۴۰۴</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۵,۰۰۰,۰۰۰ تومان</div>
-                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="2000000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box orange-theme">
-                    <i class="fa-solid fa-building-columns"></i>
-                </div>
-                <div class="details">
-                    <div class="title">تسهیلات خرید کالا (بانک سامان)</div>
-                    <div class="subtitle">تاریخ سررسید: ۱۰ مرداد ۱۴۰۴</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۲,۰۰۰,۰۰۰ تومان</div>
-                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
-                </div>
-            </div>
-
-            <div class="debt-card">
-                <label class="checkbox-container">
-                    <input type="checkbox" data-amount="1500000">
-                    <span class="checkmark"></span>
-                </label>
-                <div class="icon-box red-theme">
-                    <i class="fa-solid fa-money-check-dollar"></i>
-                </div>
-                <div class="details">
-                    <div class="title">کارت اعتباری (بانک پاسارگاد)</div>
-                    <div class="subtitle">تاریخ سررسید: ۰۵ تیر ۱۴۰۴</div>
-                </div>
-                <div class="amount-section">
-                    <div class="amount">۱,۵۰۰,۰۰۰ تومان</div>
-                    <div class="amount-badge bank-credit"><i class="bi bi-dot"></i>اعتبار فعال</div>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 
-
-    <div class="bottom-payment-bar">
-        <div class="total-info">
-            <span>مبلغ قابل پرداخت:</span>
-            <span id="total-payment-amount"></span>
+    <!-- نوار پرداخت جدید -->
+    <div class="payment-bar">
+        <div class="total-info d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-bold">مبلغ قابل پرداخت:</span>
+            <span id="total-payment-amount" class="fw-bold">۰ تومان</span>
         </div>
-        <button id="pay-button">پرداخت</button>
-        <div class="total-info d-none" id="future-months-info">
-            <span>سررسید پرداخت:</span>
-            <span>تا پایان روز ۳۱ خرداد</span>
-        </div>
+        <button id="pay-button" class="btn btn-primary w-100 py-2" disabled>
+            پرداخت
+        </button>
     </div>
 
-
+    <!-- نوار نویگیشن پایین -->
+    <div class="bottom-navigation-bar">
+        <div class="container">
+            <ul class="tf-navigation-bar">
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="credit.php">
+                        <i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php">
+                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
+                <li>
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="shop.php">
+                        <i class="fas fa-store-alt"></i>
+                        <span class="mt-1">فروشگاه</span>
+                    </a>
+                </li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php">
+                        <i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php">
+                        <i class="fas fa-user-circle"></i> پروفایل</a></li>
+            </ul>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tabItems = document.querySelectorAll('.tab-nav-item');
             const tabContents = document.querySelectorAll('.tab-content');
             const payButton = document.getElementById('pay-button');
             const totalPaymentAmountSpan = document.getElementById('total-payment-amount');
-            const futureMonthsInfo = document.getElementById('future-months-info');
-            const thisMonthBadge = document.getElementById('this-month-badge');
-            const futureMonthsBadge = document.getElementById('future-months-badge');
-            const bankCreditBadge = document.getElementById('bank-credit-badge');
 
             function formatCurrency(amount) {
-                return amount.toLocaleString('fa-IR') + ' تومان';
+                return new Intl.NumberFormat('fa-IR').format(amount) + ' تومان';
             }
 
             function calculateAndDisplayTotal() {
-                const activeTabId = document.querySelector('.tab-nav-item.active').dataset.tab;
-                const activeContent = document.getElementById(activeTabId + '-content');
+                const activeContent = document.querySelector('.tab-content.active');
                 let total = 0;
+                const selectedItems = [];
 
-                // Select all checkboxes within the *active* tab
-                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]');
-
-                // For "this-month" and "future-months", sum checked items
-                if (activeTabId === 'this-month' || activeTabId === 'future-months') {
-                    const checkedCheckboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
-                    checkedCheckboxes.forEach(checkbox => {
-                        total += parseInt(checkbox.dataset.amount);
+                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
+                checkboxes.forEach(checkbox => {
+                    total += parseInt(checkbox.dataset.amount);
+                    selectedItems.push({
+                        id: checkbox.dataset.id,
+                        amount: checkbox.dataset.amount
                     });
-                    totalPaymentAmountSpan.textContent = formatCurrency(total);
-                    // Enable pay button if any item is checked, otherwise disable
-                    payButton.disabled = total === 0;
+                });
 
-                    if (activeTabId === 'future-months') {
-                        // Display total for future debts in the header of that section
-                        let futureTotalSum = 0;
-                        checkboxes.forEach(checkbox => {
-                            futureTotalSum += parseInt(checkbox.dataset.amount);
-                        });
-                        document.getElementById('future-total-amount').textContent = formatCurrency(futureTotalSum);
-                        futureMonthsInfo.classList.remove('d-none');
+                totalPaymentAmountSpan.textContent = formatCurrency(total);
+                payButton.disabled = selectedItems.length === 0;
+
+                return selectedItems;
+            }
+
+            // فعال کردن انتخاب چک‌باکس‌ها
+            document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const container = this.closest('.checkbox-container');
+                    const debtCard = container.closest('.debt-card');
+
+                    // ایجاد تغییرات ظاهری
+                    if (this.checked) {
+                        debtCard.style.border = '2px solid var(--primary-color)';
+                        container.querySelector('.checkmark').classList.add('checked');
                     } else {
-                        futureMonthsInfo.classList.add('d-none');
+                        debtCard.style.border = 'none';
+                        container.querySelector('.checkmark').classList.remove('checked');
                     }
 
-                } else if (activeTabId === 'bank-credit') {
-                    // For "bank-credit" tab, sum all items to show total credit available
-                    let bankTotalSum = 0;
-                    checkboxes.forEach(checkbox => {
-                        bankTotalSum += parseInt(checkbox.dataset.amount);
-                    });
-                    document.getElementById('bank-credit-total-amount').textContent = formatCurrency(bankTotalSum);
-                    totalPaymentAmountSpan.textContent = '۰ تومان'; // No direct payment from here
-                    payButton.disabled = true; // Always disabled for bank credit as it's not a direct payment
-                    futureMonthsInfo.classList.add('d-none');
-                }
-            }
-
-            function updateBadgeCounts() {
-                thisMonthBadge.textContent = document.querySelectorAll('#this-month-content .debt-card').length;
-                futureMonthsBadge.textContent = document.querySelectorAll('#future-months-content .debt-card').length;
-                bankCreditBadge.textContent = document.querySelectorAll('#bank-credit-content .debt-card').length;
-            }
-
-            tabItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    // Remove active class from all tabs and hide all content
-                    tabItems.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    tabContents.forEach(c => c.style.display = 'none');
-
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-
-                    // Show corresponding content
-                    const targetTab = this.dataset.tab;
-                    const targetContent = document.getElementById(targetTab + '-content');
-                    targetContent.classList.add('active');
-                    targetContent.style.display = 'block';
-
-                    calculateAndDisplayTotal(); // Recalculate total based on new active tab
+                    calculateAndDisplayTotal();
                 });
             });
 
-            // Add event listeners to all checkboxes in all tabs
-            document.querySelectorAll('.debt-card input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', calculateAndDisplayTotal);
+            // تغییر تب‌ها
+            tabItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    this.classList.add('active');
+                    const targetTab = this.dataset.tab;
+                    document.getElementById(targetTab + '-content').classList.add('active');
+
+                    // ریست کردن محاسبات هنگام تغییر تب
+                    totalPaymentAmountSpan.textContent = '۰ تومان';
+                    payButton.disabled = true;
+
+                    // غیرفعال کردن دکمه پرداخت در تب پرداخت شده
+                    if (targetTab === 'settled') {
+                        payButton.style.display = 'none';
+                    } else {
+                        payButton.style.display = 'block';
+                    }
+                });
             });
 
-            // Initial calculations on page load
-            updateBadgeCounts();
-            calculateAndDisplayTotal();
+            payButton.addEventListener('click', async function () {
+                const selectedItems = calculateAndDisplayTotal();
+
+                if (selectedItems.length === 0) return;
+
+                const originalText = payButton.textContent;
+                payButton.disabled = true;
+                payButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
+
+                try {
+                    const requests = selectedItems.map(item => {
+                        return fetch(`proxy-settle.php?id=${item.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+
+                        });
+                    });
+
+                    const responses = await Promise.all(requests);
+
+                    // Check if responses are ok before parsing as JSON
+                    for (const response of responses) {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                    }
+
+                    const results = await Promise.all(responses.map(res => res.json()));
+
+                    const allSuccess = results.every(result => result.success);
+
+                    if (allSuccess) {
+                        await Swal.fire({
+                            icon: 'success',
+                            title: 'پرداخت موفق',
+                            text: `پرداخت ${selectedItems.length} آیتم با موفقیت انجام شد`,
+                            confirmButtonText: 'باشه'
+                        });
+                        window.location.reload(true); // force reload from server
+                    } else {
+                        throw new Error('برخی پرداخت‌ها انجام نشد');
+                    }
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'خطا در پرداخت',
+                        text: error.message || 'خطایی در پرداخت رخ داده است. لطفاً مجدداً تلاش کنید.',
+                        confirmButtonText: 'باشه'
+                    });
+                } finally {
+                    payButton.disabled = false;
+                    payButton.textContent = originalText;
+                }
+            });
+            // مخفی کردن دکمه پرداخت در تب پرداخت شده در ابتدا
+            payButton.style.display = document.querySelector('.tab-nav-item.active').dataset.tab === 'settled' ? 'none' : 'block';
         });
     </script>
 </body>

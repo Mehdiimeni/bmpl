@@ -811,7 +811,56 @@ $settled_payments = array_filter($payments, function ($payment) {
         </button>
     </div>
 
-    <!-- نوار نویگیشن پایین -->
+    <!-- Modal پرداخت بانکی -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">پرداخت اینترنتی</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">شماره کارت</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="6037-XXXX-XXXX-XXXX"
+                                maxlength="19">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiryMonth" class="form-label">ماه انقضا (MM)</label>
+                                <input type="text" class="form-control" id="expiryMonth" placeholder="00" maxlength="2"
+                                    inputmode="numeric">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expiryYear" class="form-label">سال انقضا (YY)</label>
+                                <input type="text" class="form-control" id="expiryYear" placeholder="00" maxlength="2"
+                                    inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv2" class="form-label">CVV2</label>
+                                <input type="password" class="form-control" id="cvv2" placeholder="XXX" maxlength="4">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">رمز دوم</label>
+                                <input type="password" class="form-control" id="password" placeholder="رمز دوم کارت">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" id="confirmPayment" class="btn btn-primary">تأیید پرداخت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
@@ -842,6 +891,24 @@ $settled_payments = array_filter($payments, function ($payment) {
             const tabContents = document.querySelectorAll('.tab-content');
             const payButton = document.getElementById('pay-button');
             const totalPaymentAmountSpan = document.getElementById('total-payment-amount');
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            const confirmPaymentBtn = document.getElementById('confirmPayment');
+            const cardNumberInput = document.getElementById('cardNumber');
+
+            // فرمت شماره کارت
+            cardNumberInput.addEventListener('input', function (e) {
+                let value = this.value.replace(/\D/g, '');
+                let formatted = '';
+
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formatted += '-';
+                    }
+                    formatted += value[i];
+                }
+
+                this.value = formatted;
+            });
 
             function formatCurrency(amount) {
                 return new Intl.NumberFormat('fa-IR').format(amount) + ' تومان';
@@ -909,16 +976,71 @@ $settled_payments = array_filter($payments, function ($payment) {
                 });
             });
 
-            payButton.addEventListener('click', async function () {
+            payButton.addEventListener('click', function () {
                 const selectedItems = calculateAndDisplayTotal();
-
                 if (selectedItems.length === 0) return;
 
-                const originalText = payButton.textContent;
-                payButton.disabled = true;
-                payButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
+                // نمایش مودال پرداخت
+                paymentModal.show();
+            });
+
+
+
+
+            document.getElementById('expiryMonth').addEventListener('input', function (e) {
+                this.value = this.value.replace(/\D/g, '').slice(0, 2);
+                if (this.value.length === 1 && parseInt(this.value) > 1) {
+                    this.value = '0' + this.value;
+                }
+                if (this.value.length === 2 && parseInt(this.value) > 12) {
+                    this.value = '12';
+                }
+            });
+
+            document.getElementById('expiryYear').addEventListener('input', function (e) {
+                this.value = this.value.replace(/\D/g, '').slice(0, 2);
+            });
+
+            confirmPaymentBtn.addEventListener('click', async function () {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+                const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
+                const expiryYear = document.getElementById('expiryYear').value;
+                const cvv2 = document.getElementById('cvv2').value;
+                const password = document.getElementById('password').value;
+                const selectedItems = calculateAndDisplayTotal();
+
+                // اعتبارسنجی فرم
+                if (!cardNumber || cardNumber.length !== 16) {
+                    await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
+                    await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!expiryYear || expiryYear.length !== 2) {
+                    await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
+                    await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!password) {
+                    await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
+                    return;
+                }
+
+                const originalText = confirmPaymentBtn.textContent;
+                confirmPaymentBtn.disabled = true;
+                confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
 
                 try {
+                    // ارسال درخواست‌های PUT به proxy-settle.php
                     const requests = selectedItems.map(item => {
                         return fetch(`proxy-settle.php?id=${item.id}`, {
                             method: 'PUT',
@@ -926,13 +1048,12 @@ $settled_payments = array_filter($payments, function ($payment) {
                                 'Content-Type': 'application/json',
                                 'Accept': 'application/json'
                             }
-
                         });
                     });
 
                     const responses = await Promise.all(requests);
 
-                    // Check if responses are ok before parsing as JSON
+                    // بررسی پاسخ‌ها
                     for (const response of responses) {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -944,13 +1065,14 @@ $settled_payments = array_filter($payments, function ($payment) {
                     const allSuccess = results.every(result => result.success);
 
                     if (allSuccess) {
+                        paymentModal.hide();
                         await Swal.fire({
                             icon: 'success',
                             title: 'پرداخت موفق',
                             text: `پرداخت ${selectedItems.length} آیتم با موفقیت انجام شد`,
                             confirmButtonText: 'باشه'
                         });
-                        window.location.reload(true); // force reload from server
+                        window.location.reload(true);
                     } else {
                         throw new Error('برخی پرداخت‌ها انجام نشد');
                     }
@@ -963,12 +1085,10 @@ $settled_payments = array_filter($payments, function ($payment) {
                         confirmButtonText: 'باشه'
                     });
                 } finally {
-                    payButton.disabled = false;
-                    payButton.textContent = originalText;
+                    confirmPaymentBtn.disabled = false;
+                    confirmPaymentBtn.textContent = originalText;
                 }
             });
-            // مخفی کردن دکمه پرداخت در تب پرداخت شده در ابتدا
-            payButton.style.display = document.querySelector('.tab-nav-item.active').dataset.tab === 'settled' ? 'none' : 'block';
         });
     </script>
 </body>

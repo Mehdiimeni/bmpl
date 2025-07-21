@@ -884,7 +884,7 @@ $settled_payments = array_filter($payments, function ($payment) {
     </div>
 
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
-    <script src="./assets/js/sweetalert2@11"></script>
+    <script src="./assets/js/sweetalert2@11.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

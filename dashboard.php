@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داشبورد</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link rel="stylesheet" href="./assets/css/animate.min.css" />
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/swiper-bundle.min.css" />
 
     <style>
         :root {
@@ -792,38 +793,41 @@
 
     <div class="mt-5 mb-5">
         <div class="container mt-4">
-        <div class="section-header mb-4">
-            <h4><i class="fas fa-hand-holding-dollar"></i> خدمات اعتباری</h4>
+            <div class="section-header mb-4">
+                <h4><i class="fas fa-hand-holding-dollar"></i> خدمات اعتباری</h4>
+            </div>
+
+            <ul class="box-service">
+                <li>
+                    <a href="credit-register.php" aria-label="ثبت نام اعتبار جدید">
+                        <div class="icon-box bg_color_1">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <span>ثبت نام جدید</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="credit.php" aria-label="ورود به حساب اعتبار">
+                        <div class="icon-box bg_color_3">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <span>ورود به حساب</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="credit-status.php" aria-label="استعلام وضعیت اعتبار">
+                        <div class="icon-box bg_color_2">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <span>استعلام وضعیت</span>
+                    </a>
+                </li>
+
+
+            </ul>
         </div>
-
-        <ul class="box-service">
-            <li>
-                <a href="credit-register.php" aria-label="ثبت نام اعتبار جدید">
-                    <div class="icon-box bg_color_1">
-                        <i class="fas fa-user-plus"></i> </div>
-                    <span>ثبت نام جدید</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="credit.php" aria-label="ورود به حساب اعتبار">
-                    <div class="icon-box bg_color_3">
-                        <i class="fas fa-sign-in-alt"></i> </div>
-                    <span>ورود به حساب</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="credit-status.php" aria-label="استعلام وضعیت اعتبار">
-                    <div class="icon-box bg_color_2">
-                        <i class="fas fa-info-circle"></i> </div>
-                    <span>استعلام وضعیت</span>
-                </a>
-            </li>
-
-            
-        </ul>
-    </div>
 
 
         <div class="bottom-navigation-bar">
@@ -1057,10 +1061,10 @@
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+        <script src="./assets/js/bootstrap.bundle.min.js"></script>
+        <script src="./assets/js/jquery-3.6.0.min.js"></script>
+        <script src="./assets/js/swiper-bundle.min.js"></script>
+        <script src="./assets/js/qrcode.min.js"></script>
 
 
         <script>

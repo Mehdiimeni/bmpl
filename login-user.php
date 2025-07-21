@@ -12,7 +12,6 @@
     <title>BNPL | ورود به سامانه</title>
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
 
 

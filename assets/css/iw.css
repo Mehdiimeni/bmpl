@@ -26,11 +26,9 @@
   }
 }
 
-/* Vazirmatn Font Import (ensure font files are in ./assets/fonts/) */
 @font-face {
   font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2")
-  format("woff2");
+  src: url("../fonts/Vazirmatn-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -38,7 +36,7 @@
 
 @font-face {
   font-family: "Vazirmatn";
-  src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2") format("woff2");
+  src: url("../fonts/Vazirmatn-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -331,4 +329,44 @@ p.text-muted {
     padding: 12px;
     font-size: 1.1rem;
   }
+}
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--background-light);
+  font-family: "Vazirmatn", sans-serif;
+  color: var(--text-color-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.login-card {
+  background-color: var(--card-background);
+  max-width: 450px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px var(--shadow-medium);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInScale 0.8s ease-out forwards;
+  margin: 0 auto;
+  /* این خط برای اطمینان از وسط چین شدن اضافه شد */
 }

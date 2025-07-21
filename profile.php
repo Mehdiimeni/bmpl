@@ -1,5 +1,5 @@
 <?php
-session_start();  ?>
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -7,22 +7,24 @@ session_start();  ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پروفایل من</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-icons.min.css">
     <style>
         /* Vazirmatn Font Import */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
         }
@@ -502,7 +504,9 @@ session_start();  ?>
 
         <div class="profile-header">
             <div>
-                <div class="text-muted small"><?php echo ($_SESSION['mobileNumber']); ?> ( <?php echo($_SESSION['merchantName']); ?> )</div>
+                <div class="text-muted small"><?php echo ($_SESSION['mobileNumber']); ?> (
+                    <?php echo ($_SESSION['merchantName']); ?> )
+                </div>
                 <div class="status">احرازشده</div>
             </div>
             <i class="bi bi-person-circle fs-1"></i>
@@ -590,7 +594,7 @@ session_start();  ?>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function toggleOrderCard(header) {

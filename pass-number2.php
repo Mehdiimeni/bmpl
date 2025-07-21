@@ -5,16 +5,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>BNPL | تأیید کد فعال‌سازی</title>
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload"
-        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2"
-        as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="./assets/fonts/Vazirmatn-Regular.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous">
 
     <link href="./assets/css/bootstrap.rtl.min.css" rel="stylesheet">
 
@@ -61,7 +60,7 @@
         /* Vazirmatn Font Import (ensure font files are in ./assets/fonts/) */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -69,7 +68,7 @@
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
             font-display: swap;
@@ -397,6 +396,49 @@
             .timer {
                 font-size: 1rem;
             }
+
+
+        }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Vazirmatn', sans-serif;
+            color: var(--text-color-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .login-card {
+            background-color: var(--card-background);
+            max-width: 450px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px var(--shadow-medium);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInScale 0.8s ease-out forwards;
+            margin: 0 auto;
+            /* این خط برای اطمینان از وسط چین شدن اضافه شد */
         }
     </style>
 </head>

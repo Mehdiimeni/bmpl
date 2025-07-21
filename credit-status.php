@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BNPL | استعلام وضعیت</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-icons.min.css">
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
 
     <style>
         /* Consistent Root Variables */
@@ -26,14 +27,16 @@
             /* Yellow for warning/pending */
             --danger-color: #dc3545;
             /* Red for errors */
-            --info-color: #17a2b8; /* Cyan for info */
+            --info-color: #17a2b8;
+            /* Cyan for info */
             --background-light: #f0f2f5;
             /* Light gray background */
             --text-dark: #333;
             /* Dark gray for main text */
             --text-muted: #6c757d;
             /* Muted gray for secondary text */
-            --card-background: #ffffff; /* White card background */
+            --card-background: #ffffff;
+            /* White card background */
             --card-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
             /* Soft, large shadow */
             --border-light: #e0e0e0;
@@ -46,7 +49,8 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
-            padding-bottom: 80px; /* Space for fixed bottom navigation */
+            padding-bottom: 80px;
+            /* Space for fixed bottom navigation */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -55,24 +59,31 @@
 
         /* Header Styles - Enhanced for visual appeal */
         .club-header {
-            padding: 2rem 0; /* More padding for a grander feel */
+            padding: 2rem 0;
+            /* More padding for a grander feel */
             background: var(--gradient-blue);
             color: white;
-            border-radius: 0 0 35px 35px; /* More rounded bottom corners */
-            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3); /* Deeper shadow */
+            border-radius: 0 0 35px 35px;
+            /* More rounded bottom corners */
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);
+            /* Deeper shadow */
             position: relative;
             overflow: hidden;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* More pronounced text shadow */
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            /* More pronounced text shadow */
         }
 
         .club-header::before,
         .club-header::after {
             content: '';
             position: absolute;
-            background: rgba(255, 255, 255, 0.1); /* Subtle white overlay */
+            background: rgba(255, 255, 255, 0.1);
+            /* Subtle white overlay */
             border-radius: 50%;
-            filter: blur(5px); /* Increased blur */
-            opacity: 0.8; /* Slightly more visible */
+            filter: blur(5px);
+            /* Increased blur */
+            opacity: 0.8;
+            /* Slightly more visible */
         }
 
         .club-header::before {
@@ -89,19 +100,25 @@
             height: 250px;
         }
 
-        .club-header h3 { /* Changed from h4 to h3 for prominence */
-            font-weight: 800; /* Extra bold */
+        .club-header h3 {
+            /* Changed from h4 to h3 for prominence */
+            font-weight: 800;
+            /* Extra bold */
             margin-bottom: 0.5rem;
-            font-size: 2.5rem; /* Larger font size */
+            font-size: 2.5rem;
+            /* Larger font size */
             position: relative;
             z-index: 2;
         }
 
         .club-header p {
-            font-weight: 500; /* Medium weight */
-            opacity: 0.95; /* Less transparent */
+            font-weight: 500;
+            /* Medium weight */
+            opacity: 0.95;
+            /* Less transparent */
             margin-bottom: 0;
-            font-size: 1.2rem; /* Slightly larger */
+            font-size: 1.2rem;
+            /* Slightly larger */
             position: relative;
             z-index: 2;
         }
@@ -109,52 +126,78 @@
         /* Credit Status Card - Central Focus */
         .status-card {
             background: var(--card-background);
-            border-radius: 25px; /* More rounded */
+            border-radius: 25px;
+            /* More rounded */
             padding: 2.5rem;
-            margin: -60px auto 2rem auto; /* Lifted higher, more bottom margin */
-            max-width: 650px; /* Wider card */
-            width: calc(100% - 40px); /* Responsive width with padding */
+            margin: -30px auto 2rem auto;
+            /* Lifted higher, more bottom margin */
+            max-width: 650px;
+            /* Wider card */
+            width: calc(100% - 40px);
+            /* Responsive width with padding */
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-light);
             text-align: center;
             position: relative;
-            z-index: 10; /* Ensure it's above other elements */
+            z-index: 10;
+            /* Ensure it's above other elements */
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            animation: fadeInScale 0.8s ease-out forwards; /* Entry animation */
+            animation: fadeInScale 0.8s ease-out forwards;
+            /* Entry animation */
         }
 
         .status-card:hover {
-            transform: translateY(-10px); /* More subtle lift on hover */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+            transform: translateY(-10px);
+            /* More subtle lift on hover */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            /* Enhanced shadow on hover */
         }
 
         .status-card h5 {
-            font-weight: 800; /* Extra bold */
-            font-size: 1.6rem; /* Larger title */
+            font-weight: 800;
+            /* Extra bold */
+            font-size: 1.6rem;
+            /* Larger title */
             color: var(--text-dark);
             margin-bottom: 1.5rem;
             line-height: 1.4;
         }
 
         .status-card .status-icon {
-            font-size: 4rem; /* Larger icon */
-            color: var(--warning-color); /* Yellow for "in review" */
+            font-size: 4rem;
+            /* Larger icon */
+            color: var(--warning-color);
+            /* Yellow for "in review" */
             margin-bottom: 1.5rem;
-            animation: pulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1); /* Smoother pulse animation */
+            animation: pulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+            /* Smoother pulse animation */
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.08); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .status-card .status-desc {
             color: var(--text-muted);
             line-height: 1.8;
-            font-size: 1rem; /* Slightly larger description */
+            font-size: 1rem;
+            /* Slightly larger description */
             margin-bottom: 2rem;
-            max-width: 500px; /* Limit width for readability */
+            max-width: 500px;
+            /* Limit width for readability */
             margin-left: auto;
             margin-right: auto;
         }
@@ -164,7 +207,8 @@
             max-width: 650px;
             width: calc(100% - 40px);
             margin: 0 auto 2rem auto;
-            padding-top: 2rem; /* Space from the card above */
+            padding-top: 2rem;
+            /* Space from the card above */
             animation: fadeInUp 0.8s ease-out forwards;
             animation-delay: 0.3s;
             opacity: 0;
@@ -172,7 +216,8 @@
 
         .how-to-use-title {
             font-weight: 800;
-            font-size: 1.5rem; /* Larger title */
+            font-size: 1.5rem;
+            /* Larger title */
             color: var(--text-dark);
             margin-bottom: 1rem;
             text-align: center;
@@ -190,44 +235,59 @@
 
         /* Installment Boxes - Refined appearance */
         .installment-box {
-            background-color: var(--card-background); /* White background for boxes */
-            border-radius: 18px; /* More rounded corners */
+            background-color: var(--card-background);
+            /* White background for boxes */
+            border-radius: 18px;
+            /* More rounded corners */
             padding: 1.5rem;
             margin-bottom: 1.2rem;
             text-align: right;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); /* Deeper shadow */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            /* Deeper shadow */
             border: 1px solid var(--border-light);
             transition: all 0.3s ease;
         }
 
         .installment-box:hover {
-            transform: translateY(-5px); /* More pronounced lift */
+            transform: translateY(-5px);
+            /* More pronounced lift */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .installment-box h6 { /* Changed from h5 to h6 for hierarchy */
+        .installment-box h6 {
+            /* Changed from h5 to h6 for hierarchy */
             display: flex;
             align-items: center;
             font-weight: 700;
-            font-size: 1.25rem; /* Larger title */
+            font-size: 1.25rem;
+            /* Larger title */
             color: var(--text-dark);
             margin-bottom: 0.75rem;
         }
 
         .installment-box .icon {
-            font-size: 2.2rem; /* Larger icon */
-            margin-left: 1rem; /* More margin for RTL */
+            font-size: 2.2rem;
+            /* Larger icon */
+            margin-left: 1rem;
+            /* More margin for RTL */
             color: var(--primary-color);
-            flex-shrink: 0; /* Prevent icon from shrinking */
+            flex-shrink: 0;
+            /* Prevent icon from shrinking */
         }
-        
-        .installment-box.monthly .icon { color: var(--success-color); }
-        .installment-box.installment .icon { color: var(--info-color); }
+
+        .installment-box.monthly .icon {
+            color: var(--success-color);
+        }
+
+        .installment-box.installment .icon {
+            color: var(--info-color);
+        }
 
 
         .installment-box .sub-info {
             color: var(--text-muted);
-            font-size: 0.95rem; /* Slightly larger */
+            font-size: 0.95rem;
+            /* Slightly larger */
             margin-bottom: 0.8rem;
             font-weight: 500;
         }
@@ -241,20 +301,26 @@
 
         /* Alert Box */
         .alert-info {
-            background-color: rgba(0, 123, 255, 0.08); /* Lighter background */
+            background-color: rgba(0, 123, 255, 0.08);
+            /* Lighter background */
             color: var(--primary-color);
             border-color: rgba(0, 123, 255, 0.15);
-            border-radius: 18px; /* More rounded */
-            padding: 1.2rem 1.8rem; /* More padding */
+            border-radius: 18px;
+            /* More rounded */
+            padding: 1.2rem 1.8rem;
+            /* More padding */
             font-size: 0.95rem;
             font-weight: 600;
-            margin-top: 2.5rem; /* More top margin */
+            margin-top: 2.5rem;
+            /* More top margin */
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.05); /* Subtle shadow */
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.05);
+            /* Subtle shadow */
         }
 
         .alert-info i {
-            margin-left: 0.7rem; /* More margin for icon */
+            margin-left: 0.7rem;
+            /* More margin for icon */
             font-size: 1.2rem;
             vertical-align: middle;
         }
@@ -324,13 +390,27 @@
 
         /* Animations */
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Responsive adjustments */
@@ -354,7 +434,8 @@
 
             .status-card {
                 padding: 2rem;
-                margin: -40px auto 1.5rem auto; /* Adjusted lift for smaller screens */
+                margin: -30px auto 1.5rem auto;
+                /* Adjusted lift for smaller screens */
                 border-radius: 20px;
             }
 
@@ -447,7 +528,8 @@
         <div class="installment-box monthly">
             <h6><i class="fas fa-calendar-check icon"></i> پرداخت آخر ماه</h6>
             <p class="sub-info">خرید امروز، پرداخت تا پایان ماه</p>
-            <p>در این روش، مبلغ خریدهایتان را تا پایان همان ماه، به‌صورت یک‌جا تسویه می‌کنید. مناسب برای خریدهای روزمره و مدیریت هزینه‌ها.</p>
+            <p>در این روش، مبلغ خریدهایتان را تا پایان همان ماه، به‌صورت یک‌جا تسویه می‌کنید. مناسب برای خریدهای روزمره
+                و مدیریت هزینه‌ها.</p>
         </div>
 
         <div class="alert alert-info mt-4">
@@ -456,18 +538,18 @@
         </div>
     </div>
 
-<div class="bottom-navigation-bar">
+    <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="intro.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
-               
-               
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active" href="intro.php"
+                        aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+
+
             </ul>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

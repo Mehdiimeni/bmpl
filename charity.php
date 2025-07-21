@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تاریخچه امتیازات</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap RTL -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-rtl@5.3.0/dist/css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-rtl.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
         }
+
         .points-header {
             background-color: #4e73df;
             color: white;
@@ -24,10 +28,12 @@
             margin-bottom: 2rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+
         .filter-buttons .btn {
             margin-left: 5px;
             margin-right: 5px;
         }
+
         .point-card {
             border: none;
             border-radius: 10px;
@@ -35,26 +41,32 @@
             margin-bottom: 15px;
             background-color: white;
         }
+
         .point-card .card-body {
             padding: 1.25rem;
         }
+
         .point-title {
             font-weight: 600;
             color: #2e3a59;
         }
+
         .point-date {
             color: #6c757d;
             font-size: 0.85rem;
         }
+
         .point-value {
             font-weight: 700;
             color: #28a745;
         }
+
         .point-value.negative {
             color: #dc3545;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="points-header">
@@ -94,6 +106,7 @@
     </div>
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

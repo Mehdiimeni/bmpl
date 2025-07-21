@@ -5,37 +5,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport"
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>BNPL | ورود با کد ملی</title>
 
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload"
-        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2"
-        as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload"
-        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2"
-        as="font" type="font/woff2" crossorigin="anonymous">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css" rel="stylesheet"
+
+    <link href="./assets/css/bootstrap.rtl.min.css" rel="stylesheet"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
 
     <style>
         /* CSS Variables for theming - Adjusted to match the login page */
         :root {
-            --primary-color: #2196F3; /* Blue */
-            --primary-dark: #1976D2; /* Darker Blue */
-            --secondary-color: #4CAF50; /* Green for valid states */
-            --error-color: #F44336; /* Red for error states */
-            --background-light: #f0f2f5; /* Light gray background */
-            --card-background: #ffffff; /* White card background */
-            --text-color-dark: #333; /* Dark text */
-            --text-color-light: #777; /* Muted text */
+            --primary-color: #2196F3;
+            /* Blue */
+            --primary-dark: #1976D2;
+            /* Darker Blue */
+            --secondary-color: #4CAF50;
+            /* Green for valid states */
+            --error-color: #F44336;
+            /* Red for error states */
+            --background-light: #f0f2f5;
+            /* Light gray background */
+            --card-background: #ffffff;
+            /* White card background */
+            --text-color-dark: #333;
+            /* Dark text */
+            --text-color-light: #777;
+            /* Muted text */
             --shadow-light: rgba(0, 0, 0, 0.08);
             --shadow-medium: rgba(0, 0, 0, 0.15);
-            --border-color: #e0e0e0; /* Light border for inputs */
+            --border-color: #e0e0e0;
+            /* Light border for inputs */
         }
 
         /* Dark mode adjustments (if needed) */
@@ -54,7 +57,7 @@
         /* Vazirmatn Font Import */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
             font-weight: 400;
             font-style: normal;
             font-display: swap;
@@ -62,7 +65,7 @@
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
             font-display: swap;
@@ -82,7 +85,8 @@
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden; /* Prevents horizontal scrollbar */
+            overflow-x: hidden;
+            /* Prevents horizontal scrollbar */
         }
 
         /* Preloader Styles */
@@ -103,14 +107,16 @@
 
         #preloader.hidden {
             opacity: 0;
-            pointer-events: none; /* Allows clicks through after fading */
+            pointer-events: none;
+            /* Allows clicks through after fading */
         }
 
         .spinner-border {
             width: 3rem;
             height: 3rem;
             border-width: 0.3em;
-            color: var(--primary-color) !important; /* Use !important to override Bootstrap default */
+            color: var(--primary-color) !important;
+            /* Use !important to override Bootstrap default */
         }
 
         /* Login Card Styles */
@@ -123,7 +129,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            animation: fadeInScale 0.8s ease-out forwards; /* Apply animation on load */
+            animation: fadeInScale 0.8s ease-out forwards;
+            /* Apply animation on load */
         }
 
         .logo-container {
@@ -247,10 +254,12 @@
 
         /* Loading Box Styles */
         #loadingBox {
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             text-align: center;
             margin-top: 2rem;
-            color: var(--text-color-light); /* Use muted text color */
+            color: var(--text-color-light);
+            /* Use muted text color */
             font-size: 0.95rem;
         }
 
@@ -338,6 +347,47 @@
                 font-size: 1.1rem;
             }
         }
+
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Vazirmatn', sans-serif;
+            color: var(--text-color-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        .login-card {
+            background-color: var(--card-background);
+            max-width: 450px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px var(--shadow-medium);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: fadeInScale 0.8s ease-out forwards;
+            margin: 0 auto;
+            /* این خط برای اطمینان از وسط چین شدن اضافه شد */
+        }
     </style>
 </head>
 
@@ -380,7 +430,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -417,7 +467,7 @@
             function updateFormState() {
                 const value = nationalCodeInput.value.trim();
                 // Remove non-digit characters to ensure clean input for validation
-                nationalCodeInput.value = value.replace(/\D/g, ''); 
+                nationalCodeInput.value = value.replace(/\D/g, '');
 
                 if (nationalCodeInput.value.length === 10) {
                     if (validateNationalCode(nationalCodeInput.value)) {
@@ -435,7 +485,7 @@
                 } else {
                     codeError.textContent = 'کد ملی باید ۱۰ رقم باشد.';
                     // Show error only if input has some value but not 10 digits
-                    codeError.style.display = nationalCodeInput.value.length > 0 ? 'block' : 'none'; 
+                    codeError.style.display = nationalCodeInput.value.length > 0 ? 'block' : 'none';
                     nationalCodeInput.classList.remove('is-valid');
                     // Add invalid class if length is not 10 and not empty, otherwise remove both
                     if (nationalCodeInput.value.length > 0) {

@@ -5,19 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BNPL | انتخاب ورود</title>
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css" as="style">
-    <link rel="preload"
-        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2"
-        as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload"
-        href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2"
-        as="font" type="font/woff2" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
 
     <style>
         /* Consistent Root Variables */
@@ -45,10 +39,14 @@
             --border-light: #e0e0e0;
             /* Light border color */
             --gradient-blue: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --option-blue: #283EB4; /* Specific blue for register */
-            --option-yellow: #FECC0E; /* Specific yellow for login */
-            --option-text-light: #fefefe; /* Light text on colored boxes */
-            --option-text-dark: #333; /* Dark text for titles */
+            --option-blue: #283EB4;
+            /* Specific blue for register */
+            --option-yellow: #FECC0E;
+            /* Specific yellow for login */
+            --option-text-light: #fefefe;
+            /* Light text on colored boxes */
+            --option-text-dark: #333;
+            /* Dark text for titles */
         }
 
         body {
@@ -63,27 +61,36 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            overflow: hidden; /* Prevents horizontal scroll */
+            overflow: hidden;
+            /* Prevents horizontal scroll */
         }
 
         /* Main Container/Card holding the options */
         .choice-card {
             background-color: var(--card-background);
-            border-radius: 25px; /* More rounded */
-            padding: 40px; /* Increased padding */
+            border-radius: 25px;
+            /* More rounded */
+            padding: 40px;
+            /* Increased padding */
             box-shadow: var(--card-shadow);
-            max-width: 500px; /* Wider card */
+            max-width: 500px;
+            /* Wider card */
             width: 100%;
             text-align: center;
-            animation: fadeInScale 0.8s ease-out forwards; /* Entry animation */
+            animation: fadeInScale 0.8s ease-out forwards;
+            /* Entry animation */
         }
 
         .choice-card h2 {
-            font-size: 2.5rem; /* Larger, more impactful title */
-            font-weight: 800; /* Extra bold */
+            font-size: 2.5rem;
+            /* Larger, more impactful title */
+            font-weight: 800;
+            /* Extra bold */
             color: var(--primary-color);
-            margin-bottom: 2.5rem; /* More space below title */
-            position: relative; /* For decorative element */
+            margin-bottom: 2.5rem;
+            /* More space below title */
+            position: relative;
+            /* For decorative element */
         }
 
         .choice-card h2::after {
@@ -93,16 +100,19 @@
             height: 4px;
             background-color: var(--primary-color);
             border-radius: 2px;
-            margin: 1rem auto 0 auto; /* Centered underline */
+            margin: 1rem auto 0 auto;
+            /* Centered underline */
         }
 
         /* Individual Action Items (Register/Login) */
         .action-item {
-            margin-bottom: 30px; /* More space between items */
+            margin-bottom: 30px;
+            /* More space between items */
         }
 
         .action-item:last-child {
-            margin-bottom: 0; /* No bottom margin for the last item */
+            margin-bottom: 0;
+            /* No bottom margin for the last item */
         }
 
         .action-item a {
@@ -112,43 +122,58 @@
             text-decoration: none;
             color: var(--text-dark);
             transition: all 0.3s ease-in-out;
-            padding: 25px; /* Increased padding within the clickable area */
-            border-radius: 18px; /* More rounded */
-            background-color: var(--background-light); /* Lighter background for options */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); /* Softer shadow for options */
+            padding: 25px;
+            /* Increased padding within the clickable area */
+            border-radius: 18px;
+            /* More rounded */
+            background-color: var(--background-light);
+            /* Lighter background for options */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            /* Softer shadow for options */
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border-light);
         }
 
         .action-item a:hover {
-            transform: translateY(-8px); /* More pronounced lift on hover */
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+            transform: translateY(-8px);
+            /* More pronounced lift on hover */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            /* Stronger shadow on hover */
             color: var(--primary-color);
-            border-color: var(--primary-color); /* Highlight border on hover */
+            border-color: var(--primary-color);
+            /* Highlight border on hover */
         }
-        
+
         /* Background gradient on hover for better visual feedback */
         .action-item a:hover .icon-box {
-            background-color: var(--primary-color); /* Change icon box color on hover */
+            background-color: var(--primary-color);
+            /* Change icon box color on hover */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transform: scale(1.1); /* Slight zoom on icon */
+            transform: scale(1.1);
+            /* Slight zoom on icon */
         }
 
 
         .action-item .icon-box {
-            width: 80px; /* Larger icon box */
+            width: 80px;
+            /* Larger icon box */
             height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px; /* More space below icon */
-            font-size: 3rem; /* Larger icon size */
-            color: var(--option-text-light); /* Light text for icons */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for icon box */
+            margin-bottom: 20px;
+            /* More space below icon */
+            font-size: 3rem;
+            /* Larger icon size */
+            color: var(--option-text-light);
+            /* Light text for icons */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            /* Deeper shadow for icon box */
             transition: all 0.3s ease-in-out;
-            flex-shrink: 0; /* Prevent icon box from shrinking */
+            flex-shrink: 0;
+            /* Prevent icon box from shrinking */
         }
 
         /* Specific background colors for icon boxes */
@@ -161,10 +186,14 @@
         }
 
         .action-item span {
-            font-weight: 700; /* Bold text */
-            font-size: 1.3rem; /* Larger text for option description */
-            margin-top: 10px; /* Adjusted margin */
-            color: var(--option-text-dark); /* Dark text for description */
+            font-weight: 700;
+            /* Bold text */
+            font-size: 1.3rem;
+            /* Larger text for option description */
+            margin-top: 10px;
+            /* Adjusted margin */
+            color: var(--option-text-dark);
+            /* Dark text for description */
         }
 
         /* Animations */
@@ -265,7 +294,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -142,11 +142,12 @@ if (isset($_GET['mobileNumber'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($merchant['merchantName'] ?? 'فروشگاه') ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet">
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #5b86e5;
@@ -419,19 +420,19 @@ if (isset($_GET['mobileNumber'])) {
 
         <div class="products-container">
             <?php foreach ($products as $product): ?>
-                <div class="product-card" data-product-id="<?= $product['id'] ?>">
-                    <h3 class="product-title"><?= $product['name'] ?></h3>
-                    <div class="product-price"><?= convertToPersianNumber($product['price']) ?> تومان</div>
-                    <div class="product-rating">
-                        <?= str_repeat('★', $product['rating']) . str_repeat('☆', 5 - $product['rating']) ?>
-                    </div>
-                    <p class="product-description mb-3"><?= $product['description'] ?></p>
+                    <div class="product-card" data-product-id="<?= $product['id'] ?>">
+                        <h3 class="product-title"><?= $product['name'] ?></h3>
+                        <div class="product-price"><?= convertToPersianNumber($product['price']) ?> تومان</div>
+                        <div class="product-rating">
+                            <?= str_repeat('★', $product['rating']) . str_repeat('☆', 5 - $product['rating']) ?>
+                        </div>
+                        <p class="product-description mb-3"><?= $product['description'] ?></p>
 
-                    <button class="btn btn-buy"
-                        onclick="showPaymentOptions('<?= $product['id'] ?>', '<?= $product['name'] ?>', <?= $product['price'] ?>)">
-                        <i class="fas fa-shopping-cart me-2"></i>خرید محصول
-                    </button>
-                </div>
+                        <button class="btn btn-buy"
+                            onclick="showPaymentOptions('<?= $product['id'] ?>', '<?= $product['name'] ?>', <?= $product['price'] ?>)">
+                            <i class="fas fa-shopping-cart me-2"></i>خرید محصول
+                        </button>
+                    </div>
             <?php endforeach; ?>
 
             <!-- بخش گزینه‌های پرداخت (در ابتدا مخفی است) -->
@@ -491,9 +492,9 @@ if (isset($_GET['mobileNumber'])) {
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./assets/js/sweetalert2@11"></script>
 
     <script>
         let currentProduct = null;

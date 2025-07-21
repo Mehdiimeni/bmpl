@@ -7,7 +7,9 @@
   <title>کیف پول من</title>
 
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./assets/css/all.min.css">
+  <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+  <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
   <link rel="stylesheet" href="./assets/css/animate.min.css">
   <link rel="stylesheet" href="./assets/fonts.css" />
   <link rel="stylesheet" href="./assets/icons-alipay.css">

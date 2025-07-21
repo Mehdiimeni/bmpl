@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تاریخچه پرداخت‌ها و سفارشات</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.rtl.min.css"
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
 
     <style>
         :root {
@@ -36,7 +37,8 @@
         }
 
         .container {
-            max-width: 700px; /* Slightly wider container for better card display */
+            max-width: 700px;
+            /* Slightly wider container for better card display */
         }
 
         /* Header Styles */
@@ -104,13 +106,15 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            justify-content: space-between; /* To push icon and text apart */
+            justify-content: space-between;
+            /* To push icon and text apart */
             font-weight: 700;
             font-size: 1.3rem;
         }
 
         .section-category-header i {
-            margin-left: 0.75rem; /* Space from icon in RTL */
+            margin-left: 0.75rem;
+            /* Space from icon in RTL */
             font-size: 1.4rem;
         }
 
@@ -123,7 +127,8 @@
         .search-box input {
             width: 100%;
             padding: 0.8rem 1.2rem;
-            padding-right: 3.5rem; /* Space for icon */
+            padding-right: 3.5rem;
+            /* Space for icon */
             border: 1px solid var(--text-color-light);
             border-radius: 12px;
             font-size: 1rem;
@@ -140,12 +145,14 @@
 
         .search-box i {
             position: absolute;
-            left: 1.2rem; /* Position icon on the left in RTL */
+            left: 1.2rem;
+            /* Position icon on the left in RTL */
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-color-light);
             font-size: 1.2rem;
-            pointer-events: none; /* Make icon non-clickable */
+            pointer-events: none;
+            /* Make icon non-clickable */
         }
 
         /* Order Card Styles (General for both types) */
@@ -199,7 +206,8 @@
         }
 
         .order-card-body {
-            padding: 0 1.5rem; /* Initial horizontal padding */
+            padding: 0 1.5rem;
+            /* Initial horizontal padding */
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
@@ -208,7 +216,8 @@
 
         .order-card.active .order-card-body {
             padding: 1.5rem;
-            max-height: 500px; /* Adjust as needed for content */
+            max-height: 500px;
+            /* Adjust as needed for content */
         }
 
         .order-detail-item {
@@ -496,8 +505,8 @@
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column "
-                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                        aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
@@ -508,15 +517,16 @@
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="credit-debt.php"
-                        aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
+                        href="credit-debt.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a>
+                </li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sample data - In a real application, this would come from a backend (PHP)
         const allOrders = [

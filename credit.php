@@ -18,7 +18,7 @@ if (isset($_SESSION['mobileNumber'])) {
 } else {
     session_unset();
     header('Location: login-user.php');
-    exit(); 
+    exit();
 }
 
 // ارسال درخواست به API
@@ -57,11 +57,11 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css"
-        rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
+    <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./assets/css/animate.min.css" />
+    <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/brands.min.css">
     <style>
         :root {
             --primary-color: #5b86e5;
@@ -145,7 +145,7 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
             background: var(--light-color);
             border-radius: 20px;
             padding: 2.5rem;
-            margin: -60px auto 3rem auto;
+            margin: -30px auto 3rem auto;
             max-width: 600px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
@@ -537,7 +537,7 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
 
             .credit-offer {
                 padding: 1.8rem;
-                margin: -40px auto 2rem auto;
+                margin: -30px auto 2rem auto;
                 transform: translateY(0);
             }
 
@@ -663,7 +663,7 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
                     <span>مانده بدهی</span>
                     <strong><?php echo convertToPersianNumber($_SESSION['debt'] ?? 0); ?> تومان</strong>
                 </div>
-                
+
             </div>
 
             <p class="credit-desc mt-4">
@@ -755,28 +755,30 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        function generateRandomCredit() {
-            const min = 20; // 20 million
-            const max = 200; // 200 million
-            const step = 1; // 1 million
-
-            const range = (max - min) / step;
-            const randomNumber = Math.floor(Math.random() * (range + 1)) * step + min;
-
-            return randomNumber * 1000000; // Convert to actual millions
-        }
-
-        function formatCurrency(amount) {
-            return amount.toLocaleString('fa-IR') + ' تومان';
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const creditAmountElement = document.getElementById('creditAmount');
-            const randomCredit = generateRandomCredit();
-            creditAmountElement.textContent = formatCurrency(randomCredit);
+
+            // فقط اگر عنصر وجود داشت اجرا شود
+            if (creditAmountElement) {
+                function generateRandomCredit() {
+                    const min = 20;
+                    const max = 200;
+                    const step = 1;
+                    const range = (max - min) / step;
+                    const randomNumber = Math.floor(Math.random() * (range + 1)) * step + min;
+                    return randomNumber * 1000000;
+                }
+
+                function formatCurrency(amount) {
+                    return amount.toLocaleString('fa-IR') + ' تومان';
+                }
+
+                const randomCredit = generateRandomCredit();
+                creditAmountElement.textContent = formatCurrency(randomCredit);
+            }
         });
     </script>
 </body>

@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow">
 
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="BNPL">
 
@@ -283,7 +283,7 @@
         /* فونت (برای استفاده از این فونت، فایل آن را در assets/css یا assets/fonts قرار دهید و در CSS @font-face را تعریف کنید) */
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
             /* مسیر صحیح فونت را اینجا قرار دهید */
             font-weight: 400;
             font-style: normal;
@@ -292,7 +292,7 @@
 
         @font-face {
             font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            src: url('./assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
             /* مسیر صحیح فونت را اینجا قرار دهید */
             font-weight: 700;
             font-style: normal;

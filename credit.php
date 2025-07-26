@@ -1,4 +1,11 @@
-<?php session_start();
+
+<?php 
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+
+
+session_start();
 
 function convertToPersianNumber($number, $decimals = 0)
 {
@@ -40,11 +47,7 @@ curl_close($curl);
 $data = json_decode($response, true);
 
 // اگر داده‌ها معتبر بودن و خطا نبود، در سشن ذخیره شود
-if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
-    foreach ($data as $key => $value) {
-        $_SESSION[$key] = $value;
-    }
-}
+
 
 ?>
 <!DOCTYPE html>
@@ -651,17 +654,17 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="credit-offer text-center">
-            <h5 class="mb-3">اعتبار باقی‌مانده <?php echo ($_SESSION['merchantName']); ?>:</h5>
-            <div class="main-credit-amount"><?php echo convertToPersianNumber($_SESSION['credit'] ?? 0); ?> تومان</div>
+            <h5 class="mb-3">اعتبار باقی‌مانده <?php echo ($data['merchantName']); ?>:</h5>
+            <div class="main-credit-amount"><?php echo convertToPersianNumber($data['credit'] ?? 0); ?> ریال</div>
 
             <div class="credit-summary-details">
                 <div class="credit-summary-item">
                     <span>اعتبار اولیه</span>
-                    <strong><?php echo convertToPersianNumber($_SESSION['initialCredit'] ?? 0); ?> تومان</strong>
+                    <strong><?php echo convertToPersianNumber($data['initialCredit'] ?? 0); ?> ریال</strong>
                 </div>
                 <div class="credit-summary-item">
                     <span>مانده بدهی</span>
-                    <strong><?php echo convertToPersianNumber($_SESSION['debt'] ?? 0); ?> تومان</strong>
+                    <strong><?php echo convertToPersianNumber($data['debt'] ?? 0); ?> ریال</strong>
                 </div>
 
             </div>
@@ -672,10 +675,10 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
             </p>
 
             <div class="d-flex justify-content-between mt-4 gap-3">
-                <a href="credit-debt.php" class="btn btn-primary-gradient" aria-label="صفحه پرداخت">
+                <a href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" class="btn btn-primary-gradient" aria-label="صفحه پرداخت">
                     <i class="fas fa-credit-card me-2"></i> صفحه پرداخت
                 </a>
-                <a href="shop.php" class="btn btn-outline-primary-custom" aria-label="خرید کالا">
+                <a href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" class="btn btn-outline-primary-custom" aria-label="خرید کالا">
                     <i class="fas fa-shopping-bag me-2"></i> خرید کالا
                 </a>
                 <a href="service.php" class="btn btn-outline-primary-custom" aria-label="خرید خدمات">
@@ -736,18 +739,18 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -773,7 +776,7 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
                 }
 
                 function formatCurrency(amount) {
-                    return amount.toLocaleString('fa-IR') + ' تومان';
+                    return amount.toLocaleString('fa-IR') + ' ریال';
                 }
 
                 const randomCredit = generateRandomCredit();
@@ -781,6 +784,7 @@ if ($http_code >= 200 && $http_code < 300 && is_array($data)) {
             }
         });
     </script>
+>
 </body>
 
 </html>

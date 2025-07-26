@@ -227,16 +227,28 @@
 
         /* انیمیشن‌ها */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .animate-fade {
             animation: fadeIn 0.6s ease forwards;
         }
 
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
     </style>
 </head>
 
@@ -266,7 +278,7 @@
                                         <i class="ri-information-line align-middle me-1"></i>
                                         جزئیات اعتبار
                                     </span>
-                                    <span class="amount">۱۳,۵۵۷,۹۱۱ تومان</span>
+                                    <span class="amount">۱۳,۵۵۷,۹۱۱ ریال</span>
                                 </div>
                             </a>
                         </div>
@@ -277,7 +289,7 @@
                                     <i class="ri-money-dollar-circle-line align-middle me-1"></i>
                                     پرداخت:
                                 </span>
-                                <span class="fw-bold">۲,۴۲۰,۵۵۰ تومان</span>
+                                <span class="fw-bold">۲,۴۲۰,۵۵۰ ریال</span>
                             </div>
                             <div class="payment-item">
                                 <span class="text-muted">
@@ -338,12 +350,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // انیمیشن برای آیتم‌ها
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const items = document.querySelectorAll('.animate-fade');
             items.forEach(item => {
                 item.style.opacity = '0';
             });
-            
+
             setTimeout(() => {
                 items.forEach(item => {
                     item.style.opacity = '1';
@@ -354,7 +366,7 @@
         // تغییر فعال بودن آیتم‌های نویگیشن
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 navLinks.forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
             });

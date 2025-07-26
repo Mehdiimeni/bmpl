@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php 
+
+
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+
+
+
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -10,7 +19,7 @@
     <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
-     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
     <style>
@@ -555,40 +564,72 @@
         </div>
         <ul class="shop-grid mb-4">
             <?php foreach ($merchants as $index => $merchant):
-                // انتخاب تصویر متناظر یا تصویر پیش‌فرض اگر تعداد تصاویر کمتر از فروشگاه‌ها باشد
                 $image_index = $index % count($shop_images);
                 $shop_image = $shop_images[$image_index];
+
                 if ($merchant['merchantName'] == $_SESSION['merchantName'])
                     continue;
+
+                try {
+                    $mobileNumber = $merchant['mobileNumber'];
+                    $api_url = 'http://192.168.50.15:7475/api/BNPL/login';
+                    $data = ['mobileNumber' => $mobileNumber];
+
+                    $options = [
+                        'http' => [
+                            'header' => "Content-type: application/json\r\n",
+                            'method' => 'POST',
+                            'content' => json_encode($data),
+                        ],
+                    ];
+                    $context = stream_context_create($options);
+                    $response = @file_get_contents($api_url, false, $context);
+
+                    $is_active = ($response !== FALSE && json_last_error() === JSON_ERROR_NONE);
+                } catch (Exception $e) {
+                    $is_active = false;
+                }
                 ?>
-                    <li>
-                        <a href="shop_detail.php?mobileNumber=<?= $merchant['mobileNumber'] ?>"
-                            aria-label="<?php echo htmlspecialchars($merchant['merchantName']); ?>">
-                            <img class="shop-img" src="<?php echo $shop_image; ?>"
-                                alt="<?php echo htmlspecialchars($merchant['merchantName']); ?>">
-                            <span><?php echo htmlspecialchars($merchant['merchantName']); ?></span>
-                        </a>
-                    </li>
+                <li class="<?= !$is_active ? 'disabled-shop' : '' ?>">
+                    <a href="<?= $is_active ? 'shop_detail.php?mobileNumber=' . $merchant['mobileNumber'] : 'javascript:void(0)' ?><?php echo  '&sr=' . random_int(1, 1000000000) ; ?>"
+                        aria-label="<?= htmlspecialchars($merchant['merchantName']) ?>" <?= !$is_active ? 'title="عدم دسترسی از سرور"' : '' ?>>
+                        <img class="shop-img" src="<?= $shop_image ?>"
+                            alt="<?= htmlspecialchars($merchant['merchantName']) ?>">
+                        <span><?= htmlspecialchars($merchant['merchantName']) ?></span>
+                    </a>
+                </li>
             <?php endforeach; ?>
         </ul>
+
+        <style>
+            .disabled-shop {
+                opacity: 0.3;
+                pointer-events: none;
+            }
+
+            .disabled-shop a {
+                cursor: not-allowed;
+                text-decoration: none;
+            }
+        </style>
     </div>
 
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>

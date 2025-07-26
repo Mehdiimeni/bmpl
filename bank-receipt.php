@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
-     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="./assets/css/animate.min.css" />
@@ -335,7 +335,7 @@
                 <p><span>تاریخ تراکنش:</span> <strong id="transactionDateTime"></strong></p>
             </div>
 
-            <a href="credit.php" class="btn btn-back-home">بازگشت به صفحه اصلی</a>
+            <a href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" class="btn btn-back-home">بازگشت به صفحه اصلی</a>
         </div>
     </div>
 
@@ -343,18 +343,18 @@
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span>فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -372,7 +372,7 @@
 
             // Function to format currency (from previous pages)
             function formatCurrency(amount) {
-                return amount.toLocaleString('fa-IR') + ' تومان';
+                return amount.toLocaleString('fa-IR') + ' ریال';
             }
 
             // Generate a random 8-digit number

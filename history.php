@@ -489,15 +489,15 @@
             <h4 class="text-center mb-3">جمع کل خریدها</h4>
             <div class="summary-item">
                 <span>جمع خریدهای تسویه ماهانه:</span>
-                <span id="totalFullPayments">۰ تومان</span>
+                <span id="totalFullPayments">۰ ریال</span>
             </div>
             <div class="summary-item">
                 <span>جمع خریدهای اقساطی:</span>
-                <span id="totalInstallments">۰ تومان</span>
+                <span id="totalInstallments">۰ ریال</span>
             </div>
             <div class="summary-item">
                 <span>جمع کل خریدها:</span>
-                <span id="grandTotal">۰ تومان</span>
+                <span id="grandTotal">۰ ریال</span>
             </div>
         </div>
     </div>
@@ -505,22 +505,22 @@
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit-debt.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a>
+                        href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
@@ -532,10 +532,10 @@
         const allOrders = [
             { id: 'O1001', date: '۱۴۰۴/۰۱/۰۴', status: 'paid', amount: 289000, type: 'گوشی تلفن همراه', code: '۱۶۷۳۳۴', paymentType: 'full', description: 'خرید یک عدد گوشی هوشمند جدید', installmentDetails: '' },
             { id: 'O1002', date: '۱۴۰۴/۰۱/۰۴', status: 'paid', amount: 300000, type: 'شارژ کیف پول', code: '۷۶۵۴۳۲', paymentType: 'full', description: 'افزایش موجودی کیف پول اعتباری', installmentDetails: '' },
-            { id: 'O1003', date: '۱۴۰۳/۱۲/۱۰', status: 'pending', amount: 1200000, type: 'لوازم خانگی', code: '۲۲۳۴۵۶', paymentType: 'installment', description: 'خرید ماشین لباسشویی', installmentDetails: '۴ قسط ماهیانه ۳۱۵,۰۰۰ تومان' },
+            { id: 'O1003', date: '۱۴۰۳/۱۲/۱۰', status: 'pending', amount: 1200000, type: 'لوازم خانگی', code: '۲۲۳۴۵۶', paymentType: 'installment', description: 'خرید ماشین لباسشویی', installmentDetails: '۴ قسط ماهیانه ۳۱۵,۰۰۰ ریال' },
             { id: 'O1004', date: '۱۴۰۳/۱۱/۲۰', status: 'paid', amount: 500000, type: 'کتاب دیجیتال', code: '۴۵۶۷۸۹', paymentType: 'full', description: 'خرید مجموعه کتاب‌های آموزشی', installmentDetails: '' },
             { id: 'O1005', date: '۱۴۰۳/۱۰/۱۵', status: 'paid', amount: 800000, type: 'خدمات رستوران', code: '۸۹۰۱۲۳', paymentType: 'full', description: 'پرداخت صورتحساب رستوران', installmentDetails: '' },
-            { id: 'O1006', date: '۱۴۰۳/۰۹/۰۵', status: 'pending', amount: 1800000, type: 'بلیت هواپیما', code: '۹۹۸۷۶۵', paymentType: 'installment', description: 'بلیت رفت و برگشت به مشهد', installmentDetails: '۴ قسط ماهیانه ۴۷۲,۵۰۰ تومان' },
+            { id: 'O1006', date: '۱۴۰۳/۰۹/۰۵', status: 'pending', amount: 1800000, type: 'بلیت هواپیما', code: '۹۹۸۷۶۵', paymentType: 'installment', description: 'بلیت رفت و برگشت به مشهد', installmentDetails: '۴ قسط ماهیانه ۴۷۲,۵۰۰ ریال' },
             { id: 'O1007', date: '۱۴۰۳/۰۸/۲۸', status: 'paid', amount: 187960, type: 'خدمات اینترنت', code: '۸۹۰۱۲۳', paymentType: 'full', description: 'تمدید اشتراک اینترنت پرسرعت', installmentDetails: '' },
             { id: 'O1008', date: '۱۴۰۳/۰۷/۱۰', status: 'paid', amount: 450000, type: 'کتاب دیجیتال', code: '۴۵۶۷۸۹', paymentType: 'full', description: 'خرید کتاب الکترونیکی', installmentDetails: '' },
             { id: 'O1009', date: '۱۴۰۳/۰۶/۲۰', status: 'paid', amount: 1500000, type: 'لباس ورزشی', code: '۲۳۴۵۶۷', paymentType: 'full', description: 'خرید لباس و کفش ورزشی', installmentDetails: '' },
@@ -544,11 +544,11 @@
             { id: 'O1012', date: '۱۴۰۳/۰۳/۰۱', status: 'paid', amount: 125000, type: 'بلیت سینما', code: '۲۴۶۸۰۰', paymentType: 'full', description: 'خرید بلیت فیلم', installmentDetails: '' },
             { id: 'O1013', date: '۱۴۰۳/۰۲/۱۵', status: 'paid', amount: 950000, type: 'کفش ورزشی', code: '۳۶۹۱۵۹', paymentType: 'full', description: 'خرید کفش ورزشی جدید', installmentDetails: '' },
             { id: 'O1014', date: '۱۴۰۳/۰۱/۳۰', status: 'paid', amount: 600000, type: 'اشتراک نرم‌افزار', code: '۷۸۹۰۱۲', paymentType: 'full', description: 'تمدید اشتراک سالانه نرم‌افزار', installmentDetails: '' },
-            { id: 'O1015', date: '۱۴۰۳/۰۱/۲۵', status: 'pending', amount: 2500000, type: 'لوازم الکترونیک', code: '۱۱۱۵۵۵', paymentType: 'installment', description: 'خرید هدفون بی‌سیم', installmentDetails: '۴ قسط ماهیانه ۶۵۶,۲۵۰ تومان' }
+            { id: 'O1015', date: '۱۴۰۳/۰۱/۲۵', status: 'pending', amount: 2500000, type: 'لوازم الکترونیک', code: '۱۱۱۵۵۵', paymentType: 'installment', description: 'خرید هدفون بی‌سیم', installmentDetails: '۴ قسط ماهیانه ۶۵۶,۲۵۰ ریال' }
         ];
 
         function formatCurrency(amount) {
-            return amount.toLocaleString('fa-IR') + ' تومان';
+            return amount.toLocaleString('fa-IR') + ' ریال';
         }
 
         function getStatusBadge(status) {

@@ -818,21 +818,21 @@
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
                         href="service.php" aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
@@ -911,7 +911,7 @@
                                             <span class="text-success">جدید</span>
                                         </div>
                                         <div class="desc">
-                                            <p>مبلغ ۲۵۰,۰۰۰ تومان به حساب شما واریز شد</p>
+                                            <p>مبلغ ۲۵۰,۰۰۰ ریال به حساب شما واریز شد</p>
                                             <span class="time">10 دقیقه پیش</span>
                                             <i class="dot"></i>
                                         </div>

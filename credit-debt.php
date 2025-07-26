@@ -9,8 +9,35 @@ function convertToPersianNumber($number)
     return str_replace($english, $persian, number_format($number));
 }
 
+if (isset($_SESSION['mobileNumber'])) {
+    $mobileNumber = $_SESSION['mobileNumber'];
+} else {
+    session_unset();
+    header('Location: login-user.php');
+    exit();
+}
+
+// ارسال درخواست به API
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    CURLOPT_POSTFIELDS => json_encode(['mobileNumber' => $mobileNumber])
+));
+
+$response = curl_exec($curl);
+$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+curl_close($curl);
+
+
+// تلاش برای تبدیل به JSON
+$data = json_decode($response, true);
+
+
 // دریافت اطلاعات پرداخت‌ها از API
-$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $_SESSION['merchantNumber'];
+$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $data['merchantNumber'];
 $response = file_get_contents($api_url);
 $payments = json_decode($response, true);
 
@@ -749,12 +776,11 @@ $settled_payments = array_filter($payments, function ($payment) {
                 <span class="badge" id="settled-badge"><?= count($settled_payments) ?></span>
             </div>
         </div>
-
         <div id="unsettled-content" class="tab-content active">
             <?php foreach ($unsettled_payments as $payment): ?>
                 <div class="debt-card">
                     <label class="checkbox-container">
-                        <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                        <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $data['billId'] ?>">
                         <span class="checkmark"></span>
                     </label>
                     <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
@@ -765,7 +791,7 @@ $settled_payments = array_filter($payments, function ($payment) {
                         <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
                     </div>
                     <div class="amount-section">
-                        <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> تومان</div>
+                        <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
                         <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
                             <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="bi bi-dot"></i>قسط' ?>
                         </div>
@@ -786,7 +812,7 @@ $settled_payments = array_filter($payments, function ($payment) {
                             <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
                         </div>
                         <div class="amount-section">
-                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> تومان</div>
+                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
                             <div class="amount-badge success">
                                 <i class="bi bi-check-circle"></i> پرداخت شده
                             </div>
@@ -805,7 +831,7 @@ $settled_payments = array_filter($payments, function ($payment) {
     <div class="payment-bar">
         <div class="total-info d-flex justify-content-between align-items-center mb-2">
             <span class="fw-bold">مبلغ قابل پرداخت:</span>
-            <span id="total-payment-amount" class="fw-bold">۰ تومان</span>
+            <span id="total-payment-amount" class="fw-bold">۰ ریال</span>
         </div>
         <button id="pay-button" class="btn btn-primary w-100 py-2" disabled>
             پرداخت
@@ -865,17 +891,18 @@ $settled_payments = array_filter($payments, function ($payment) {
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="credit.php">
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
                         <i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column " href="shop.php">
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column " href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active" href="credit-debt.php">
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
+                        href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
                         <i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php">
                         <i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -912,7 +939,7 @@ $settled_payments = array_filter($payments, function ($payment) {
             });
 
             function formatCurrency(amount) {
-                return new Intl.NumberFormat('fa-IR').format(amount) + ' تومان';
+                return new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
             }
 
             function calculateAndDisplayTotal() {
@@ -965,7 +992,7 @@ $settled_payments = array_filter($payments, function ($payment) {
                     document.getElementById(targetTab + '-content').classList.add('active');
 
                     // ریست کردن محاسبات هنگام تغییر تب
-                    totalPaymentAmountSpan.textContent = '۰ تومان';
+                    totalPaymentAmountSpan.textContent = '۰ ریال';
                     payButton.disabled = true;
 
                     // غیرفعال کردن دکمه پرداخت در تب پرداخت شده

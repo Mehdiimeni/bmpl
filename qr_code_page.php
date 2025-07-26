@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css"
         integrity="sha384-MdqCcafa5BLgxBDJ3d/4D292geNL64JyRtSGjEszRUQX9rhL1QkcnId+OT7Yw+D+" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
-     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="./assets/css/animate.min.css" />
@@ -551,7 +551,7 @@
 
             <form id="paymentForm">
                 <div class="mb-3">
-                    <label for="amountInput" class="form-label">مبلغ (تومان)</label>
+                    <label for="amountInput" class="form-label">مبلغ (ریال)</label>
                     <input type="number" class="form-control" id="amountInput" placeholder="مثلاً 150000" min="1000"
                         required>
                     <div class="invalid-feedback" id="amountError">لطفاً مبلغ معتبری وارد کنید.</div>
@@ -569,7 +569,7 @@
                         <input type="radio" name="paymentType" value="full">
                     </label>
                     <div class="installment-details w-100 text-end">
-                        مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ تومان</strong>
+                        مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ ریال</strong>
                     </div>
                 </div>
 
@@ -579,7 +579,7 @@
                         <input type="radio" name="paymentType" value="installments">
                     </label>
                     <div class="installment-details w-100 text-end">
-                        مبلغ هر قسط: <strong id="installmentAmount">۰ تومان</strong>
+                        مبلغ هر قسط: <strong id="installmentAmount">۰ ریال</strong>
                     </div>
                 </div>
 
@@ -731,7 +731,7 @@
 
             // Helper to format currency
             function formatCurrency(amount) {
-                return amount.toLocaleString('fa-IR') + ' تومان';
+                return amount.toLocaleString('fa-IR') + ' ریال';
             }
 
             // Function to reset the QR scan section to its initial state

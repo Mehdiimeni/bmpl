@@ -927,7 +927,7 @@
                                                 <span class="text-success">جدید</span>
                                             </div>
                                             <div class="desc">
-                                                <p>مبلغ ۲۵۰,۰۰۰ تومان به حساب شما واریز شد</p>
+                                                <p>مبلغ ۲۵۰,۰۰۰ ریال به حساب شما واریز شد</p>
                                                 <span class="time">10 دقیقه پیش</span>
                                                 <i class="dot"></i>
                                             </div>

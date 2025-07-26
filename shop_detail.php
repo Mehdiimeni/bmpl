@@ -1,4 +1,12 @@
 <?php
+
+
+
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+
+
 session_start();
 
 function convertToPersianNumber($number, $decimals = 0)
@@ -24,6 +32,34 @@ if (isset($_GET['mobileNumber'])) {
     $context = stream_context_create($options);
     $response = file_get_contents($api_url, false, $context);
     $merchant = json_decode($response, true);
+
+
+
+    if (isset($_SESSION['mobileNumber'])) {
+    $mobileNumber = $_SESSION['mobileNumber'];
+} else {
+    session_unset();
+    header('Location: login-user.php');
+    exit();
+}
+
+// ارسال درخواست به API
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    CURLOPT_POSTFIELDS => json_encode(['mobileNumber' => $mobileNumber])
+));
+
+$response = curl_exec($curl);
+$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+curl_close($curl);
+
+
+// تلاش برای تبدیل به JSON
+$data = json_decode($response, true);
 
     // لیست کامل محصولات
     $products = [
@@ -145,7 +181,7 @@ if (isset($_GET['mobileNumber'])) {
     <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
-     <link rel="stylesheet" href="./assets/css/solid.min.css">
+    <link rel="stylesheet" href="./assets/css/solid.min.css">
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet">
     <style>
@@ -420,19 +456,19 @@ if (isset($_GET['mobileNumber'])) {
 
         <div class="products-container">
             <?php foreach ($products as $product): ?>
-                    <div class="product-card" data-product-id="<?= $product['id'] ?>">
-                        <h3 class="product-title"><?= $product['name'] ?></h3>
-                        <div class="product-price"><?= convertToPersianNumber($product['price']) ?> تومان</div>
-                        <div class="product-rating">
-                            <?= str_repeat('★', $product['rating']) . str_repeat('☆', 5 - $product['rating']) ?>
-                        </div>
-                        <p class="product-description mb-3"><?= $product['description'] ?></p>
-
-                        <button class="btn btn-buy"
-                            onclick="showPaymentOptions('<?= $product['id'] ?>', '<?= $product['name'] ?>', <?= $product['price'] ?>)">
-                            <i class="fas fa-shopping-cart me-2"></i>خرید محصول
-                        </button>
+                <div class="product-card" data-product-id="<?= $product['id'] ?>">
+                    <h3 class="product-title"><?= $product['name'] ?></h3>
+                    <div class="product-price"><?= convertToPersianNumber($product['price']) ?> ریال</div>
+                    <div class="product-rating">
+                        <?= str_repeat('★', $product['rating']) . str_repeat('☆', 5 - $product['rating']) ?>
                     </div>
+                    <p class="product-description mb-3"><?= $product['description'] ?></p>
+
+                    <button class="btn btn-buy"
+                        onclick="showPaymentOptions('<?= $product['id'] ?>', '<?= $product['name'] ?>', <?= $product['price'] ?>)">
+                        <i class="fas fa-shopping-cart me-2"></i>خرید محصول
+                    </button>
+                </div>
             <?php endforeach; ?>
 
             <!-- بخش گزینه‌های پرداخت (در ابتدا مخفی است) -->
@@ -445,7 +481,7 @@ if (isset($_GET['mobileNumber'])) {
                         <input type="radio" name="paymentType" value="full">
                     </label>
                     <div class="installment-details w-100 text-end">
-                        مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ تومان</strong>
+                        مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ ریال</strong>
                     </div>
                 </div>
 
@@ -456,7 +492,7 @@ if (isset($_GET['mobileNumber'])) {
                         <input type="radio" name="paymentType" value="installments">
                     </label>
                     <div class="installment-details w-100 text-end">
-                        مبلغ هر قسط: <strong id="installmentAmount">۰ تومان</strong>
+                        مبلغ هر قسط: <strong id="installmentAmount">۰ ریال</strong>
                         <small class="text-muted d-block">(۱۰٪ افزایش به دلیل اقساط)</small>
                     </div>
                 </div>
@@ -470,20 +506,20 @@ if (isset($_GET['mobileNumber'])) {
         <div class="bottom-navigation-bar">
             <div class="container">
                 <ul class="tf-navigation-bar">
-                    <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php"
+                    <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column " href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                             aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                             aria-label="خدمات">
                             <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                     <li>
                         <a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
-                            href="shop.php" aria-label="فروشگاه">
+                            href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="فروشگاه">
                             <i class="fas fa-store-alt"></i>
                             <span class="mt-1">فروشگاه</span>
                         </a>
                     </li>
                     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                            href="credit-debt.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i>
+                            href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i>
                             پرداخت</a></li>
                     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                             aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
@@ -507,8 +543,8 @@ if (isset($_GET['mobileNumber'])) {
             };
 
             // تنظیم مقادیر پرداخت
-            $('#fullPaymentAmount').text(productPrice.toLocaleString('fa-IR') + ' تومان');
-            $('#installmentAmount').text(Math.round(productPrice * 1.1 / 4).toLocaleString('fa-IR') + ' تومان');
+            $('#fullPaymentAmount').text(productPrice.toLocaleString('fa-IR') + ' ریال');
+            $('#installmentAmount').text(Math.round(productPrice * 1.1 / 4).toLocaleString('fa-IR') + ' ریال');
 
             // مخفی کردن تمام دکمه‌های خرید
             $('.btn-buy').css('visibility', 'hidden');
@@ -540,7 +576,7 @@ if (isset($_GET['mobileNumber'])) {
             const paymentMethod = paymentType === 'full' ? 0 : 1;
 
             const postData = {
-                buyerMerchantNumber: '<?= $_SESSION['merchantNumber'] ?>',
+                buyerMerchantNumber: '<?= $data['merchantNumber'] ?>',
                 sellerMerchantNumber: '<?= $merchant['merchantNumber'] ?>',
                 amount: currentProduct.price,
                 productCode: currentProduct.id,

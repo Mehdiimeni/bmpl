@@ -399,11 +399,11 @@
                 <div class="balance-box">
                     <div>
                         <div class="text-muted">باقی‌مانده اعتبار</div>
-                        <div class="text-success fw-bold fs-4">۱۳,۵۵۷,۹۱۱ تومان</div>
+                        <div class="text-success fw-bold fs-4">۱۳,۵۵۷,۹۱۱ ریال</div>
                     </div>
                     <div class="text-end">
                         <div class="text-muted">کل اعتبار</div>
-                        <div class="fw-bold fs-6">۲۰,۰۰۰,۰۰۰ تومان</div>
+                        <div class="fw-bold fs-6">۲۰,۰۰۰,۰۰۰ ریال</div>
                     </div>
                 </div>
 
@@ -435,18 +435,18 @@
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
                 <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
+                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="فروشگاه">
                         <i class="fas fa-store-alt"></i>
                         <span class="mt-1">فروشگاه</span>
                     </a>
                 </li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>

@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = $_GET['id'];
-$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?id=" . urlencode($id);
+$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?billId=" . urlencode($id);
 
 $ch = curl_init($api_url);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");

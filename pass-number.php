@@ -457,7 +457,7 @@
                 <h2 class="text-center">تأیید کد فعال‌سازی</h2>
                 <p class="text-center text-muted">کد 6 رقمی ارسال شده به شماره موبایل شما را وارد نمایید</p>
 
-                <form id="verificationForm" action="credit.php" method="post" novalidate>
+                <form id="verificationForm" action="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" method="post" novalidate>
                     <div class="input-field">
                         <label for="activationCode">کد فعال‌سازی</label>
                         <input type="tel" id="activationCode" name="activationCode" maxlength="6" minlength="6"

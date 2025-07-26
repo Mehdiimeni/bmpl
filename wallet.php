@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="./assets/css/fontawesome.min.css">
   <link rel="stylesheet" href="./assets/css/solid.min.css">
-    <link rel="stylesheet" href="./assets/css/brands.min.css">
+  <link rel="stylesheet" href="./assets/css/brands.min.css">
   <link rel="stylesheet" href="./assets/css/animate.min.css">
   <link rel="stylesheet" href="./assets/fonts.css" />
   <link rel="stylesheet" href="./assets/icons-alipay.css">
@@ -183,17 +183,17 @@
 
       <div class="wallet-info">
         <label>اعتبار باقی‌مانده:</label>
-        <span class="value">۵۰۰٬۰۰۰ تومان</span>
+        <span class="value">۵۰۰٬۰۰۰ ریال</span>
       </div>
 
       <div class="wallet-info">
         <label>اعتبار مصرف‌شده (۱ تا ۳۰):</label>
-        <span class="value">۱٬۲۰۰٬۰۰۰ تومان</span>
+        <span class="value">۱٬۲۰۰٬۰۰۰ ریال</span>
       </div>
 
       <div class="wallet-info">
         <label>باقی‌مانده + جریمه:</label>
-        <span class="value">۷۰۰٬۰۰۰ تومان</span>
+        <span class="value">۷۰۰٬۰۰۰ ریال</span>
       </div>
 
       <button class="repay-btn">بازپرداخت</button>
@@ -212,17 +212,17 @@
         <tbody>
           <tr>
             <td>۱۴۰۳/۰۲/۰۱</td>
-            <td>۴۰۰٬۰۰۰ تومان</td>
+            <td>۴۰۰٬۰۰۰ ریال</td>
             <td><span class="badge-success">پرداخت‌شده</span></td>
           </tr>
           <tr>
             <td>۱۴۰۳/۰۲/۱۵</td>
-            <td>۴۰۰٬۰۰۰ تومان</td>
+            <td>۴۰۰٬۰۰۰ ریال</td>
             <td><span class="badge-success">پرداخت‌شده</span></td>
           </tr>
           <tr>
             <td>۱۴۰۳/۰۳/۰۱</td>
-            <td>۴۰۰٬۰۰۰ تومان</td>
+            <td>۴۰۰٬۰۰۰ ریال</td>
             <td><span class="badge-warning">در انتظار</span></td>
           </tr>
         </tbody>

@@ -1,3 +1,9 @@
+<?php 
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0"); // Proxies
+
+?>
 <!DOCTYPE HTML>
 <html lang="fa" dir="rtl">
 
@@ -17,7 +23,7 @@
 
     <link rel="icon" href="./assets/icons/apple-icon-72.png" type="image/png">
     <link rel="apple-touch-icon" href="./assets/icons/android-icon-192.png">
-    <link rel="manifest" href="./manifest.json">
+   
 
     <link rel="preload" href="./assets/css/bootstrap.rtl.min.css" as="style">
     <link rel="preload" href="./assets/icons/android-icon-192.png" as="image">

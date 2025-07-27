@@ -376,13 +376,7 @@
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
-                        aria-label="فروشگاه">
-                        <i class="fas fa-store-alt"></i>
-                        <span class="mt-1">فروشگاه</span>
-                    </a>
-                </li>
+                
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"

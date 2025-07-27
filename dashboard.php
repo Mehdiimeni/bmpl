@@ -838,13 +838,7 @@
                     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                             aria-label="خدمات">
                             <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                    <li>
-                        <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
-                            aria-label="فروشگاه">
-                            <i class="fas fa-store-alt"></i>
-                            <span class="mt-1">فروشگاه</span>
-                        </a>
-                    </li>
+                    
                     <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
                             href="credit-debt.php" aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i>
                             پرداخت</a></li>

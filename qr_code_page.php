@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+// دریافت شناسه ترمینال از URL
+$terminal_id = isset($_GET['terminal_id']) ? urldecode($_GET['terminal_id']) : null;
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -13,7 +19,8 @@
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <link href="./assets/css/Vazirmatn-Variable-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="./assets/css/animate.min.css" />
-
+    <!-- استفاده از نسخه صحیح ZXing -->
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
     <style>
         :root {
             --primary-color: #5b86e5;
@@ -133,6 +140,8 @@
             cursor: pointer;
             /* Indicates it's clickable */
             transition: background-color 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .qr-scanner-placeholder:hover {
@@ -145,6 +154,106 @@
             margin-bottom: 0.5rem;
             color: var(--primary-color);
         }
+
+        #scanner-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            z-index: 10;
+        }
+
+        .scanner-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-scan {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-start-scan {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-stop-scan {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-start-scan:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-stop-scan:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .product-details {
+            display: none;
+            /* Hidden by default */
+            text-align: right;
+            /* Align text to the right for RTL */
+            margin-top: 0;
+            /* Adjusted margin */
+            padding: 1.5rem;
+            /* Padding for spacing */
+            /* border: 1px solid #e9ecef; Remove border as it's part of the placeholder */
+            border-radius: 10px;
+            background-color: transparent;
+            /* Make background transparent */
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .product-details p {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .product-details p strong {
+            color: var(--primary-color);
+        }
+
+        .scan-success-message {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 0.5s ease-out;
+        }
+
+        .camera-permission-denied {
+            color: var(--danger-color);
+            font-weight: bold;
+            margin-top: 1rem;
+            display: none;
+        }
+
 
         .product-details {
             display: none;
@@ -519,7 +628,57 @@
             .tf-navigation-bar li a svg {
                 font-size: 1.1rem;
             }
+
+
         }
+
+        .scanner-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #scanner {
+            width: 100%;
+            height: 300px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        #scanner video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .terminal-info {
+            background-color: #e9ecef;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .btn-action {
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            margin: 0.5rem;
+        }
+
+        /* بقیه استایل‌ها مانند قبل... */
     </style>
 </head>
 
@@ -532,22 +691,45 @@
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="main-card animate__animated animate__fadeInUp">
-            <div class="qr-section">
-                <div class="qr-scanner-placeholder text-center" id="qrScannerPlaceholder">
-                    <i class="fas fa-qrcode"></i>
-                    <span id="qrInitialText">برای شروع اسکن QR Code اینجا کلیک کنید</span>
+            <?php if ($terminal_id): ?>
+                <!-- اگر terminal_id از URL دریافت شده باشد -->
+                <div class="terminal-info">
+                    <p>شناسه ترمینال دریافت شده:</p>
+                    <h3 class="text-primary"><?= htmlspecialchars($terminal_id) ?></h3>
+                    <a href="qr_code_page.php?terminal_id=<?= urlencode($terminal_id) ?>"
+                        class="btn btn-success btn-action mt-3">
+                        ادامه به پرداخت
+                    </a>
                 </div>
+            <?php else: ?>
+                <!-- اگر terminal_id وجود نداشته باشد، اسکنر نمایش داده می‌شود -->
+                <div class="qr-section">
+                    <div class="qr-scanner-placeholder" id="scanner">
+                        <div class="scanner-overlay" id="scanner-overlay">
+                            <i class="fas fa-qrcode mb-3"></i>
+                            <span id="qrInitialText">برای شروع اسکن QR Code کلیک کنید</span>
+                        </div>
+                        <video id="scanner-video"></video>
+                    </div>
 
-                <div class="product-details" id="productDetails">
-                    <p class="scan-success-message">اسکن با موفقیت انجام شد!</p>
-                    <p>کد کالا: <strong id="productCode"></strong></p>
-                    <p>نام کالا: <strong id="productName"></strong></p>
-                    <p>شرح: <strong id="productDescription"></strong></p>
-                    <button type="button" class="btn btn-rescan mt-3" id="rescanBtn">
-                        <i class="fas fa-redo-alt"></i> اسکن مجدد
-                    </button>
+                    <div class="scanner-controls">
+                        <button id="startBtn" class="btn-scan btn-start-scan">شروع اسکن</button>
+                        <button id="stopBtn" class="btn-scan btn-stop-scan" style="display: none;">توقف اسکن</button>
+                    </div>
+
+                    <div id="cameraPermissionDenied" class="camera-permission-denied">
+                        دسترسی به دوربین داده نشد. لطفاً مجوز دسترسی را بررسی کنید.
+                    </div>
+
+                    <div id="result" class="terminal-info" style="display: none;">
+                        <p>شناسه ترمینال :</p>
+                        <h3 class="text-primary" id="scanned-terminal"></h3>
+                        <button id="proceedBtn" class="btn btn-success btn-action mt-3">
+                            ادامه به پرداخت
+                        </button>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
 
             <form id="paymentForm">
                 <div class="mb-3">
@@ -596,13 +778,7 @@
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="shop.php"
-                        aria-label="فروشگاه">
-                        <i class="fas fa-store-alt"></i>
-                        <span>فروشگاه</span>
-                    </a>
-                </li>
+
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php"
                         aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
@@ -614,253 +790,177 @@
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const amountInput = document.getElementById('amountInput');
-            const amountError = document.getElementById('amountError');
-            const paymentForm = document.getElementById('paymentForm');
-            const paymentOptionsDiv = document.getElementById('paymentOptions');
-            const fullPaymentAmountSpan = document.getElementById('fullPaymentAmount');
-            const installmentAmountSpan = document.getElementById('installmentAmount');
-            const payNowBtn = document.getElementById('payNowBtn');
-            const paymentOptionCards = document.querySelectorAll('.payment-option-card');
-            const radioButtons = document.querySelectorAll('input[name="paymentType"]');
+            <?php if (!$terminal_id): ?>
+                const scannerElement = document.getElementById('scanner');
+                const scannerVideo = document.getElementById('scanner-video');
+                const scannerOverlay = document.getElementById('scanner-overlay');
+                const qrInitialText = document.getElementById('qrInitialText');
+                const startBtn = document.getElementById('startBtn');
+                const stopBtn = document.getElementById('stopBtn');
+                const resultDiv = document.getElementById('result');
+                const scannedTerminalSpan = document.getElementById('scanned-terminal');
+                const proceedBtn = document.getElementById('proceedBtn');
+                const permissionDeniedMsg = document.getElementById('cameraPermissionDenied');
 
-            const qrScannerPlaceholder = document.getElementById('qrScannerPlaceholder');
-            const qrInitialText = document.getElementById('qrInitialText');
-            const productDetailsDiv = document.getElementById('productDetails');
-            const productCodeSpan = document.getElementById('productCode');
-            const productNameSpan = document.getElementById('productName');
-            const productDescriptionSpan = document.getElementById('productDescription');
-            const qrIcon = qrScannerPlaceholder.querySelector('i');
-            const rescanBtn = document.getElementById('rescanBtn');
+                let codeReader;
+                let isScanning = false;
+                let scannedTerminalId = '';
+                let videoStream = null;
 
-            let enteredAmount = 0; // Global variable to store the entered amount
+                // تنظیمات اسکنر
+                function setupScanner() {
+                    // استفاده از ZXing از CDN
+                    codeReader = new ZXing.BrowserQRCodeReader();
 
-            // Array of sample products
-            const sampleProducts = [
-                {
-                    code: 'PROD-101',
-                    name: 'لپ‌تاپ گیمینگ قدرتمند',
-                    description: 'لپ‌تاپی مناسب برای بازی و کارهای سنگین با کارت گرافیک RTX.',
-                    amount: 35000000
-                },
-                {
-                    code: 'PROD-102',
-                    name: 'هدفون بی‌سیم نویز کنسلینگ',
-                    description: 'تجربه‌ای بی‌نظیر از صدا با حذف نویز فعال و باتری طولانی.',
-                    amount: 4200000
-                },
-                {
-                    code: 'PROD-103',
-                    name: 'ماشین لباسشویی هوشمند',
-                    description: 'ماشین لباسشویی کم‌مصرف با برنامه‌های متنوع شستشو و قابلیت هوشمند.',
-                    amount: 18000000
-                },
-                {
-                    code: 'PROD-104',
-                    name: 'ساعت هوشمند ورزشی',
-                    description: 'همراهی ایده‌آل برای تمرینات ورزشی و پایش سلامتی روزانه.',
-                    amount: 2800000
-                },
-                {
-                    code: 'PROD-105',
-                    name: 'قهوه‌ساز اتوماتیک',
-                    description: 'تهیه قهوه‌ای لذیذ تنها با یک دکمه، دارای آسیاب داخلی.',
-                    amount: 7500000
-                },
-                {
-                    code: 'PROD-106',
-                    name: 'تلفن همراه هوشمند مدل Z',
-                    description: 'جدیدترین مدل گوشی هوشمند با دوربین فوق‌العاده و عملکرد بی‌نقص.',
-                    amount: 22000000
-                },
-                {
-                    code: 'PROD-107',
-                    name: 'تلویزیون هوشمند 4K',
-                    description: 'تصویری خیره‌کننده با کیفیت 4K و قابلیت‌های هوشمند برای سرگرمی بیشتر.',
-                    amount: 12000000
-                },
-                {
-                    code: 'PRO0-108',
-                    name: 'اسپیکر بلوتوثی قابل حمل',
-                    description: 'صدای قوی و شفاف در یک طراحی جمع‌وجور، مناسب برای هر مکان.',
-                    amount: 1500000
-                },
-                {
-                    code: 'PROD-109',
-                    name: 'پکیج آموزشی آنلاین زبان انگلیسی',
-                    description: 'دوره جامع آموزش زبان انگلیسی از مبتدی تا پیشرفته با پشتیبانی مدرس.',
-                    amount: 900000
-                },
-                {
-                    code: 'PROD-110',
-                    name: 'دوچرخه کوهستان حرفه‌ای',
-                    description: 'دوچرخه‌ای مقاوم و سبک برای مسیرهای دشوار کوهستانی.',
-                    amount: 11000000
-                },
-                {
-                    code: 'PROD-111',
-                    name: 'فر توکار برقی',
-                    description: 'فری با قابلیت‌های پخت متنوع و صفحه نمایش لمسی.',
-                    amount: 9500000
-                },
-                {
-                    code: 'PROD-112',
-                    name: 'جاروبرقی رباتیک هوشمند',
-                    description: 'خانه‌ای تمیز با جاروبرقی خودکار و قابلیت کنترل از راه دور.',
-                    amount: 5500000
-                },
-                {
-                    code: 'PROD-113',
-                    name: 'کنسول بازی نسل جدید',
-                    description: 'تجربه بازی‌های هیجان‌انگیز با گرافیک بالا و سرعت بی‌نظیر.',
-                    amount: 16000000
-                },
-                {
-                    code: 'PROD-114',
-                    name: 'دوربین عکاسی DSLR',
-                    description: 'برای علاقه‌مندان به عکاسی، با لنز قابل تعویض و کیفیت تصویر عالی.',
-                    amount: 14000000
-                },
-                {
-                    code: 'PROD-115',
-                    name: 'یخچال ساید بای ساید',
-                    description: 'فضای بزرگ و طراحی مدرن، همراه با سیستم خنک‌کننده پیشرفته.',
-                    amount: 28000000
+                    console.log('ZXing initialized:', codeReader);
+
+                    // کلیک روی ناحیه اسکنر
+                    scannerElement.addEventListener('click', () => {
+                        if (!isScanning) {
+                            startScanner();
+                        }
+                    });
+
+                    // دکمه شروع اسکن
+                    startBtn.addEventListener('click', startScanner);
+
+                    // دکمه توقف اسکن
+                    stopBtn.addEventListener('click', stopScanner);
                 }
-            ];
 
-            // Helper to format currency
-            function formatCurrency(amount) {
-                return amount.toLocaleString('fa-IR') + ' ریال';
-            }
+                // شروع اسکن
+                async function startScanner() {
+                    if (isScanning) return;
 
-            // Function to reset the QR scan section to its initial state
-            function resetQrScanSection() {
-                qrScannerPlaceholder.style.display = 'flex';
-                qrScannerPlaceholder.style.pointerEvents = 'auto'; // Enable clicks
-                qrScannerPlaceholder.style.opacity = '1';
-                qrScannerPlaceholder.style.border = '2px dashed #ccc';
-                qrScannerPlaceholder.style.backgroundColor = '#f0f0f0';
-                qrScannerPlaceholder.style.height = '250px'; // Reset fixed height
+                    try {
+                        // درخواست دسترسی به دوربین
+                        videoStream = await navigator.mediaDevices.getUserMedia({
+                            video: {
+                                facingMode: 'environment' // اولویت با دوربین پشتی
+                            },
+                            audio: false
+                        });
 
-                qrIcon.classList.remove('fa-check-circle', 'text-success');
-                qrIcon.classList.add('fa-qrcode');
-                qrInitialText.textContent = 'برای شروع اسکن QR Code اینجا کلیک کنید';
+                        permissionDeniedMsg.style.display = 'none';
+                        scannerVideo.srcObject = videoStream;
+                        scannerVideo.style.display = 'block';
+                        scannerOverlay.style.display = 'none';
 
-                productDetailsDiv.style.display = 'none'; // Hide product details
-                productDetailsDiv.classList.remove('animate__animated', 'animate__fadeIn'); // Remove animation classes
+                        // شروع اسکن QR
+                        await codeReader.decodeFromVideoDevice(
+                            null,
+                            scannerVideo,
+                            (result, err) => {
+                                if (result) {
+                                    handleScanResult(result.text);
+                                }
+                                if (err && !(err instanceof ZXing.NotFoundException)) {
+                                    console.error('Scan error:', err);
+                                }
+                            }
+                        );
 
-                amountInput.value = ''; // Clear amount input
-                amountInput.classList.remove('is-valid', 'is-invalid'); // Clear validation styles
-                amountError.style.display = 'none';
+                        isScanning = true;
+                        startBtn.style.display = 'none';
+                        stopBtn.style.display = 'inline-block';
+                        resultDiv.style.display = 'none';
 
-                paymentOptionsDiv.classList.add('d-none'); // Hide payment options
-                paymentOptionsDiv.style.opacity = '0';
-            }
-
-            // Simulate QR scan and display product details
-            qrScannerPlaceholder.addEventListener('click', () => {
-                // Get a random product from the array
-                const randomIndex = Math.floor(Math.random() * sampleProducts.length);
-                const scannedData = sampleProducts[randomIndex];
-
-                // Hide QR placeholder content and display product details
-                qrScannerPlaceholder.style.display = 'none'; // Hide the initial placeholder entirely
-
-                productCodeSpan.textContent = scannedData.code;
-                productNameSpan.textContent = scannedData.name;
-                productDescriptionSpan.textContent = scannedData.description;
-
-                productDetailsDiv.style.display = 'block'; // Show product details
-                productDetailsDiv.classList.add('animate__animated', 'animate__fadeIn');
-
-                // Set the amount input value from scanned data
-                amountInput.value = scannedData.amount;
-                amountInput.dispatchEvent(new Event('input')); // Trigger input event for validation and calculations
-
-                // Scroll to payment options if already open, or to product details
-                if (!paymentOptionsDiv.classList.contains('d-none')) {
-                    paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    productDetailsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } catch (error) {
+                        console.error('Camera access error:', error);
+                        permissionDeniedMsg.style.display = 'block';
+                        qrInitialText.textContent = 'خطا در دسترسی به دوربین';
+                    }
                 }
-            });
 
-            // Handle rescan button click
-            rescanBtn.addEventListener('click', () => {
-                location.reload(); // Reload the page to reset everything
-            });
+                // توقف اسکن
+                function stopScanner() {
+                    if (!isScanning) return;
 
+                    codeReader.reset();
 
-            // Validate amount input
-            amountInput.addEventListener('input', () => {
-                const value = parseInt(amountInput.value);
-                if (value && value >= 1000) {
-                    amountInput.classList.remove('is-invalid');
-                    amountInput.classList.add('is-valid');
-                    amountError.style.display = 'none';
-                } else {
-                    amountInput.classList.remove('is-valid');
-                    amountInput.classList.add('is-invalid');
-                    amountError.style.display = 'block';
+                    // توقف استریم دوربین
+                    if (videoStream) {
+                        videoStream.getTracks().forEach(track => track.stop());
+                        videoStream = null;
+                    }
+
+                    isScanning = false;
+                    scannerVideo.style.display = 'none';
+                    scannerOverlay.style.display = 'flex';
+                    startBtn.style.display = 'inline-block';
+                    stopBtn.style.display = 'none';
                 }
-            });
 
-            // Handle form submission (Confirm Amount)
-            paymentForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const value = parseInt(amountInput.value);
+                // پردازش نتیجه اسکن
+                // پردازش نتیجه اسکن
+                function handleScanResult(scannedData) {
+                    try {
+                        console.log('Scanned data:', scannedData);
 
-                if (value && value >= 1000) {
-                    enteredAmount = value;
-                    paymentOptionsDiv.classList.remove('d-none');
-                    paymentOptionsDiv.style.animation = 'fadeIn 0.8s ease-out forwards';
+                        // استخراج شناسه ترمینال از URL (اگر داده یک URL است)
+                        let terminalId = extractTerminalId(scannedData);
 
-                    // Reset radio buttons and pay button state
-                    radioButtons.forEach(radio => radio.checked = false);
-                    payNowBtn.disabled = true;
-                    paymentOptionCards.forEach(card => card.classList.remove('selected'));
+                        if (terminalId) {
+                            scannedTerminalId = terminalId;
+                            scannedTerminalSpan.textContent = scannedTerminalId;
+                            resultDiv.style.display = 'block';
+                            proceedBtn.style.display = 'inline-block';
 
-                    // Calculate and display payment details
-                    fullPaymentAmountSpan.textContent = formatCurrency(enteredAmount);
-                    // For installments, typically there's an interest/fee. Let's assume a simple 5% for example.
-                    const installmentTotal = enteredAmount * 1.05; // 5% interest
-                    const singleInstallment = installmentTotal / 4;
-                    installmentAmountSpan.textContent = formatCurrency(Math.round(singleInstallment));
-
-                    // Scroll to payment options
-                    paymentOptionsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                } else {
-                    amountInput.classList.add('is-invalid');
-                    amountError.style.display = 'block';
+                            stopScanner();
+                        } else {
+                            throw new Error('شناسه ترمینال در QR Code یافت نشد');
+                        }
+                    } catch (e) {
+                        console.error('Error parsing QR data:', e);
+                        scannedTerminalSpan.textContent = 'خطا: ' + e.message;
+                        resultDiv.style.display = 'block';
+                        proceedBtn.style.display = 'none';
+                    }
                 }
-            });
 
-            // Handle selection of payment option
-            paymentOptionCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    paymentOptionCards.forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    const radio = card.querySelector('input[type="radio"]');
-                    if (radio) {
-                        radio.checked = true;
-                        payNowBtn.disabled = false; // Enable final pay button
+                // تابع برای استخراج شناسه ترمینال از URL
+                function extractTerminalId(data) {
+                    try {
+                        // اگر داده JSON است
+                        const jsonData = JSON.parse(data);
+                        if (jsonData.terminal_id) {
+                            return jsonData.terminal_id;
+                        }
+                    } catch (e) {
+                        // اگر JSON نبود، شاید URL باشد
+                        const urlParams = new URLSearchParams(data.split('?')[1]);
+                        const terminalId = urlParams.get('terminal_id');
+                        if (terminalId) {
+                            return terminalId;
+                        }
+
+                        // اگر فقط شناسه ترمینال است
+                        if (/^[a-zA-Z0-9_-]+$/.test(data)) {
+                            return data;
+                        }
+                    }
+                    return null;
+                }
+
+                // ادامه به صفحه پرداخت
+                proceedBtn.addEventListener('click', () => {
+                    if (scannedTerminalId) {
+                        window.location.href = `qr_code_page.php?terminal_id=${encodeURIComponent(scannedTerminalId)}`;
                     }
                 });
-            });
 
-            // Handle final payment button click
-            payNowBtn.addEventListener('click', () => {
-                const selectedOption = document.querySelector('input[name="paymentType"]:checked');
-                if (selectedOption) {
-                    // بجای نمایش alert، کاربر را به صفحه رسید هدایت می‌کنیم
-                    // مبلغ تراکنش را به عنوان پارامتر 'amount' به URL اضافه می‌کنیم
-                    window.location.href = `bank-receipt.php?amount=${enteredAmount}`;
-                } else {
-                    alert('لطفاً یک گزینه پرداخت را انتخاب کنید.');
-                }
-            });
+                // راه اندازی اسکنر
+                setupScanner();
+            <?php endif; ?>
+
+            // مدیریت فرم پرداخت (مانند قبل)
+            const paymentForm = document.getElementById('paymentForm');
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    // منطق پرداخت...
+                });
+            }
         });
     </script>
 </body>

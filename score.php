@@ -182,22 +182,7 @@
 
         <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><i
               class="icon-history"></i> سوابق</a> </li>
-        <li>
-          <a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 11V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V11" stroke="#717171"
-                stroke-width="1.5" stroke-linecap="round" />
-              <path
-                d="M3.5 7L5.05335 3.7236C5.18965 3.3912 5.51059 3.16667 5.86852 3.16667H18.1315C18.4894 3.16667 18.8104 3.3912 18.9466 3.7236L20.5 7"
-                stroke="#717171" stroke-width="1.5" stroke-linecap="round" />
-              <path d="M9 11V15C9 16.1046 9.89543 17 11 17H13C14.1046 17 15 16.1046 15 15V11" stroke="#717171"
-                stroke-width="1.5" stroke-linecap="round" />
-              <circle cx="9" cy="7" r="1" fill="#717171" />
-              <circle cx="15" cy="7" r="1" fill="#717171" />
-            </svg>
-            <span class="mt-1">فروشگاه</span>
-          </a>
-        </li>
+        
         <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="#"><svg width="25"
               height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="12.25" cy="12" r="9.5" stroke="#717171" />

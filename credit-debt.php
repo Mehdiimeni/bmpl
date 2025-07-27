@@ -895,12 +895,7 @@ $settled_payments = array_filter($payments, function ($payment) {
                         <i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                <li>
-                    <a class="fw_4 d-flex justify-content-center align-items-center flex-column " href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
-                        <i class="fas fa-store-alt"></i>
-                        <span class="mt-1">فروشگاه</span>
-                    </a>
-                </li>
+                
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
                         href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
                         <i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>

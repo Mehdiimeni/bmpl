@@ -1,5 +1,12 @@
 <?php
-session_start(); ?>
+session_start();
+
+
+if (!isset($_SESSION['mobileNumber'])) {
+    header('Location: login-user.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -14,7 +21,7 @@ session_start(); ?>
     <link rel="stylesheet" href="./assets/css/brands.min.css">
     <style>
         /* Vazirmatn Font Import */
-  
+
         /* Root Variables for consistent theming */
         :root {
             --primary-color: #007bff;
@@ -546,7 +553,7 @@ session_start(); ?>
             <i class="bi bi-chevron-left"></i>
         </a>
 
-        <a href="index.php" class="menu-item logout">
+        <a href="login-user.php?logout=1" class="menu-item logout">
             <div class="menu-label">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>خروج از حساب</span>
@@ -561,13 +568,15 @@ session_start(); ?>
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
+                            class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
-                        aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="سوابق"><i
+                            class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>

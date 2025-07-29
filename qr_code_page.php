@@ -1,6 +1,15 @@
 <?php
 session_start();
 
+if(isset($_GET['terminal_id']) and !isset($_SESSION['mobileNumber'])) {
+    header('Location: login-user.php?terminal_id=' . $_GET['terminal_id']);
+    exit;
+}
+
+if (!isset($_SESSION['mobileNumber'])) {
+    header('Location: login-user.php');
+    exit;
+}
 // دریافت شناسه ترمینال از URL
 $terminal_id = isset($_GET['terminal_id']) ? urldecode($_GET['terminal_id']) : null;
 ?>

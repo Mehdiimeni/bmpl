@@ -1,3 +1,14 @@
+<?php 
+
+session_start();
+
+if (!isset($_SESSION['mobileNumber'])) {
+    header('Location: login-user.php');
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 

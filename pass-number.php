@@ -456,26 +456,32 @@
             <div class="form-container">
                 <h2 class="text-center">تأیید کد فعال‌سازی</h2>
                 <p class="text-center text-muted">کد 6 رقمی ارسال شده به شماره موبایل شما را وارد نمایید</p>
+                <?php if ($_POST['return_url'] != '' and  $_POST['terminal_id'] == '') { ?>
+                    <form action="authentication-check.php" method="post">
+                        <?php } elseif($_POST['terminal_id'] != '') { ?>
+                            <form action="qr_code_page.php?terminal_id=<?php echo $_POST['terminal_id']; ?>" method="post"></form>
+                    <?php } else { ?>
+                        <form id="verificationForm" action="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
+                            method="post" novalidate>
+                        <?php } ?>
+                        <div class="input-field">
+                            <label for="activationCode">کد فعال‌سازی</label>
+                            <input type="tel" id="activationCode" name="activationCode" maxlength="6" minlength="6"
+                                pattern="[0-9]{6}" placeholder="------" required>
+                            <div class="error-message" id="codeError">کد فعال‌سازی باید 6 رقم عددی باشد.</div>
+                        </div>
 
-                <form id="verificationForm" action="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" method="post" novalidate>
-                    <div class="input-field">
-                        <label for="activationCode">کد فعال‌سازی</label>
-                        <input type="tel" id="activationCode" name="activationCode" maxlength="6" minlength="6"
-                            pattern="[0-9]{6}" placeholder="------" required>
-                        <div class="error-message" id="codeError">کد فعال‌سازی باید 6 رقم عددی باشد.</div>
-                    </div>
+                        <div class="timer-container">
+                            <span>زمان باقی‌مانده: </span>
+                            <span id="timer" class="timer">02:00</span>
+                            <a href="javascript:void(0);" id="resendLink" class="resend-link disabled"
+                                style="display: none;">ارسال مجدد کد</a>
+                        </div>
 
-                    <div class="timer-container">
-                        <span>زمان باقی‌مانده: </span>
-                        <span id="timer" class="timer">02:00</span>
-                        <a href="javascript:void(0);" id="resendLink" class="resend-link disabled"
-                            style="display: none;">ارسال مجدد کد</a>
-                    </div>
-
-                    <button type="submit" id="submitBtn" class="submit-btn" disabled>
-                        ورود به سیستم
-                    </button>
-                </form>
+                        <button type="submit" id="submitBtn" class="submit-btn" disabled>
+                            ورود به سیستم
+                        </button>
+                    </form>
             </div>
         </div>
     </div>

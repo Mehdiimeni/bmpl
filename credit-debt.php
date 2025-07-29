@@ -1,6 +1,14 @@
 <?php
 session_start();
 
+
+if (isset($_SESSION['mobileNumber'])) {
+    $mobileNumber = $_SESSION['mobileNumber'];
+} else {
+    header('Location: login-user.php');
+    exit();
+}
+
 // تابع تبدیل اعداد به فارسی
 function convertToPersianNumber($number)
 {
@@ -9,13 +17,7 @@ function convertToPersianNumber($number)
     return str_replace($english, $persian, number_format($number));
 }
 
-if (isset($_SESSION['mobileNumber'])) {
-    $mobileNumber = $_SESSION['mobileNumber'];
-} else {
-    session_unset();
-    header('Location: login-user.php');
-    exit();
-}
+
 
 // ارسال درخواست به API
 $curl = curl_init();

@@ -1,4 +1,22 @@
-<?php session_unset(); ?>
+<?php session_start(); 
+if(isset($_GET['logout']) && $_GET['logout'] == 1) {
+    session_unset();
+    header('Location: login-user.php');
+    exit();
+}
+
+if(isset($_GET['terminal_id'])) {
+    $terminal_id = $_GET['terminal_id'];
+}else{
+    $terminal_id = '';
+}
+
+if(isset($_GET['return_url'])) {
+    $return_url = $_GET['return_url'];
+}else{
+    $return_url = '';
+}
+?>
 <!DOCTYPE HTML>
 <html lang="fa" dir="rtl">
 
@@ -52,7 +70,8 @@
                     </div>
 
                     <input type="hidden" name="scode" id="scode" value="">
-
+                    <input type="hidden" name="return_url" id="return_url" value="<?php echo $return_url; ?>">
+                    <input type="hidden" name="terminal_id" id="terminal_id" value="<?php echo $terminal_id; ?>">
                     <button type="submit" id="submitBtn" class="submit-btn" disabled>
                         دریافت کد ورود
                     </button>

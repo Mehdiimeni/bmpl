@@ -1,11 +1,15 @@
-
-<?php 
+<?php
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 header("Pragma: no-cache"); // HTTP 1.0
 header("Expires: 0"); // Proxies
 
 
 session_start();
+
+if (!isset($_SESSION['mobileNumber'])) {
+    header('Location: login-user.php');
+    exit();
+}
 
 function convertToPersianNumber($number, $decimals = 0)
 {
@@ -675,12 +679,11 @@ $data = json_decode($response, true);
             </p>
 
             <div class="d-flex justify-content-between mt-4 gap-3">
-                <a href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" class="btn btn-primary-gradient" aria-label="صفحه پرداخت">
+                <a href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
+                    class="btn btn-primary-gradient" aria-label="صفحه پرداخت">
                     <i class="fas fa-credit-card me-2"></i> صفحه پرداخت
                 </a>
-                <a href="shop.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" class="btn btn-outline-primary-custom" aria-label="خرید کالا">
-                    <i class="fas fa-shopping-bag me-2"></i> خرید کالا
-                </a>
+
                 <a href="service.php" class="btn btn-outline-primary-custom" aria-label="خرید خدمات">
                     <i class="fas fa-handshake me-2"></i> خرید خدمات
                 </a>
@@ -703,49 +706,21 @@ $data = json_decode($response, true);
             </div>
         </div>
 
-
-        <div class="row w-100 px-3 mt-4 feature-section">
-            <div class="col-lg-6 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="credit-debt.php" class="text-decoration-none" aria-label="پرداخت های من">
-                        <div class="card-body">
-                            <div class="feature-icon">
-                                <i class="fas fa-receipt"></i>
-                            </div>
-                            <h5 class="card-title">پرداخت‌های من</h5>
-                            <p class="card-text">مشاهده و مدیریت تمامی پرداخت‌های اقساطی شما.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="col-lg-6 col-md-6 mb-4">
-                <div class="card feature-card h-100">
-                    <a href="history.php" class="text-decoration-none" aria-label="تاریخچه خرید">
-                        <div class="card-body text-center">
-                            <div class="feature-icon">
-                                <i class="fas fa-clock-rotate-left"></i>
-                            </div>
-                            <h5 class="card-title">تاریخچه خرید</h5>
-                            <p class="card-text">مشاهده تمام تراکنش‌ها و خریدهای انجام شده.</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>" aria-label="خانه"><i class="fas fa-home"></i> خانه</a></li>
+                        href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
+                            class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
                         aria-label="خدمات">
                         <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>"
-                        aria-label="سوابق"><i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
+
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="سوابق"><i
+                            class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
@@ -778,7 +753,7 @@ $data = json_decode($response, true);
             }
         });
     </script>
->
+    >
 </body>
 
 </html>

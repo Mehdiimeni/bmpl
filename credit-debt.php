@@ -1,5 +1,9 @@
 <?php
+require 'vendor/autoload.php';
+
+use Morilog\Jalali\Jalalian;
 session_start();
+
 
 if (isset($_SESSION['mobileNumber'])) {
     $mobileNumber = $_SESSION['mobileNumber'];
@@ -9,16 +13,14 @@ if (isset($_SESSION['mobileNumber'])) {
 }
 
 // تابع تبدیل اعداد به فارسی
-function convertToPersianNumber($number) {
+function convertToPersianNumber($number)
+{
     $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     return str_replace($english, $persian, number_format($number));
 }
 
-// تاریخ امروز
-$today = new DateTime();
-$currentDay = $today->format('N'); // 1 (Monday) to 7 (Sunday)
-$currentDate = $today->format('Y-m-d');
+
 
 // ارسال درخواست به API
 $curl = curl_init();
@@ -34,41 +36,93 @@ $response = curl_exec($curl);
 $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
 
-$data = json_decode($response, true);
+$userData = json_decode($response, true);
 
 // دریافت اطلاعات پرداخت‌ها از API
-$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $data['merchantNumber'];
+$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $userData['merchantNumber'];
 $response = file_get_contents($api_url);
 $payments = json_decode($response, true);
 
-// تفکیک پرداخت‌های هفته جاری و ماه جاری
-$weekly_payments = [];
-$monthly_payments = [];
 
-foreach ($payments as $payment) {
-    if (!isset($payment['settled']) || $payment['settled'] == false) {
-        $paymentDate = new DateTime($payment['paymentDate']);
-        $paymentMonth = $paymentDate->format('m');
-        $currentMonth = $today->format('m');
-        
-        // اگر پرداخت مربوط به ماه جاری است
-        if ($paymentMonth == $currentMonth) {
-            $monthly_payments[] = $payment;
-            
-            // اگر پرداخت مربوط به هفته جاری است (از شنبه تا جمعه)
-            $paymentDay = $paymentDate->format('N');
-            $daysDiff = $paymentDate->diff($today)->days;
-            
-            if (($paymentDay >= 6 && $currentDay <= 5 && $daysDiff <= 2) || // پنجشنبه و جمعه هفته قبل
-                ($paymentDay <= $currentDay && $daysDiff <= 6)) { // شنبه تا امروز
-                $weekly_payments[] = $payment;
-            }
-        }
+
+
+$today = new DateTime();
+$threeDaysLater = clone $today; // ایجاد یک کپی از تاریخ امروز
+$threeDaysLater->modify('+2 days');
+$saturdayThisWeek = (clone $threeDaysLater)->modify('last saturday');
+$fridayThisWeek = (clone $threeDaysLater)->modify('next friday');
+$firstDayOfMonth = (clone $threeDaysLater)->modify('first day of this month');
+$lastDayOfMonth = (clone $threeDaysLater)->modify('last day of this month');
+
+$apiUrl = "http://192.168.50.15:7475/api/BNPL/InstallmentsByDate?mobileNumber=" . urlencode($mobileNumber);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/json', 'Content-Type: application/json']);
+
+$response = curl_exec($ch);
+if (curl_errno($ch))
+    die('خطا در ارتباط با API: ' . curl_error($ch));
+if (curl_getinfo($ch, CURLINFO_HTTP_CODE) !== 200)
+    die('خطا در دریافت داده از API');
+curl_close($ch);
+
+$userPayData = json_decode($response, true);
+if (!isset($userPayData['success']) || !$userPayData['success'] || !isset($userPayData['data']))
+    die('داده دریافتی معتبر نیست');
+
+$payments = [];
+foreach ($userPayData['data'] as $payment) {
+    if (!isset($payment['price']) || !isset($payment['date']))
+        continue;
+
+    try {
+        $paymentDate = new DateTime($payment['date']);
+        $isThisWeek = $paymentDate >= $saturdayThisWeek && $paymentDate <= $fridayThisWeek;
+        $isThisMonth = $paymentDate >= $firstDayOfMonth && $paymentDate <= $lastDayOfMonth;
+        $isOverdue = $paymentDate < $saturdayThisWeek && $paymentDate < $today;
+
+        $payments[] = [
+            'price' => (int) $payment['price'],
+            'date' => $payment['date'],
+            'is_this_week' => $isThisWeek,
+            'is_this_month' => $isThisMonth,
+            'is_overdue' => $isOverdue,
+            'shamsi_date' => Jalalian::fromDateTime($paymentDate)->format('Y/m/d')
+        ];
+    } catch (Exception $e) {
+        continue;
     }
 }
+
+$weeklyPayments = array_filter($payments, fn($p) => $p['is_this_week']);
+$monthlyPayments = array_filter($payments, fn($p) => $p['is_this_month']);
+$overduePayments = array_filter($payments, fn($p) => $p['is_overdue']);
+
+function calculateTotals($payments)
+{
+    return [
+        'count' => count($payments),
+        'total' => array_sum(array_column($payments, 'price')),
+        'items' => $payments
+    ];
+}
+
+$result = [
+    'weekly' => calculateTotals($weeklyPayments),
+    'monthly' => calculateTotals($monthlyPayments),
+    'overdue' => calculateTotals($overduePayments)
+];
+
+?>
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -334,10 +388,10 @@ foreach ($payments as $payment) {
         }
 
         .debt-card .amount {
-            font-weight: 700;
-            font-size: 1.15rem;
+
             color: var(--text-dark);
             white-space: nowrap;
+            margin: 0 40px 0 0;
             /* Prevent wrapping */
         }
 
@@ -769,31 +823,30 @@ foreach ($payments as $payment) {
             padding: 0.85rem 0;
             z-index: 1000;
         }
- 
+
         /* استایل‌های قبلی را اینجا قرار دهید */
         /* ... */
-        
+
         /* استایل جدید برای input مبلغ پرداختی */
         .amount-input-container {
             display: flex;
             align-items: center;
             margin-top: 0.5rem;
         }
-        
+
         .amount-input {
-            width: 120px;
             text-align: left;
             padding: 0.3rem 0.5rem;
             border: 1px solid var(--border-light);
             border-radius: 6px;
             margin-left: 0.5rem;
         }
-        
+
         .amount-input-buttons {
             display: flex;
             flex-direction: column;
         }
-        
+
         .amount-input-btn {
             width: 24px;
             height: 24px;
@@ -809,6 +862,7 @@ foreach ($payments as $payment) {
         }
     </style>
 </head>
+
 <body>
     <div class="club-header text-center">
         <div class="container">
@@ -819,36 +873,38 @@ foreach ($payments as $payment) {
 
     <div class="container">
         <div class="tab-nav mb-12">
+
             <div class="tab-nav-item active" data-tab="weekly">
                 این هفته
-                <span class="badge" id="weekly-badge"><?= count($weekly_payments) ?></span>
+                <span class="badge" id="weekly-badge"><?= count($weeklyPayments) ?></span>
             </div>
             <div class="tab-nav-item" data-tab="monthly">
                 این ماه
-                <span class="badge" id="monthly-badge"><?= count($monthly_payments) ?></span>
+                <span class="badge" id="monthly-badge"><?= count($monthlyPayments) ?></span>
+            </div>
+            <div class="tab-nav-item " data-tab="overdue">
+                معوقه
+                <span class="badge" id="overdue-badge"><?= count($overduePayments) ?></span>
             </div>
         </div>
-        
+
         <div id="weekly-content" class="tab-content active">
-            <?php if (!empty($weekly_payments)): ?>
-                <?php foreach ($weekly_payments as $payment): ?>
+            <?php if (!empty($weeklyPayments)): ?>
+                <?php foreach ($weeklyPayments as $payment):
+
+                    ?>
                     <div class="debt-card">
                         <label class="checkbox-container">
-                            <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
+
+
                             <span class="checkmark"></span>
+                            <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
                         </label>
-                        <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
-                            <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
-                        </div>
-                        <div class="details">
-                            <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
-                            <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
-                        </div>
+
                         <div class="amount-section">
-                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
-                            <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
-                                <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="fas fa-circle"></i>قسط' ?>
-                            </div>
+
+                            <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -860,31 +916,51 @@ foreach ($payments as $payment) {
         </div>
 
         <div id="monthly-content" class="tab-content">
-            <?php if (!empty($monthly_payments)): ?>
-                <?php foreach ($monthly_payments as $payment): ?>
+            <?php if (!empty($monthlyPayments)): ?>
+                <?php foreach ($monthlyPayments as $payment): ?>
                     <div class="debt-card">
                         <label class="checkbox-container">
-                            <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
+
+
                             <span class="checkmark"></span>
+                            <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
                         </label>
-                        <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
-                            <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
-                        </div>
-                        <div class="details">
-                            <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
-                            <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
-                        </div>
+
                         <div class="amount-section">
-                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
-                            <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
-                                <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="fas fa-circle"></i>قسط' ?>
-                            </div>
+
+                            <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="text-center py-4 text-muted">
                     هیچ پرداختی برای این ماه وجود ندارد
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div id="overdue-content" class="tab-content">
+            <?php if (!empty($overduePayments)): ?>
+                <?php foreach ($overduePayments as $payment): ?>
+                    <div class="debt-card">
+                        <label class="checkbox-container">
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
+
+
+                            <span class="checkmark"></span>
+                            <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
+                        </label>
+
+                        <div class="amount-section">
+
+                            <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="text-center py-4 text-muted">
+                    هیچ پرداختی معوقه وجود ندارد
                 </div>
             <?php endif; ?>
         </div>
@@ -895,7 +971,8 @@ foreach ($payments as $payment) {
         <div class="total-info d-flex justify-content-between align-items-center mb-2">
             <span class="fw-bold">مبلغ قابل پرداخت:</span>
             <div class="amount-input-container">
-                <input type="text" id="payment-amount-input" class="amount-input" value="۰ ریال" readonly>
+                <input type="text" id="payment-amount-input" data-billid="<?php echo ($userData['billId']); ?>"
+                    class="amount-input" value="۰ ریال" readonly>
                 <div class="amount-input-buttons">
                     <button class="amount-input-btn" id="increase-amount">+</button>
                     <button class="amount-input-btn" id="decrease-amount">-</button>
@@ -942,6 +1019,8 @@ foreach ($payments as $payment) {
                             <div class="col-md-6 mb-3">
                                 <label for="password" class="form-label">رمز دوم</label>
                                 <input type="password" class="form-control" id="password" placeholder="رمز دوم کارت">
+                                <input type="hidden" class="form-control" id="billid"
+                                    value="<?php echo ($userData['billId']); ?>">
                             </div>
                         </div>
                     </form>
@@ -964,11 +1043,12 @@ foreach ($payments as $payment) {
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
                         href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
                             class="fas fa-credit-card"></i> پرداخت</a></li>
-                            <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
-                        aria-label="تاریخچه">
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="تاریخچه">
                         <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
-                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پروفایل"><i
+                            class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>
@@ -977,291 +1057,266 @@ foreach ($payments as $payment) {
     <script src="./assets/js/sweetalert2@11.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabItems = document.querySelectorAll('.tab-nav-item');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const payButton = document.getElementById('pay-button');
-            const paymentAmountInput = document.getElementById('payment-amount-input');
-            const increaseBtn = document.getElementById('increase-amount');
-            const decreaseBtn = document.getElementById('decrease-amount');
-            
-            let currentTotal = 0;
-            let selectedItems = [];
+    document.addEventListener('DOMContentLoaded', function () {
+    // عناصر DOM
+    const tabItems = document.querySelectorAll('.tab-nav-item');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const payButton = document.getElementById('pay-button');
+    const paymentAmountInput = document.getElementById('payment-amount-input');
+    const increaseBtn = document.getElementById('increase-amount');
+    const decreaseBtn = document.getElementById('decrease-amount');
+    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    const confirmPaymentBtn = document.getElementById('confirmPayment');
 
-            // تابع تبدیل عدد به فرمت ریال
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
-            }
+    // متغیرهای حالت
+    let currentTotal = 0;
+    let globalSelectedItems = [];
 
-            // تابع تبدیل فرمت ریال به عدد
-            function parseCurrency(currencyStr) {
-                return parseInt(currencyStr.replace(/[^0-9]/g, ''));
-            }
+    // --- توابع کمکی ---
+    const formatCurrency = (amount) => new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
+    const parseCurrency = (currencyStr) => parseInt(currencyStr.replace(/[^0-9]/g, ''));
 
-            // محاسبه و نمایش جمع مبلغ
-            function calculateAndDisplayTotal() {
-                currentTotal = 0;
-                selectedItems = [];
-                
-                const activeContent = document.querySelector('.tab-content.active');
-                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
-                
-                checkboxes.forEach(checkbox => {
-                    const amount = parseInt(checkbox.dataset.amount);
-                    currentTotal += amount;
-                    selectedItems.push({
-                        id: checkbox.dataset.id,
-                        amount: amount
-                    });
-                });
+    // --- مدیریت انتخاب پرداخت‌ها ---
+    const calculateAndDisplayTotal = () => {
+        currentTotal = 0;
+        globalSelectedItems = []; // Reset global selected items
 
-                paymentAmountInput.value = formatCurrency(currentTotal);
-                payButton.disabled = selectedItems.length === 0;
-            }
+        const activeContent = document.querySelector('.tab-content.active');
+        const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
 
-            // افزایش مبلغ پرداختی
-            increaseBtn.addEventListener('click', function() {
-                currentTotal += 10000; // افزایش 10,000 ریال
-                paymentAmountInput.value = formatCurrency(currentTotal);
-            });
-
-            // کاهش مبلغ پرداختی
-            decreaseBtn.addEventListener('click', function() {
-                if (currentTotal > 10000) {
-                    currentTotal -= 10000; // کاهش 10,000 ریال
-                    paymentAmountInput.value = formatCurrency(currentTotal);
-                }
-            });
-
-            // فعال کردن انتخاب چک‌باکس‌ها
-            document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', function () {
-                    const container = this.closest('.checkbox-container');
-                    const debtCard = container.closest('.debt-card');
-
-                    if (this.checked) {
-                        debtCard.style.border = '2px solid var(--primary-color)';
-                        container.querySelector('.checkmark').classList.add('checked');
-                    } else {
-                        debtCard.style.border = 'none';
-                        container.querySelector('.checkmark').classList.remove('checked');
-                    }
-
-                    calculateAndDisplayTotal();
-                });
-            });
-
-            // تغییر تب‌ها
-            tabItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    tabItems.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-
-                    this.classList.add('active');
-                    const targetTab = this.dataset.tab;
-                    document.getElementById(targetTab + '-content').classList.add('active');
-
-                    // ریست کردن محاسبات هنگام تغییر تب
-                    currentTotal = 0;
-                    selectedItems = [];
-                    paymentAmountInput.value = formatCurrency(currentTotal);
-                    payButton.disabled = true;
-                });
-            });
- cardNumberInput.addEventListener('input', function (e) {
-                let value = this.value.replace(/\D/g, '');
-                let formatted = '';
-
-                for (let i = 0; i < value.length; i++) {
-                    if (i > 0 && i % 4 === 0) {
-                        formatted += '-';
-                    }
-                    formatted += value[i];
-                }
-
-                this.value = formatted;
-            });
-
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
-            }
-
-            function calculateAndDisplayTotal() {
-                const activeContent = document.querySelector('.tab-content.active');
-                let total = 0;
-                const selectedItems = [];
-
-                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
-                checkboxes.forEach(checkbox => {
-                    total += parseInt(checkbox.dataset.amount);
-                    selectedItems.push({
-                        id: checkbox.dataset.id,
-                        amount: checkbox.dataset.amount
-                    });
-                });
-
-                totalPaymentAmountSpan.textContent = formatCurrency(total);
-                payButton.disabled = selectedItems.length === 0;
-
-                return selectedItems;
-            }
-
-            // فعال کردن انتخاب چک‌باکس‌ها
-            document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
-                checkbox.addEventListener('change', function () {
-                    const container = this.closest('.checkbox-container');
-                    const debtCard = container.closest('.debt-card');
-
-                    // ایجاد تغییرات ظاهری
-                    if (this.checked) {
-                        debtCard.style.border = '2px solid var(--primary-color)';
-                        container.querySelector('.checkmark').classList.add('checked');
-                    } else {
-                        debtCard.style.border = 'none';
-                        container.querySelector('.checkmark').classList.remove('checked');
-                    }
-
-                    calculateAndDisplayTotal();
-                });
-            });
-
-            // تغییر تب‌ها
-            tabItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    tabItems.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-
-                    this.classList.add('active');
-                    const targetTab = this.dataset.tab;
-                    document.getElementById(targetTab + '-content').classList.add('active');
-
-                    // ریست کردن محاسبات هنگام تغییر تب
-                    totalPaymentAmountSpan.textContent = '۰ ریال';
-                    payButton.disabled = true;
-
-                    // غیرفعال کردن دکمه پرداخت در تب پرداخت شده
-                    if (targetTab === 'settled') {
-                        payButton.style.display = 'none';
-                    } else {
-                        payButton.style.display = 'block';
-                    }
-                });
-            });
-
-            payButton.addEventListener('click', function () {
-                const selectedItems = calculateAndDisplayTotal();
-                if (selectedItems.length === 0) return;
-
-                // نمایش مودال پرداخت
-                paymentModal.show();
-            });
-
-
-
-
-            document.getElementById('expiryMonth').addEventListener('input', function (e) {
-                this.value = this.value.replace(/\D/g, '').slice(0, 2);
-                if (this.value.length === 1 && parseInt(this.value) > 1) {
-                    this.value = '0' + this.value;
-                }
-                if (this.value.length === 2 && parseInt(this.value) > 12) {
-                    this.value = '12';
-                }
-            });
-
-            document.getElementById('expiryYear').addEventListener('input', function (e) {
-                this.value = this.value.replace(/\D/g, '').slice(0, 2);
-            });
-
-            confirmPaymentBtn.addEventListener('click', async function () {
-                const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
-                const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
-                const expiryYear = document.getElementById('expiryYear').value;
-                const cvv2 = document.getElementById('cvv2').value;
-                const password = document.getElementById('password').value;
-                const selectedItems = calculateAndDisplayTotal();
-
-                // اعتبارسنجی فرم
-                if (!cardNumber || cardNumber.length !== 16) {
-                    await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
-                    return;
-                }
-
-                if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
-                    await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
-                    return;
-                }
-
-                if (!expiryYear || expiryYear.length !== 2) {
-                    await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
-                    return;
-                }
-
-                if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
-                    await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
-                    return;
-                }
-
-                if (!password) {
-                    await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
-                    return;
-                }
-
-                const originalText = confirmPaymentBtn.textContent;
-                confirmPaymentBtn.disabled = true;
-                confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
-
-                try {
-                    // ارسال درخواست‌های PUT به proxy-settle.php
-                    const requests = selectedItems.map(item => {
-                        return fetch(`proxy-settle.php?id=${item.id}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            }
-                        });
-                    });
-
-                    const responses = await Promise.all(requests);
-
-                    // بررسی پاسخ‌ها
-                    for (const response of responses) {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                    }
-
-                    const results = await Promise.all(responses.map(res => res.json()));
-
-                    const allSuccess = results.every(result => result.success);
-
-                    if (allSuccess) {
-                        paymentModal.hide();
-                        await Swal.fire({
-                            icon: 'success',
-                            title: 'پرداخت موفق',
-                            text: `پرداخت ${selectedItems.length} آیتم با موفقیت انجام شد`,
-                            confirmButtonText: 'باشه'
-                        });
-                        window.location.reload(true);
-                    } else {
-                        throw new Error('برخی پرداخت‌ها انجام نشد');
-                    }
-                } catch (error) {
-                    console.error('Payment error:', error);
-                    await Swal.fire({
-                        icon: 'error',
-                        title: 'خطا در پرداخت',
-                        text: error.message || 'خطایی در پرداخت رخ داده است. لطفاً مجدداً تلاش کنید.',
-                        confirmButtonText: 'باشه'
-                    });
-                } finally {
-                    confirmPaymentBtn.disabled = false;
-                    confirmPaymentBtn.textContent = originalText;
-                }
+        checkboxes.forEach(checkbox => {
+            const amount = parseInt(checkbox.dataset.amount);
+            currentTotal += amount;
+            globalSelectedItems.push({
+                id: checkbox.dataset.id || '',
+                amount: amount,
+                element: checkbox
             });
         });
-    </script>
+
+        paymentAmountInput.value = formatCurrency(currentTotal);
+        payButton.disabled = globalSelectedItems.length === 0;
+
+        // Update badge count
+        const activeTab = document.querySelector('.tab-nav-item.active');
+        if (activeTab) {
+            const badge = activeTab.querySelector('.badge');
+            if (badge) {
+                badge.textContent = checkboxes.length;
+            }
+        }
+
+        return globalSelectedItems; // Return the updated array
+    };
+
+    // --- رویدادهای UI ---
+    increaseBtn.addEventListener('click', () => {
+        currentTotal += 1000000;
+        paymentAmountInput.value = formatCurrency(currentTotal);
+    });
+
+    decreaseBtn.addEventListener('click', () => {
+        if (currentTotal > 1000000) {
+            currentTotal -= 1000000;
+            paymentAmountInput.value = formatCurrency(currentTotal);
+        }
+    });
+
+    // مدیریت انتخاب چک‌باکس‌ها
+    document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const container = this.closest('.checkbox-container');
+            const debtCard = container.closest('.debt-card');
+
+            if (this.checked) {
+                debtCard.style.border = '2px solid var(--primary-color)';
+                container.querySelector('.checkmark').classList.add('checked');
+            } else {
+                debtCard.style.border = 'none';
+                container.querySelector('.checkmark').classList.remove('checked');
+            }
+
+            calculateAndDisplayTotal();
+        });
+    });
+
+    // مدیریت تب‌ها
+    tabItems.forEach(item => {
+        item.addEventListener('click', function() {
+            tabItems.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            this.classList.add('active');
+            const targetTab = this.dataset.tab;
+            document.getElementById(targetTab + '-content').classList.add('active');
+
+            // Reset state
+            currentTotal = 0;
+            globalSelectedItems = [];
+            paymentAmountInput.value = formatCurrency(currentTotal);
+            payButton.disabled = true;
+
+            calculateAndDisplayTotal();
+        });
+    });
+
+    // --- پرداخت ---
+    payButton.addEventListener('click', () => {
+        // Double check selection before showing modal
+        const items = calculateAndDisplayTotal();
+        if (items.length === 0) {
+            Swal.fire('خطا', 'لطفاً حداقل یک قسط را انتخاب نمایید', 'warning');
+            return;
+        }
+        paymentModal.show();
+    });
+
+    // --- اعتبارسنجی فرم پرداخت ---
+    confirmPaymentBtn.addEventListener('click', async function() {
+        // Get fresh selection data
+        const selectedItems = calculateAndDisplayTotal();
+        
+        // Final validation
+        if (!selectedItems || selectedItems.length === 0) {
+            await Swal.fire('خطا', 'لطفاً حداقل یک قسط را انتخاب نمایید', 'error');
+            return;
+        }
+
+        const billid = document.getElementById('billid').value;
+        if (!billid) {
+            await Swal.fire('خطا', 'شناسه قبض معتبر نیست', 'error');
+            return;
+        }
+
+        // Validate card details
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+        const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
+        const expiryYear = document.getElementById('expiryYear').value;
+        const cvv2 = document.getElementById('cvv2').value;
+        const password = document.getElementById('password').value;
+
+        if (!cardNumber || cardNumber.length !== 16) {
+            await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
+            return;
+        }
+
+        if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
+            await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
+            return;
+        }
+
+        if (!expiryYear || expiryYear.length !== 2) {
+            await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
+            return;
+        }
+
+        if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
+            await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
+            return;
+        }
+
+        if (!password) {
+            await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
+            return;
+        }
+
+        // UI Feedback
+        const originalText = confirmPaymentBtn.innerHTML;
+        confirmPaymentBtn.disabled = true;
+        confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
+
+        try {
+            // Process each selected item
+            const paymentPromises = selectedItems.map(item => {
+                return fetch(`proxy-settle.php?id=${billid}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: item.amount,
+                        payment_date: new Date().toISOString(),
+                        item_id: billid
+                    })
+                });
+            });
+
+            const responses = await Promise.all(paymentPromises);
+            
+            // Check all responses
+            const allSuccessful = responses.every(response => response.ok);
+            if (!allSuccessful) {
+                throw new Error('برخی پرداخت‌ها انجام نشد');
+            }
+
+            const results = await Promise.all(responses.map(res => res.json()));
+            const allComplete = results.every(result => result.success);
+
+            if (allComplete) {
+                paymentModal.hide();
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'پرداخت موفق',
+                    text: `پرداخت ${selectedItems.length} قسط با موفقیت انجام شد`,
+                    confirmButtonText: 'باشه'
+                });
+                
+                // Update UI after payment
+                selectedItems.forEach(item => {
+                    if (item.element) {
+                        item.element.checked = false;
+                        item.element.dispatchEvent(new Event('change'));
+                    }
+                });
+                
+                window.location.reload();
+            } else {
+                throw new Error('پرداخت با خطا مواجه شد');
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'خطا در پرداخت',
+                text: error.message || 'خطایی در پرداخت رخ داده است',
+                confirmButtonText: 'متوجه شدم'
+            });
+        } finally {
+            confirmPaymentBtn.disabled = false;
+            confirmPaymentBtn.innerHTML = originalText;
+        }
+    });
+
+    // --- سایر رویدادهای فرم ---
+    const cardNumberInput = document.getElementById('cardNumber');
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += value[i];
+            }
+            this.value = formatted;
+        });
+    }
+
+    document.getElementById('expiryMonth').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 2);
+        if (this.value.length === 1 && parseInt(this.value) > 1) {
+            this.value = '0' + this.value;
+        }
+        if (this.value.length === 2 && parseInt(this.value) > 12) {
+            this.value = '12';
+        }
+    });
+
+    document.getElementById('expiryYear').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 2);
+    });
+});
+</script>
 </body>
+
 </html>

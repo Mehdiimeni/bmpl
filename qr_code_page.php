@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(isset($_GET['terminal_id']) and !isset($_SESSION['mobileNumber'])) {
+if (isset($_GET['terminal_id']) and !isset($_SESSION['mobileNumber'])) {
     header('Location: login-user.php?terminal_id=' . $_GET['terminal_id']);
     exit;
 }
@@ -857,34 +857,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <?php endif; ?>
 
             <form id="paymentForm">
-                    <div class="mb-3">
-                        <label for="amountInput" class="form-label">مبلغ (ریال)</label>
-                        <input type="number" class="form-control" id="amountInput" placeholder="مثلاً 150000" min="1000" required>
-                        <div class="invalid-feedback" id="amountError">لطفاً مبلغ معتبری وارد کنید.</div>
-                    </div>
-
-                    <button type="submit" class="btn btn-submit w-100">تایید مبلغ</button>
-                </form>
-
-                <div id="paymentOptions" class="payment-options d-none mt-4">
-                    <h5 class="text-center mb-4">نحوه بازپرداخت اعتبار</h5>
-
-                    <div class="payment-option-card mb-3" data-option="full">
-                        <label class="d-flex align-items-center justify-content-between w-100">
-                            <span>تسویه تا 30 ام ماه</span>
-                            <input type="radio" name="paymentType" value="full">
-                        </label>
-                        <div class="installment-details w-100 text-end">
-                            مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ ریال</strong>
-                        </div>
-                    </div>
-
-                    
-
-                    <button type="button" class="btn btn-pay-now w-100 mt-4" id="payNowBtn" disabled>ثبت</button>
+                <div class="mb-3">
+                    <label for="amountInput" class="form-label">مبلغ (ریال)</label>
+                    <input type="number" class="form-control" id="amountInput" placeholder="مثلاً 150000" min="1000"
+                        required>
+                    <div class="invalid-feedback" id="amountError">لطفاً مبلغ معتبری وارد کنید.</div>
                 </div>
+
+                <button type="submit" class="btn btn-submit w-100">تایید مبلغ</button>
+            </form>
+
+            <div id="paymentOptions" class="payment-options d-none mt-4">
+                <h5 class="text-center mb-4">نحوه بازپرداخت اعتبار</h5>
+
+                <div class="payment-option-card mb-3" data-option="full">
+                    <label class="d-flex align-items-center justify-content-between w-100">
+                        <span> اقساط چهار ماهه </span>
+                        <input type="radio" name="paymentType" value="full">
+                    </label>
+                    <div class="installment-details w-100 text-end">
+                        مبلغ قابل پرداخت: <strong id="fullPaymentAmount">۰ ریال</strong>
+                    </div>
+                </div>
+
+
+
+                <button type="button" class="btn btn-pay-now w-100 mt-4"
+                    data-bill-id="<?php echo $userData['billId']; ?>" id="payNowBtn" disabled>ثبت</button>
             </div>
         </div>
+    </div>
     </div>
 
     <div class="bottom-navigation-bar">
@@ -897,11 +899,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
                         href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
                             class="fas fa-credit-card"></i> پرداخت</a></li>
-                            <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
-                        aria-label="تاریخچه">
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="تاریخچه">
                         <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
-                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پروفایل"><i
+                            class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>
@@ -1080,72 +1083,137 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             const installmentAmount = document.getElementById('installmentAmount');
             const payNowBtn = document.getElementById('payNowBtn');
             const paymentOptionCards = document.querySelectorAll('.payment-option-card');
-            
+
             if (paymentForm) {
                 paymentForm.addEventListener('submit', function (e) {
                     e.preventDefault();
-                    
+
                     // اعتبارسنجی مبلغ
                     const amount = parseInt(amountInput.value);
                     if (isNaN(amount) || amount < 1000) {
                         amountInput.classList.add('is-invalid');
                         return;
                     }
-                    
+
                     amountInput.classList.remove('is-invalid');
-                    
+
                     // نمایش گزینه‌های پرداخت
                     paymentOptions.classList.remove('d-none');
-                    
+
                     // محاسبه و نمایش مبالغ
                     const formattedAmount = amount.toLocaleString('fa-IR');
                     fullPaymentAmount.textContent = `${formattedAmount} ریال`;
-                    
+
                     const installmentValue = Math.ceil(amount / 4);
                     const formattedInstallment = installmentValue.toLocaleString('fa-IR');
                     installmentAmount.textContent = `${formattedInstallment} ریال`;
-                    
+
                     // اسکرول به بخش گزینه‌های پرداخت
                     paymentOptions.scrollIntoView({ behavior: 'smooth' });
                 });
             }
-            
+
             // مدیریت انتخاب گزینه پرداخت
             paymentOptionCards.forEach(card => {
-                card.addEventListener('click', function() {
+                card.addEventListener('click', function () {
                     // حذف حالت انتخاب از همه کارتها
                     paymentOptionCards.forEach(c => {
                         c.classList.remove('selected');
                     });
-                    
+
                     // اضافه کردن حالت انتخاب به کارت جاری
                     this.classList.add('selected');
-                    
+
                     // فعال کردن دکمه پرداخت
                     payNowBtn.disabled = false;
                 });
             });
-            
+
             // مدیریت کلیک روی دکمه پرداخت
+
             if (payNowBtn) {
-                payNowBtn.addEventListener('click', function() {
-                    const selectedOption = document.querySelector('input[name="paymentType"]:checked');
-                    if (!selectedOption) {
-                        alert('لطفاً یک روش پرداخت را انتخاب کنید');
-                        return;
+                payNowBtn.addEventListener('click', async function () {
+                    try {
+                        // 1. بررسی انتخاب روش پرداخت
+                        const selectedOption = document.querySelector('input[name="paymentType"]:checked');
+                        if (!selectedOption) {
+                            alert('لطفاً یک روش پرداخت را انتخاب کنید');
+                            return;
+                        }
+
+                        // 2. بررسی مبلغ پرداخت
+                        const amount = parseInt(amountInput.value);
+                        if (isNaN(amount)) {
+                            alert('مبلغ پرداخت معتبر نیست');
+                            return;
+                        }
+
+                        // 3. دریافت billId از دیتا-اَتْریبِیوت
+                        const billId = payNowBtn.dataset.billId;
+                        if (!billId) {
+                            alert('شناسه قبض معتبر نیست');
+                            return;
+                        }
+
+                        // 4. بررسی موارد انتخاب شده
+                        const selectedItems = calculateAndDisplayTotal();
+                        if (!selectedItems || selectedItems.length === 0) {
+                            alert('لطفاً حداقل یک مورد را انتخاب کنید');
+                            return;
+                        }
+
+                        // 5. ارسال درخواست‌های پرداخت
+                        const paymentPromises = selectedItems.map(item => {
+                            return fetch(`proxy-settle.php?id=${billId}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    amount: item.amount, // استفاده از مبلغ آیتم انتخاب شده
+                                    payment_date: new Date().toISOString(),
+                                    item_id: item.id  
+                                })
+                            });
+                        });
+
+                        // 6. پردازش نتایج
+                        const responses = await Promise.all(paymentPromises);
+                        const allSuccessful = responses.every(response => response.ok);
+
+                        if (allSuccessful) {
+                            // 7. نمایش پیام موفقیت
+                            await Swal.fire({
+                                icon: 'success',
+                                title: 'موفقیت',
+                                text: 'درخواست پرداخت شما با موفقیت ثبت شد',
+                                confirmButtonText: 'باشه'
+                            });
+
+                            // 8. به‌روزرسانی UI
+                            selectedItems.forEach(item => {
+                                if (item.element) {
+                                    item.element.checked = false;
+                                    item.element.dispatchEvent(new Event('change'));
+                                }
+                            });
+                        } else {
+                            throw new Error('برخی پرداخت‌ها انجام نشد');
+                        }
+                    } catch (error) {
+                        console.error('Payment error:', error);
+                        await Swal.fire({
+                            icon: 'error',
+                            title: 'خطا',
+                            text: 'خطایی در پرداخت رخ داده است',
+                            confirmButtonText: 'متوجه شدم'
+                        });
                     }
-                    
-                    const amount = parseInt(amountInput.value);
-                    const paymentMethod = selectedOption.value;
-                    
-                    // در اینجا می‌توانید منطق پرداخت را اضافه کنید
-                    console.log(`پرداخت ${amount} ریال با روش ${paymentMethod === 'full' ? 'تک‌مبلغی' : 'اقساطی'}`);
-                    
-                    // نمایش پیام موفقیت
-                    alert('درخواست پرداخت شما با موفقیت ثبت شد');
                 });
             }
         });
     </script>
 </body>
+
 </html>

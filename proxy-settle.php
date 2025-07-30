@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = $_GET['id'];
-$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?billId=" . urlencode($id);
+$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?billId=" . ($id);
 
 $ch = curl_init($api_url);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -28,7 +28,6 @@ $error = curl_error($ch);
 curl_close($ch);
 
 // ثبت در لاگ برای بررسی پاسخ API
-file_put_contents("log.txt", "HTTP: $http_code\nResponse:\n$response\n");
 
 if ($error) {
     http_response_code(500);

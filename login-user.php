@@ -71,7 +71,6 @@ if(isset($_GET['return_url'])) {
 
                     <input type="hidden" name="scode" id="scode" value="">
                     <input type="hidden" name="return_url" id="return_url" value="<?php echo $return_url; ?>">
-                    <input type="hidden" name="terminal_id" id="terminal_id" value="<?php echo $terminal_id; ?>">
                     <button type="submit" id="submitBtn" class="submit-btn" disabled>
                         دریافت کد ورود
                     </button>

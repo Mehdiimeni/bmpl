@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const preloader = document.getElementById("preloader");
   const scodeInput = document.getElementById("scode");
   const returnUrl = document.getElementById("return_url");
-  const terminalId = document.getElementById("terminal_id");
   const loginForm = document.getElementById("loginForm");
 
   // Function to generate random 6-digit code
@@ -124,15 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const redirectInput = document.createElement("input");
       redirectInput.type = "hidden";
       redirectInput.name = "return_url";
-      redirectInput.value = terminalId.value;
+      redirectInput.value = returnUrl.value;
       form.appendChild(redirectInput);
-
-
-      const terminalIdInput = document.createElement("input");
-      terminalIdInput.type = "hidden";
-      terminalIdInput.name = "terminal_id";
-      terminalIdInput.value = returnUrl.value;
-      form.appendChild(terminalIdInput);
 
       document.body.appendChild(form);
       form.submit();

@@ -13,8 +13,30 @@ if (!isset($_SESSION['payment_data'])) {
 $paymentData = $_SESSION['payment_data'];
 $buyResponse = null;
 
+// user data
+
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    CURLOPT_POSTFIELDS => json_encode(['mobileNumber' => $_SESSION['mobileNumber']])
+));
+
+$response = curl_exec($curl);
+$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+curl_close($curl);
+
+
+// تلاش برای تبدیل به JSON
+$userData = json_decode($response, true);
+
+
+
 // تابع درخواست API
-function callAPI($url, $data) {
+function callAPI($url, $data)
+{
     $curl = curl_init();
     curl_setopt_array($curl, [
         CURLOPT_URL => $url,
@@ -37,22 +59,46 @@ function callAPI($url, $data) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'confirm') {
         $buyResponse = callAPI('http://192.168.50.15:7475/api/BNPL/buy', [
-            'buyerMerchantNumber' => '10433',
-            'sellerMerchantNumber' => '700000000879',
+            'buyerMerchantNumber' => $userData['merchantId'],
+            'sellerMerchantNumber' => $paymentData['terminal_id'],
             'amount' => $paymentData['total_amount'],
-            'productCode' => 'sdg',
+            'productCode' => 'test',
             'productName' => 'محصول انتخابی',
             'paymentType' => 0
         ]);
 
         $_SESSION['payment_result'] = $buyResponse;
 
-        $confirmResponse = callAPI('http://192.168.50.15:7475/api/BNPL/confirm', [
-            'transactionId' => $buyResponse['response']['transactionId'] ?? null,
-            'terminalId' => $paymentData['terminal_id']
+
+        $confirmResponse = callAPI('http://192.168.50.15:7475/api/BNPL/Verify', [
+
+            'customerId' => $userData['merchantId'] ?? null,
+            'rrn' => $buyResponse['response']['rrn'] ?? null,
+            'amount' => $paymentData['total_amount'] ?? null,
+            'traceNo' => $buyResponse['response']['traceNo'] ?? null
         ]);
 
-        header('Location: ' . $paymentData['return_url'] . '?status=' . ($confirmResponse['status'] ? 'success' : 'fail') . '&response=' . urlencode(json_encode($confirmResponse['response'])));
+        // پردازش پاسخ و هدایت کاربر
+        if ($confirmResponse['status'] && isset($confirmResponse['response']['success']) && $confirmResponse['response']['success']) {
+            // در صورت موفقیت آمیز بودن تایید تراکنش
+            $redirectParams = [
+                'status' => 'success',
+                'message' => $confirmResponse['response']['data']['message'] ?? 'تراکنش با موفقیت انجام شد',
+                'rrn' => $confirmResponse['response']['data']['rrn'] ?? null,
+                'traceNo' => $confirmResponse['response']['data']['traceNo'] ?? null
+            ];
+        } else {
+            // در صورت عدم موفقیت در تایید تراکنش
+            $redirectParams = [
+                'status' => 'fail',
+                'message' => $confirmResponse['response']['data']['message'] ?? 'خطا در انجام تراکنش',
+                'error' => $confirmResponse['error'] ?? null,
+                'http_code' => $confirmResponse['http_code'] ?? null
+            ];
+        }
+
+        // هدایت کاربر به صفحه بازگشت
+        header('Location: ' . $paymentData['return_url'] . '?' . http_build_query($redirectParams));
         exit;
     }
 
@@ -64,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <title>تأیید پرداخت</title>
@@ -73,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         body {
             background-color: #f5f5f5;
         }
+
         .payment-box {
             max-width: 600px;
             margin: 50px auto;
@@ -81,14 +129,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             border-radius: 15px;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
         }
+
         .countdown {
             font-size: 2rem;
             color: #dc3545;
             font-weight: bold;
         }
+
         .btn-lg {
             min-width: 160px;
         }
+
         .info-box {
             background: #f0f8ff;
             border: 1px solid #cce5ff;
@@ -99,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="payment-box text-center">
@@ -143,4 +195,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }, 1000);
     </script>
 </body>
+
 </html>

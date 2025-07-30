@@ -3,6 +3,12 @@ header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
 header("Pragma: no-cache"); // HTTP 1.0
 header("Expires: 0"); // Proxies
 
+session_start();
+
+if (isset($_SESSION['mobileNumber'])) {
+    header('Location: credit.php?sr=' . random_int(1, 1000000000));
+    exit();
+}
 ?>
 <!DOCTYPE HTML>
 <html lang="fa" dir="rtl">

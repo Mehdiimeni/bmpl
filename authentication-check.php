@@ -175,12 +175,11 @@ if (!validateToken($token, $mobileNumber, $terminalId)) {
 $acquirerName = 'نام پذیرنده';
 $curl = curl_init();
 curl_setopt_array($curl, [
-    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/GetMerchantByTerminalNumber/',
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/GetMerchantByTerminalNumber/' . $terminalId,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST => true,
     CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-    CURLOPT_POSTFIELDS => json_encode(['terminal_id' => $terminalId])
 ]);
+
 
 $merchantResponse = curl_exec($curl);
 if (curl_errno($curl)) {

@@ -456,10 +456,10 @@
             <div class="form-container">
                 <h2 class="text-center">تأیید کد فعال‌سازی</h2>
                 <p class="text-center text-muted">کد 6 رقمی ارسال شده به شماره موبایل شما را وارد نمایید</p>
-                <?php if ($_POST['return_url'] != '' and  $_POST['terminal_id'] == '') { ?>
+                <?php if ($_POST['return_url'] != '') { ?>
                     <form action="authentication-check.php" method="post">
-                        <?php } elseif($_POST['terminal_id'] != '') { ?>
-                            <form action="qr_code_page.php?terminal_id=<?php echo $_POST['terminal_id']; ?>" method="post"></form>
+
+
                     <?php } else { ?>
                         <form id="verificationForm" action="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
                             method="post" novalidate>

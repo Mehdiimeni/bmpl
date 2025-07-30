@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 if (isset($_SESSION['mobileNumber'])) {
     $mobileNumber = $_SESSION['mobileNumber'];
 } else {
@@ -10,14 +9,16 @@ if (isset($_SESSION['mobileNumber'])) {
 }
 
 // تابع تبدیل اعداد به فارسی
-function convertToPersianNumber($number)
-{
+function convertToPersianNumber($number) {
     $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     return str_replace($english, $persian, number_format($number));
 }
 
-
+// تاریخ امروز
+$today = new DateTime();
+$currentDay = $today->format('N'); // 1 (Monday) to 7 (Sunday)
+$currentDate = $today->format('Y-m-d');
 
 // ارسال درخواست به API
 $curl = curl_init();
@@ -33,28 +34,41 @@ $response = curl_exec($curl);
 $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
 
-
-// تلاش برای تبدیل به JSON
 $data = json_decode($response, true);
-
 
 // دریافت اطلاعات پرداخت‌ها از API
 $api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $data['merchantNumber'];
 $response = file_get_contents($api_url);
 $payments = json_decode($response, true);
 
-// تفکیک پرداخت‌های تسویه نشده و تسویه شده
-$unsettled_payments = array_filter($payments, function ($payment) {
-    return !isset($payment['settled']) || $payment['settled'] == false;
-});
+// تفکیک پرداخت‌های هفته جاری و ماه جاری
+$weekly_payments = [];
+$monthly_payments = [];
 
-$settled_payments = array_filter($payments, function ($payment) {
-    return isset($payment['settled']) && $payment['settled'] == true;
-});
+foreach ($payments as $payment) {
+    if (!isset($payment['settled']) || $payment['settled'] == false) {
+        $paymentDate = new DateTime($payment['paymentDate']);
+        $paymentMonth = $paymentDate->format('m');
+        $currentMonth = $today->format('m');
+        
+        // اگر پرداخت مربوط به ماه جاری است
+        if ($paymentMonth == $currentMonth) {
+            $monthly_payments[] = $payment;
+            
+            // اگر پرداخت مربوط به هفته جاری است (از شنبه تا جمعه)
+            $paymentDay = $paymentDate->format('N');
+            $daysDiff = $paymentDate->diff($today)->days;
+            
+            if (($paymentDay >= 6 && $currentDay <= 5 && $daysDiff <= 2) || // پنجشنبه و جمعه هفته قبل
+                ($paymentDay <= $currentDay && $daysDiff <= 6)) { // شنبه تا امروز
+                $weekly_payments[] = $payment;
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -755,11 +769,47 @@ $settled_payments = array_filter($payments, function ($payment) {
             padding: 0.85rem 0;
             z-index: 1000;
         }
+ 
+        /* استایل‌های قبلی را اینجا قرار دهید */
+        /* ... */
+        
+        /* استایل جدید برای input مبلغ پرداختی */
+        .amount-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .amount-input {
+            width: 120px;
+            text-align: left;
+            padding: 0.3rem 0.5rem;
+            border: 1px solid var(--border-light);
+            border-radius: 6px;
+            margin-left: 0.5rem;
+        }
+        
+        .amount-input-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .amount-input-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.1rem;
+        }
     </style>
 </head>
-
 <body>
-
     <div class="club-header text-center">
         <div class="container">
             <h3 class="mb-3">پرداخت‌های من</h3>
@@ -769,45 +819,26 @@ $settled_payments = array_filter($payments, function ($payment) {
 
     <div class="container">
         <div class="tab-nav mb-12">
-            <div class="tab-nav-item active" data-tab="unsettled">
+            <div class="tab-nav-item active" data-tab="weekly">
+                این هفته
+                <span class="badge" id="weekly-badge"><?= count($weekly_payments) ?></span>
+            </div>
+            <div class="tab-nav-item" data-tab="monthly">
                 این ماه
-                <span class="badge" id="unsettled-badge"><?= count($unsettled_payments) ?></span>
-            </div>
-            <div class="tab-nav-item" data-tab="settled">
-                پرداخت شده
-                <span class="badge" id="settled-badge"><?= count($settled_payments) ?></span>
+                <span class="badge" id="monthly-badge"><?= count($monthly_payments) ?></span>
             </div>
         </div>
-        <div id="unsettled-content" class="tab-content active">
-            <?php foreach ($unsettled_payments as $payment): ?>
-                <div class="debt-card">
-                    <label class="checkbox-container">
-                        <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $data['billId'] ?>">
-                        <span class="checkmark"></span>
-                    </label>
-                    <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
-                        <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
-                    </div>
-                    <div class="details">
-                        <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
-                        <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
-                    </div>
-                    <div class="amount-section">
-                        <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
-                        <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
-                            <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="bi bi-dot"></i>قسط' ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <div id="settled-content" class="tab-content">
-            <?php if (!empty($settled_payments)): ?>
-                <?php foreach ($settled_payments as $payment): ?>
+        
+        <div id="weekly-content" class="tab-content active">
+            <?php if (!empty($weekly_payments)): ?>
+                <?php foreach ($weekly_payments as $payment): ?>
                     <div class="debt-card">
-                        <div class="icon-box success-theme">
-                            <i class="fa-solid fa-check"></i>
+                        <label class="checkbox-container">
+                            <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                            <span class="checkmark"></span>
+                        </label>
+                        <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
+                            <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
                         </div>
                         <div class="details">
                             <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
@@ -815,15 +846,45 @@ $settled_payments = array_filter($payments, function ($payment) {
                         </div>
                         <div class="amount-section">
                             <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
-                            <div class="amount-badge success">
-                                <i class="bi bi-check-circle"></i> پرداخت شده
+                            <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
+                                <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="fas fa-circle"></i>قسط' ?>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
                 <div class="text-center py-4 text-muted">
-                    هیچ پرداخت انجام شده‌ای وجود ندارد
+                    هیچ پرداختی برای این هفته وجود ندارد
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div id="monthly-content" class="tab-content">
+            <?php if (!empty($monthly_payments)): ?>
+                <?php foreach ($monthly_payments as $payment): ?>
+                    <div class="debt-card">
+                        <label class="checkbox-container">
+                            <input type="checkbox" data-amount="<?= $payment['amount'] ?>" data-id="<?= $payment['id'] ?>">
+                            <span class="checkmark"></span>
+                        </label>
+                        <div class="icon-box <?= $payment['paymentType'] == 0 ? 'green-theme' : 'blue-theme' ?>">
+                            <i class="fa-solid fa-<?= $payment['paymentType'] == 0 ? 'calendar' : 'credit-card' ?>"></i>
+                        </div>
+                        <div class="details">
+                            <div class="title"><?= $payment['productName'] ?> (<?= $payment['sellerMerchantName'] ?>)</div>
+                            <div class="subtitle"><?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : 'خرید اقساطی' ?></div>
+                        </div>
+                        <div class="amount-section">
+                            <div class="amount"><?= convertToPersianNumber($payment['amount']) ?> ریال</div>
+                            <div class="amount-badge <?= $payment['paymentType'] == 0 ? 'monthly' : 'installment' ?>">
+                                <?= $payment['paymentType'] == 0 ? 'بدهی ماهانه' : '<i class="fas fa-circle"></i>قسط' ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="text-center py-4 text-muted">
+                    هیچ پرداختی برای این ماه وجود ندارد
                 </div>
             <?php endif; ?>
         </div>
@@ -833,7 +894,13 @@ $settled_payments = array_filter($payments, function ($payment) {
     <div class="payment-bar">
         <div class="total-info d-flex justify-content-between align-items-center mb-2">
             <span class="fw-bold">مبلغ قابل پرداخت:</span>
-            <span id="total-payment-amount" class="fw-bold">۰ ریال</span>
+            <div class="amount-input-container">
+                <input type="text" id="payment-amount-input" class="amount-input" value="۰ ریال" readonly>
+                <div class="amount-input-buttons">
+                    <button class="amount-input-btn" id="increase-amount">+</button>
+                    <button class="amount-input-btn" id="decrease-amount">-</button>
+                </div>
+            </div>
         </div>
         <button id="pay-button" class="btn btn-primary w-100 py-2" disabled>
             پرداخت
@@ -887,26 +954,25 @@ $settled_payments = array_filter($payments, function ($payment) {
         </div>
     </div>
 
-
-
-
     <div class="bottom-navigation-bar">
         <div class="container">
             <ul class="tf-navigation-bar">
-                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column" href="credit.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
-                        <i class="fas fa-home"></i> خانه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php">
-                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
-                
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit-debt.php<?php echo  '?sr=' . random_int(1, 1000000000) ; ?>">
-                        <i class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php">
-                        <i class="fas fa-user-circle"></i> پروفایل</a></li>
+                <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
+                        href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
+                            class="fas fa-home"></i> خانه</a></li>
+
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
+                            class="fas fa-credit-card"></i> پرداخت</a></li>
+                            <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
+                        aria-label="تاریخچه">
+                        <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
+                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>
-
+    <!-- اسکریپت‌ها -->
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2@11.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
@@ -915,13 +981,94 @@ $settled_payments = array_filter($payments, function ($payment) {
             const tabItems = document.querySelectorAll('.tab-nav-item');
             const tabContents = document.querySelectorAll('.tab-content');
             const payButton = document.getElementById('pay-button');
-            const totalPaymentAmountSpan = document.getElementById('total-payment-amount');
-            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-            const confirmPaymentBtn = document.getElementById('confirmPayment');
-            const cardNumberInput = document.getElementById('cardNumber');
+            const paymentAmountInput = document.getElementById('payment-amount-input');
+            const increaseBtn = document.getElementById('increase-amount');
+            const decreaseBtn = document.getElementById('decrease-amount');
+            
+            let currentTotal = 0;
+            let selectedItems = [];
 
-            // فرمت شماره کارت
-            cardNumberInput.addEventListener('input', function (e) {
+            // تابع تبدیل عدد به فرمت ریال
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
+            }
+
+            // تابع تبدیل فرمت ریال به عدد
+            function parseCurrency(currencyStr) {
+                return parseInt(currencyStr.replace(/[^0-9]/g, ''));
+            }
+
+            // محاسبه و نمایش جمع مبلغ
+            function calculateAndDisplayTotal() {
+                currentTotal = 0;
+                selectedItems = [];
+                
+                const activeContent = document.querySelector('.tab-content.active');
+                const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
+                
+                checkboxes.forEach(checkbox => {
+                    const amount = parseInt(checkbox.dataset.amount);
+                    currentTotal += amount;
+                    selectedItems.push({
+                        id: checkbox.dataset.id,
+                        amount: amount
+                    });
+                });
+
+                paymentAmountInput.value = formatCurrency(currentTotal);
+                payButton.disabled = selectedItems.length === 0;
+            }
+
+            // افزایش مبلغ پرداختی
+            increaseBtn.addEventListener('click', function() {
+                currentTotal += 10000; // افزایش 10,000 ریال
+                paymentAmountInput.value = formatCurrency(currentTotal);
+            });
+
+            // کاهش مبلغ پرداختی
+            decreaseBtn.addEventListener('click', function() {
+                if (currentTotal > 10000) {
+                    currentTotal -= 10000; // کاهش 10,000 ریال
+                    paymentAmountInput.value = formatCurrency(currentTotal);
+                }
+            });
+
+            // فعال کردن انتخاب چک‌باکس‌ها
+            document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const container = this.closest('.checkbox-container');
+                    const debtCard = container.closest('.debt-card');
+
+                    if (this.checked) {
+                        debtCard.style.border = '2px solid var(--primary-color)';
+                        container.querySelector('.checkmark').classList.add('checked');
+                    } else {
+                        debtCard.style.border = 'none';
+                        container.querySelector('.checkmark').classList.remove('checked');
+                    }
+
+                    calculateAndDisplayTotal();
+                });
+            });
+
+            // تغییر تب‌ها
+            tabItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    this.classList.add('active');
+                    const targetTab = this.dataset.tab;
+                    document.getElementById(targetTab + '-content').classList.add('active');
+
+                    // ریست کردن محاسبات هنگام تغییر تب
+                    currentTotal = 0;
+                    selectedItems = [];
+                    paymentAmountInput.value = formatCurrency(currentTotal);
+                    payButton.disabled = true;
+                });
+            });
+ cardNumberInput.addEventListener('input', function (e) {
                 let value = this.value.replace(/\D/g, '');
                 let formatted = '';
 
@@ -1117,5 +1264,4 @@ $settled_payments = array_filter($payments, function ($payment) {
         });
     </script>
 </body>
-
 </html>

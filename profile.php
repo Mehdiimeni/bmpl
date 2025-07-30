@@ -502,66 +502,41 @@ if (!isset($_SESSION['mobileNumber'])) {
                 </div>
                 <div class="status">احرازشده</div>
             </div>
-            <i class="bi bi-person-circle fs-1"></i>
+            <i class="fas fa-user-circle fs-1"></i>
         </div>
 
         <a href="#" class="menu-item">
             <div class="menu-label">
-                <i class="bi bi-gift-fill text-warning"></i>
-                <span>کارت هدیه </span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-key-fill text-primary"></i>
+                <i class="fas fa-key text-primary"></i>
                 <span>تغییر رمز عبور</span>
             </div>
-            <i class="bi bi-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
         </a>
-
         <a href="#" class="menu-item">
             <div class="menu-label">
-                <i class="bi bi-wallet-fill text-primary"></i>
-                <span>مدیریت کیف‌ها</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-phone-fill text-primary"></i>
-                <span>دستگاه‌های متصل</span>
-            </div>
-            <i class="bi bi-chevron-left"></i>
-        </a>
-
-        <a href="#" class="menu-item">
-            <div class="menu-label">
-                <i class="bi bi-life-preserver text-primary"></i>
+                <i class="fas fa-life-ring text-primary"></i>
                 <span>پشتیبانی</span>
             </div>
-            <i class="bi bi-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
         </a>
 
         <a href="#" class="menu-item">
             <div class="menu-label">
-                <i class="bi bi-info-circle-fill text-primary"></i>
+                <i class="fas fa-info-circle text-primary"></i>
                 <span>درباره ما</span>
             </div>
-            <i class="bi bi-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
         </a>
 
         <a href="login-user.php?logout=1" class="menu-item logout">
             <div class="menu-label">
-                <i class="bi bi-box-arrow-right"></i>
+                <i class="fas fa-sign-out-alt"></i>
                 <span>خروج از حساب</span>
             </div>
-            <i class="bi bi-chevron-left"></i>
+            <i class="fas fa-chevron-left"></i>
         </a>
 
-        <div class="version-text">نسخه 1.0.4</div>
+        <div class="version-text">نسخه 2.2.4</div>
 
     </div>
     <div class="bottom-navigation-bar">
@@ -570,15 +545,16 @@ if (!isset($_SESSION['mobileNumber'])) {
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
                         href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
                             class="fas fa-home"></i> خانه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
-                        aria-label="خدمات">
-                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
 
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="سوابق"><i
-                            class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
-                        aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
+                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
+                            class="fas fa-credit-card"></i> پرداخت</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="تاریخچه">
+                        <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
+                        href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پروفایل"><i
+                            class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>

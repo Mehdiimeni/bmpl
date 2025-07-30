@@ -684,8 +684,8 @@ $data = json_decode($response, true);
                     <i class="fas fa-credit-card me-2"></i> صفحه پرداخت
                 </a>
 
-                <a href="service.php" class="btn btn-outline-primary-custom" aria-label="خرید خدمات">
-                    <i class="fas fa-handshake me-2"></i> خرید خدمات
+                <a href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" class="btn btn-outline-primary-custom" aria-label="تاریخچه">
+                    <i class="fas fa-clock-rotate-left me-2"></i> تاریخچه 
                 </a>
 
             </div>
@@ -699,7 +699,7 @@ $data = json_decode($response, true);
                 <div class="qr-promo-content">
                     <h4 class="mb-2">پرداخت سریع با QR Code</h4>
                     <p>با اسکن QR Code، خریدهای خود را به سادگی و سرعت انجام دهید.</p>
-                    <a href="qr_code_page.php" class="btn btn-light btn-lg" aria-label="پرداخت با QR Code">
+                    <a href="qr_code_page.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" class="btn btn-light btn-lg" aria-label="پرداخت با QR Code">
                         <i class="fas fa-arrow-left ms-2"></i> شروع پرداخت
                     </a>
                 </div>
@@ -714,14 +714,14 @@ $data = json_decode($response, true);
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
                         href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
                             class="fas fa-home"></i> خانه</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="service.php"
-                        aria-label="خدمات">
-                        <i class="fas fa-bell-concierge"></i> خدمات</a></li>
 
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="سوابق"><i
-                            class="fas fa-clock-rotate-left"></i> پرداخت</a></li>
-                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php"
+                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
+                            class="fas fa-credit-card"></i> پرداخت</a></li>
+                            <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
+                        aria-label="تاریخچه">
+                        <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
+                <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column" href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>"
                         aria-label="پروفایل"><i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>

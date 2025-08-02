@@ -1,21 +1,34 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 header('Content-Type: application/json');
 
-if (!isset($_GET['id'])) {
+// دریافت داده‌های JSON ارسالی
+$json = file_get_contents('php://input');
+$data = json_decode($json, true);
+
+// لاگ کردن داده‌های دریافتی برای دیباگ
+
+// اعتبارسنجی داده‌های دریافتی
+if (!$data || !isset($data['mobileNumber']) || !isset($data['amount'])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Missing ID']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request data'
+    ]);
     exit;
 }
 
-$id = $_GET['id'];
-$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?billId=" . ($id);
+$mobileNumber = $data['mobileNumber'];
+$amount = $data['amount'];
+
+// ارسال به API اصلی
+$api_url = "http://192.168.50.15:7475/api/BNPL/Settle?mobileNumber=" . urlencode($mobileNumber) . "&amount=" . urlencode($amount);
+
+
 
 $ch = curl_init($api_url);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, ''); // بدنه خالی
+curl_setopt($ch, CURLOPT_POSTFIELDS, '');
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json',
     'Accept: application/json',
@@ -27,7 +40,7 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 $error = curl_error($ch);
 curl_close($ch);
 
-// ثبت در لاگ برای بررسی پاسخ API
+// لاگ کردن پاسخ API
 
 if ($error) {
     http_response_code(500);
@@ -49,5 +62,6 @@ if ($http_code >= 400) {
     exit;
 }
 
-// اگر پاسخ JSON معتبر بود
+// بازگرداندن پاسخ اصلی API
 echo $response;
+?>

@@ -1,5 +1,96 @@
+<?php
+session_start();
+
+if (isset($_SESSION['mobileNumber'])) {
+    $mobileNumber = $_SESSION['mobileNumber'];
+} else {
+    session_unset();
+    header('Location: login-user.php');
+    exit();
+}
+
+
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
+    CURLOPT_POSTFIELDS => json_encode(['mobileNumber' => $mobileNumber])
+));
+
+$response = curl_exec($curl);
+$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+curl_close($curl);
+
+
+// تلاش برای تبدیل به JSON
+$userData = json_decode($response, true);
+
+$merchantNumber = $userData['merchantNumber'];
+
+// دریافت لیست محصولات
+$buyHistoryUrl = "http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber={$merchantNumber}";
+$buyHistory = json_decode(file_get_contents($buyHistoryUrl), true);
+
+$inProgress = [];
+$completed = [];
+
+if ($buyHistory['success'] && !empty($buyHistory['data'])) {
+    foreach ($buyHistory['data'] as $product) {
+        $productId = $product['productId'];
+        $productName = $product['productName'];
+
+        // دریافت اقساط محصول
+        $installmentsUrl = "http://192.168.50.15:7475/api/BNPL/Installments?mobileNumber={$mobileNumber}&productId={$productId}";
+        $installments = json_decode(file_get_contents($installmentsUrl), true);
+
+        if ($installments['success'] && !empty($installments['data'])) {
+            $totalPrice = 0;
+            $totalPaid = 0;
+            $allPaid = true;
+            $details = [];
+
+            foreach ($installments['data'] as $index => $inst) {
+                $price = $inst['price'];
+                $isPaid = $inst['isPayed'];
+                $payDate = $inst['payDate'];
+
+                $totalPrice += $price;
+                if ($isPaid) {
+                    $totalPaid += $price;
+                } else {
+                    $allPaid = false;
+                }
+
+                $details[] = [
+                    'date' => $payDate,
+                    'price' => $price,
+                    'isPaid' => $isPaid
+                ];
+            }
+
+            $productData = [
+                'name' => $productName,
+                'totalPrice' => $totalPrice,
+                'totalPaid' => $totalPaid,
+                'installments' => $details
+            ];
+
+            if ($allPaid) {
+                $completed[] = $productData;
+            } else {
+                $inProgress[] = $productData;
+            }
+        }
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -227,6 +318,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>خریدهای اقساطی من</h1>
@@ -235,217 +327,89 @@
 
     <div class="container">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="inprogress-tab" data-bs-toggle="tab" data-bs-target="#inprogress" type="button" role="tab" aria-controls="inprogress" aria-selected="true">
-                    <span class="badge-count">2</span>
-                    در جریان
+            <li class="nav-item">
+                <button class="nav-link active" id="inprogress-tab" data-bs-toggle="tab" data-bs-target="#inprogress">
+                    <span class="badge-count"><?= count($inProgress) ?></span> در جریان
                 </button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">
-                    <span class="badge-count">2</span>
-                    تسویه شده
+            <li class="nav-item">
+                <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed">
+                    <span class="badge-count"><?= count($completed) ?></span> تسویه شده
                 </button>
             </li>
         </ul>
 
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content">
             <!-- تب در جریان -->
-            <div class="tab-pane fade show active" id="inprogress" role="tabpanel" aria-labelledby="inprogress-tab">
-                <!-- کالای اول - لپ‌تاپ ایسوس -->
-                <div class="product-card">
-                    <div class="product-header" data-bs-toggle="collapse" data-bs-target="#product1Details" aria-expanded="false" aria-controls="product1Details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="product-title">لپ‌تاپ ایسوس</h5>
-                                <div class="product-price">۲,۵۰۰,۰۰۰ تومان</div>
+            <div class="tab-pane fade show active" id="inprogress">
+                <?php foreach ($inProgress as $idx => $prod): ?>
+                    <div class="product-card">
+                        <div class="product-header" data-bs-toggle="collapse" data-bs-target="#prodIn<?= $idx ?>">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5><?= htmlspecialchars($prod['name']) ?></h5>
+                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> تومان</div>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
                             </div>
-                            <i class="fas fa-chevron-down"></i>
                         </div>
-                    </div>
-                    <div class="collapse" id="product1Details">
-                        <div class="installment-details">
-                            <div class="installment-item">
-                                <div class="installment-date">قسط اول - ۱۵ خرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۶۲۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
+                        <div class="collapse" id="prodIn<?= $idx ?>">
+                            <div class="installment-details">
+                                <?php foreach ($prod['installments'] as $i => $inst): ?>
+                                    <div class="installment-item">
+                                        <div class="installment-date">قسط <?= $i + 1 ?> - <?= $inst['date'] ?></div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="installment-amount"><?= number_format($inst['price']) ?> تومان</span>
+                                            <?php if ($inst['isPaid']): ?>
+                                                <span class="status-badge status-paid ms-2">پرداخت شده</span>
+                                            <?php else: ?>
+                                                <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <div class="total-paid">
+                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> تومان از
+                                    <?= number_format($prod['totalPrice']) ?> تومان
                                 </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط دوم - ۱۵ تیر ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۶۲۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط سوم - ۱۵ مرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۶۲۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط چهارم - ۱۵ شهریور ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۶۲۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
-                                </div>
-                            </div>
-                            <div class="total-paid">
-                                مجموع پرداختی: ۶۲۵,۰۰۰ تومان از ۲,۵۰۰,۰۰۰ تومان
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- کالای دوم - هدفون سونی -->
-                <div class="product-card">
-                    <div class="product-header" data-bs-toggle="collapse" data-bs-target="#product2Details" aria-expanded="false" aria-controls="product2Details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="product-title">هدفون سونی</h5>
-                                <div class="product-price">۵,۰۰۰,۰۰۰ تومان</div>
-                            </div>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                    <div class="collapse" id="product2Details">
-                        <div class="installment-details">
-                            <div class="installment-item">
-                                <div class="installment-date">قسط اول - ۱ تیر ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۱,۲۵۰,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط دوم - ۱ مرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۱,۲۵۰,۰۰۰ تومان</span>
-                                    <span class="status-badge status-pending ms-2">در انتظار پرداخت</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط سوم - ۱ شهریور ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۱,۲۵۰,۰۰۰ تومان</span>
-                                    <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط چهارم - ۱ مهر ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۱,۲۵۰,۰۰۰ تومان</span>
-                                    <span class="status-badge status-unpaid ms-2">پرداخت نشده</span>
-                                </div>
-                            </div>
-                            <div class="total-paid">
-                                مجموع پرداختی: ۱,۲۵۰,۰۰۰ تومان از ۵,۰۰۰,۰۰۰ تومان
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
 
             <!-- تب تسویه شده -->
-            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
-                <!-- کالای اول - ماوس گیمینگ -->
-                <div class="product-card">
-                    <div class="product-header" data-bs-toggle="collapse" data-bs-target="#product3Details" aria-expanded="false" aria-controls="product3Details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="product-title">ماوس گیمینگ</h5>
-                                <div class="product-price">۱۵۰,۰۰۰ تومان</div>
+            <div class="tab-pane fade" id="completed">
+                <?php foreach ($completed as $idx => $prod): ?>
+                    <div class="product-card">
+                        <div class="product-header" data-bs-toggle="collapse" data-bs-target="#prodCo<?= $idx ?>">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h5><?= htmlspecialchars($prod['name']) ?></h5>
+                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> تومان</div>
+                                </div>
+                                <i class="fas fa-chevron-down"></i>
                             </div>
-                            <i class="fas fa-chevron-down"></i>
                         </div>
-                    </div>
-                    <div class="collapse" id="product3Details">
-                        <div class="installment-details">
-                            <div class="installment-item">
-                                <div class="installment-date">قسط اول - ۱۰ خرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۳۷,۵۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
+                        <div class="collapse" id="prodCo<?= $idx ?>">
+                            <div class="installment-details">
+                                <?php foreach ($prod['installments'] as $i => $inst): ?>
+                                    <div class="installment-item">
+                                        <div class="installment-date">قسط <?= $i + 1 ?> - <?= $inst['date'] ?></div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="installment-amount"><?= number_format($inst['price']) ?> تومان</span>
+                                            <span class="status-badge status-paid ms-2">پرداخت شده</span>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                                <div class="total-paid">
+                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> تومان از
+                                    <?= number_format($prod['totalPrice']) ?> تومان
                                 </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط دوم - ۱۰ تیر ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۳۷,۵۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط سوم - ۱۰ مرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۳۷,۵۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط چهارم - ۱۰ شهریور ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۳۷,۵۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="total-paid">
-                                مجموع پرداختی: ۱۵۰,۰۰۰ تومان از ۱۵۰,۰۰۰ تومان
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- کالای دوم - کیبورد مکانیکی -->
-                <div class="product-card">
-                    <div class="product-header" data-bs-toggle="collapse" data-bs-target="#product4Details" aria-expanded="false" aria-controls="product4Details">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="product-title">کیبورد مکانیکی</h5>
-                                <div class="product-price">۳۰۰,۰۰۰ تومان</div>
-                            </div>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                    <div class="collapse" id="product4Details">
-                        <div class="installment-details">
-                            <div class="installment-item">
-                                <div class="installment-date">قسط اول - ۵ خرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۷۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط دوم - ۵ تیر ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۷۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط سوم - ۵ مرداد ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۷۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="installment-item">
-                                <div class="installment-date">قسط چهارم - ۵ شهریور ۱۴۰۴</div>
-                                <div class="d-flex align-items-center">
-                                    <span class="installment-amount">۷۵,۰۰۰ تومان</span>
-                                    <span class="status-badge status-paid ms-2">پرداخت شده</span>
-                                </div>
-                            </div>
-                            <div class="total-paid">
-                                مجموع پرداختی: ۳۰۰,۰۰۰ تومان از ۳۰۰,۰۰۰ تومان
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -461,7 +425,8 @@
                     </a>
                 </div>
                 <div class="col nav-item">
-                    <a href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت" class="nav-link">
+                    <a href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"
+                        class="nav-link">
                         <i class="fas fa-credit-card"></i>
                         پرداخت
                     </a>
@@ -485,22 +450,22 @@
     <!-- اضافه کردن jQuery و Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // اسکریپت برای تغییر آیکون هنگام باز و بسته شدن منوهای کرکره‌ای
         document.querySelectorAll('.product-header').forEach(header => {
-            header.addEventListener('click', function() {
+            header.addEventListener('click', function () {
                 const icon = this.querySelector('i');
                 const targetId = this.getAttribute('data-bs-target');
                 const targetElement = document.querySelector(targetId);
-                
+
                 // استفاده از رویدادهای collapse در بوت‌استرپ 5
-                targetElement.addEventListener('show.bs.collapse', function() {
+                targetElement.addEventListener('show.bs.collapse', function () {
                     icon.classList.remove('fa-chevron-down');
                     icon.classList.add('fa-chevron-up');
                 });
-                
-                targetElement.addEventListener('hide.bs.collapse', function() {
+
+                targetElement.addEventListener('hide.bs.collapse', function () {
                     icon.classList.remove('fa-chevron-up');
                     icon.classList.add('fa-chevron-down');
                 });
@@ -508,4 +473,5 @@
         });
     </script>
 </body>
+
 </html>

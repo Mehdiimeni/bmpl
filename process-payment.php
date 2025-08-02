@@ -58,25 +58,34 @@ function callAPI($url, $data)
 // هندل کردن فرم ارسال شده
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'confirm') {
-        $buyResponse = callAPI('http://192.168.50.15:7475/api/BNPL/buy', [
-            'buyerMerchantNumber' => $userData['merchantId'],
-            'sellerMerchantNumber' => $paymentData['terminal_id'],
-            'amount' => $paymentData['total_amount'],
-            'productCode' => 'test',
-            'productName' => 'محصول انتخابی',
-            'paymentType' => 0
-        ]);
 
-        $_SESSION['payment_result'] = $buyResponse;
+        $_SESSION['payment_result'] = []; // تعریف به عنوان آرایه خالی
+        foreach ($paymentData['products'] as $products) {
+
+            $buyResponse = callAPI('http://192.168.50.15:7475/api/BNPL/buy', [
+                'buyerMerchantNumber' => $userData['merchantNumber'],
+                'sellerMerchantNumber' => $paymentData['terminal_id'],
+                'productCode' => $products['id'],
+                'productName' => $products['name'],
+                'amount' => (int) $products['price'],
+                'paymentType' => 0
+            ]);
+            $_SESSION['payment_result'][] = $buyResponse; 
+
+            if(!isset($buyResponse['response']['data']['rrn']))
+                continue;
+
+            $confirmResponse = callAPI('http://192.168.50.15:7475/api/BNPL/Verify', [
+
+                'customerId' => (int) $userData['merchantId'] ?? 0,
+                'rrn' => (int) $buyResponse['response']['data']['rrn'] ?? 0,
+                'amount' => (int) $products['price'] ?? 0,
+                'traceNo' => $buyResponse['response']['data']['traceNo'] ?? null
+            ]);
+        }
 
 
-        $confirmResponse = callAPI('http://192.168.50.15:7475/api/BNPL/Verify', [
 
-            'customerId' => $userData['merchantId'] ?? null,
-            'rrn' => $buyResponse['response']['rrn'] ?? null,
-            'amount' => $paymentData['total_amount'] ?? null,
-            'traceNo' => $buyResponse['response']['traceNo'] ?? null
-        ]);
 
         // پردازش پاسخ و هدایت کاربر
         if ($confirmResponse['status'] && isset($confirmResponse['response']['success']) && $confirmResponse['response']['success']) {

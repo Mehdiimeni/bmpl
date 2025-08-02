@@ -1,0 +1,117 @@
+2025-08-02 18:10:51 - Received data: Array
+(
+    [mobileNumber] => 09126406880
+    [amount] => 5200000
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 0
+                    [amount] => 5200000
+                    [element] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [manualPayment] => 
+    [cardDetails] => Array
+        (
+            [number] => 6545644654564566
+            [expiry] => 05/65
+            [cvv] => 6545
+        )
+
+)
+
+2025-08-02 18:10:51 - API Response: {"success":true,"data":"تسویه با موفقیت انجام شد."}
+2025-08-02 18:11:34 - Received data: Array
+(
+    [mobileNumber] => 09126406880
+    [amount] => 5200000
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 0
+                    [amount] => 5200000
+                    [element] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [manualPayment] => 
+    [cardDetails] => Array
+        (
+            [number] => 6574654545465456
+            [expiry] => 07/46
+            [cvv] => 79+7
+        )
+
+)
+
+2025-08-02 18:11:34 - API Response: {"success":true,"data":"تسویه با موفقیت انجام شد."}
+2025-08-02 18:12:03 - Received data: Array
+(
+    [mobileNumber] => 09126406880
+    [amount] => 5200000
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 0
+                    [amount] => 5200000
+                    [element] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [manualPayment] => 
+    [cardDetails] => Array
+        (
+            [number] => 5465564654654654
+            [expiry] => 05/46
+            [cvv] => 6546
+        )
+
+)
+
+2025-08-02 18:12:03 - API Response: {"success":true,"data":"تسویه با موفقیت انجام شد."}
+2025-08-02 19:52:40 - API Response: {"success":true,"data":"تسویه با موفقیت انجام شد."}
+2025-08-02 19:57:35 - Received data: Array
+(
+    [mobileNumber] => 09126406880
+    [amount] => 16002222
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 0
+                    [amount] => 16002222
+                    [element] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [manualPayment] => 
+    [cardDetails] => Array
+        (
+            [number] => 6545656464456566
+            [expiry] => 05/55
+            [cvv] => 5555
+        )
+
+)
+
+2025-08-02 20:25:23 - API Response: 

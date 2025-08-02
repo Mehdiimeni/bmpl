@@ -456,7 +456,7 @@
             <div class="form-container">
                 <h2 class="text-center">تأیید کد فعال‌سازی</h2>
                 <p class="text-center text-muted">کد 6 رقمی ارسال شده به شماره موبایل شما را وارد نمایید</p>
-                <?php if ($_POST['return_url'] != '') { ?>
+                <?php if (isset($_POST['return_url']) && (string)$_POST['return_url'] != '') { ?>
                     <form action="authentication-check.php" method="post">
 
 

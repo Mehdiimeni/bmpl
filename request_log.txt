@@ -1,0 +1,54 @@
+Array
+(
+    [MIBDIRS] => E:/xampp/php/extras/mibs
+    [MYSQL_HOME] => \xampp\mysql\bin
+    [OPENSSL_CONF] => E:/xampp/apache/bin/openssl.cnf
+    [PHP_PEAR_SYSCONF_DIR] => \xampp\php
+    [PHPRC] => \xampp\php
+    [TMP] => \xampp\tmp
+    [HTTP_HOST] => localhost
+    [HTTP_CONNECTION] => keep-alive
+    [CONTENT_LENGTH] => 198
+    [HTTP_SEC_CH_UA_PLATFORM] => "Windows"
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+    [HTTP_SEC_CH_UA] => "Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+    [CONTENT_TYPE] => application/json
+    [HTTP_SEC_CH_UA_MOBILE] => ?0
+    [HTTP_ACCEPT] => */*
+    [HTTP_ORIGIN] => http://localhost
+    [HTTP_SEC_FETCH_SITE] => same-origin
+    [HTTP_SEC_FETCH_MODE] => cors
+    [HTTP_SEC_FETCH_DEST] => empty
+    [HTTP_REFERER] => http://localhost/superapp/credit-debt.php?sr=475851562
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate, br, zstd
+    [HTTP_ACCEPT_LANGUAGE] => en-US,en;q=0.9,fa;q=0.8
+    [HTTP_COOKIE] => condition_29=true; condition_19=true; condition_21=true; condition_3=true; condition_2=true; condition_24=true; condition_16=true; condition_22=true; condition_30=true; condition_13=true; condition_23=true; condition_25=true; condition_11=true; condition_18=true; condition_4=true; condition_26=true; condition_1=true; condition_27=true; condition_20=true; datatable_length=100; local=true; checkbox-signup=true; person_hour=true; delivery_time=true; selectAllUnits=true; selectAllTypes=true; selectAllStatuses=true; selectAllCompanies=false; unit_7=true; unit_1=true; unit_2=true; unit_3=true; unit_6=true; unit_10=true; unit_14=true; unit_16=true; unit_4=true; unit_5=true; unit_8=true; unit_9=true; unit_13=true; unit_11=true; unit_15=true; company_4=true; type_2=true; userLanguageDir=rtl; adminLanguageDir=rtl; company_2=true; company_9=true; company_5=true; company_6=true; company_7=true; company_8=true; type_1=true; type_3=true; type_4=true; type_7=true; type_8=true; type_5=true; type_6=true; type_9=true; type_10=true; csrftoken=E82bC0n1rHQatWZgcyWN73pcTvNcHehP; sessionid=ecix6df0kb3i660tatypjrnbvw4g8pft; PHPSESSID=alhn9bc7te5gaolof1nfb7ndd9
+    [PATH] => C:\Users\m.imeni\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\m.imeni\AppData\Local\Programs\Python\Python313\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-21.0.1.12-hotspot\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Git\cmd;E:\xampp\php;C:\composer;C:\Program Files\PuTTY\;C:\Program Files\dotnet\;C:\Users\m.imeni\AppData\Local\Programs\Python\Python313\python.exe\bin;C:\java\jdk\bin;c:\spark\bin;c:\hadoop\bin;c:\hadoop\sbin;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Go\bin;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;c:\Users\m.imeni\AppData\Local\Programs\cursor\resources\app\bin;C:\Users\m.imeni\AppData\Local\Programs\Python\Launcher\;C:\Users\m.imeni\AppData\Local\Microsoft\WindowsApps;C:\Users\m.imeni\AppData\Roaming\Composer\vendor\bin;c:\hadoop\bin;C:\java\jdk\bin;c:\spark\bin;C:\Users\m.imeni\go\bin;C:\Users\m.imeni\AppData\Roaming\npm;C:\Users\m.imeni\AppData\Local\Programs\Ollama;C:\Users\m.imeni\AppData\Local\Programs\cursor\resources\app\bin
+    [SystemRoot] => C:\Windows
+    [COMSPEC] => C:\Windows\system32\cmd.exe
+    [PATHEXT] => .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW
+    [WINDIR] => C:\Windows
+    [SERVER_SIGNATURE] => <address>Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4 Server at localhost Port 80</address>
+
+    [SERVER_SOFTWARE] => Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.2.4
+    [SERVER_NAME] => localhost
+    [SERVER_ADDR] => ::1
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => ::1
+    [DOCUMENT_ROOT] => E:/xampp/htdocs
+    [REQUEST_SCHEME] => http
+    [CONTEXT_PREFIX] => 
+    [CONTEXT_DOCUMENT_ROOT] => E:/xampp/htdocs
+    [SERVER_ADMIN] => postmaster@localhost
+    [SCRIPT_FILENAME] => E:/xampp/htdocs/superapp/proxy-settle.php
+    [REMOTE_PORT] => 51810
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => POST
+    [QUERY_STRING] => 
+    [REQUEST_URI] => /superapp/proxy-settle.php
+    [SCRIPT_NAME] => /superapp/proxy-settle.php
+    [PHP_SELF] => /superapp/proxy-settle.php
+    [REQUEST_TIME_FLOAT] => 1754157455.7058
+    [REQUEST_TIME] => 1754157455
+)

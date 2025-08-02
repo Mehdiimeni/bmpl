@@ -4,7 +4,6 @@ require 'vendor/autoload.php';
 use Morilog\Jalali\Jalalian;
 session_start();
 
-
 if (isset($_SESSION['mobileNumber'])) {
     $mobileNumber = $_SESSION['mobileNumber'];
 } else {
@@ -20,9 +19,7 @@ function convertToPersianNumber($number)
     return str_replace($english, $persian, number_format($number));
 }
 
-
-
-// ارسال درخواست به API
+// دریافت اطلاعات کاربر
 $curl = curl_init();
 curl_setopt_array($curl, array(
     CURLOPT_URL => 'http://192.168.50.15:7475/api/BNPL/login',
@@ -35,25 +32,9 @@ curl_setopt_array($curl, array(
 $response = curl_exec($curl);
 $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
-
 $userData = json_decode($response, true);
 
-// دریافت اطلاعات پرداخت‌ها از API
-$api_url = 'http://192.168.50.15:7475/api/BNPL/buy-history?merchantNumber=' . $userData['merchantNumber'];
-$response = file_get_contents($api_url);
-$payments = json_decode($response, true);
-
-
-
-
-$today = new DateTime();
-$threeDaysLater = clone $today; // ایجاد یک کپی از تاریخ امروز
-$threeDaysLater->modify('+2 days');
-$saturdayThisWeek = (clone $threeDaysLater)->modify('last saturday');
-$fridayThisWeek = (clone $threeDaysLater)->modify('next friday');
-$firstDayOfMonth = (clone $threeDaysLater)->modify('first day of this month');
-$lastDayOfMonth = (clone $threeDaysLater)->modify('last day of this month');
-
+// دریافت اطلاعات پرداخت‌ها
 $apiUrl = "http://192.168.50.15:7475/api/BNPL/InstallmentsByDate?mobileNumber=" . urlencode($mobileNumber);
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $apiUrl);
@@ -71,16 +52,23 @@ $userPayData = json_decode($response, true);
 if (!isset($userPayData['success']) || !$userPayData['success'] || !isset($userPayData['data']))
     die('داده دریافتی معتبر نیست');
 
+// پردازش تاریخ‌ها
+$today = Jalalian::now();
+$saturdayThisWeek = Jalalian::now()->subDays($today->getDayOfWeek())->toCarbon()->startOfDay();
+$fridayThisWeek = $saturdayThisWeek->copy()->addDays(6)->endOfDay();
+$firstDayOfMonth = (new Jalalian($today->getYear(), $today->getMonth(), 1))->toCarbon()->startOfDay();
+$lastDayOfMonth = (new Jalalian($today->getYear(), $today->getMonth(), $today->getMonthDays()))->toCarbon()->endOfDay();
+
 $payments = [];
 foreach ($userPayData['data'] as $payment) {
     if (!isset($payment['price']) || !isset($payment['date']))
         continue;
 
     try {
-        $paymentDate = new DateTime($payment['date']);
-        $isThisWeek = $paymentDate >= $saturdayThisWeek && $paymentDate <= $fridayThisWeek;
-        $isThisMonth = $paymentDate >= $firstDayOfMonth && $paymentDate <= $lastDayOfMonth;
-        $isOverdue = $paymentDate < $saturdayThisWeek && $paymentDate < $today;
+        $paymentDate = Jalalian::fromFormat('Y/m/d', $payment['date'])->toCarbon();
+        $isThisWeek = $paymentDate->between($saturdayThisWeek, $fridayThisWeek);
+        $isThisMonth = $paymentDate->between($firstDayOfMonth, $lastDayOfMonth);
+        $isOverdue = $paymentDate->lessThan($today->toCarbon()->startOfDay()) && !$isThisWeek;
 
         $payments[] = [
             'price' => (int) $payment['price'],
@@ -88,13 +76,16 @@ foreach ($userPayData['data'] as $payment) {
             'is_this_week' => $isThisWeek,
             'is_this_month' => $isThisMonth,
             'is_overdue' => $isOverdue,
-            'shamsi_date' => Jalalian::fromDateTime($paymentDate)->format('Y/m/d')
+            'shamsi_date' => $payment['date'],
+            'date_object' => $paymentDate
         ];
     } catch (Exception $e) {
+        error_log('Error processing payment: ' . $e->getMessage());
         continue;
     }
 }
 
+// دسته‌بندی پرداخت‌ها
 $weeklyPayments = array_filter($payments, fn($p) => $p['is_this_week']);
 $monthlyPayments = array_filter($payments, fn($p) => $p['is_this_month']);
 $overduePayments = array_filter($payments, fn($p) => $p['is_overdue']);
@@ -113,12 +104,6 @@ $result = [
     'monthly' => calculateTotals($monthlyPayments),
     'overdue' => calculateTotals($overduePayments)
 ];
-
-?>
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -801,7 +786,7 @@ $result = [
 
         .payment-bar {
             position: fixed;
-            bottom: 100px;
+            bottom: 180px;
             /* قرار گرفتن بالای نوار نویگیشن */
             left: 0;
             right: 0;
@@ -860,6 +845,163 @@ $result = [
             cursor: pointer;
             margin: 0.1rem;
         }
+
+        .checkbox-container {
+            display: block;
+            position: relative;
+            padding-right: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 4px;
+        }
+
+        .checkbox-container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        .checkbox-container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .debt-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .debt-card.selected {
+            border: 2px solid #2196F3;
+            background-color: #f8f9fa;
+        }
+
+        .payment-bar {
+            position: fixed;
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .amount-input-container {
+            position: relative;
+            width: 200px;
+        }
+
+        .amount-input {
+            width: 100%;
+            padding: 8px 40px 8px 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .amount-input-buttons {
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .amount-input-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-nav-item.active {
+            color: #2196F3;
+            font-weight: bold;
+        }
+
+        .tab-nav-item.active:after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #2196F3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .badge {
+            background-color: #2196F3;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
     </style>
 </head>
 
@@ -873,7 +1015,6 @@ $result = [
 
     <div class="container">
         <div class="tab-nav mb-12">
-
             <div class="tab-nav-item active" data-tab="weekly">
                 این هفته
                 <span class="badge" id="weekly-badge"><?= count($weeklyPayments) ?></span>
@@ -882,7 +1023,7 @@ $result = [
                 این ماه
                 <span class="badge" id="monthly-badge"><?= count($monthlyPayments) ?></span>
             </div>
-            <div class="tab-nav-item " data-tab="overdue">
+            <div class="tab-nav-item" data-tab="overdue">
                 معوقه
                 <span class="badge" id="overdue-badge"><?= count($overduePayments) ?></span>
             </div>
@@ -890,20 +1031,14 @@ $result = [
 
         <div id="weekly-content" class="tab-content active">
             <?php if (!empty($weeklyPayments)): ?>
-                <?php foreach ($weeklyPayments as $payment):
-
-                    ?>
-                    <div class="debt-card">
+                <?php foreach ($weeklyPayments as $index => $payment): ?>
+                    <div class="debt-card" id="payment-<?= $index ?>">
                         <label class="checkbox-container">
-                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
-
-
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>" data-id="<?= $index ?>">
                             <span class="checkmark"></span>
                             <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
                         </label>
-
                         <div class="amount-section">
-
                             <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
                         </div>
                     </div>
@@ -917,18 +1052,14 @@ $result = [
 
         <div id="monthly-content" class="tab-content">
             <?php if (!empty($monthlyPayments)): ?>
-                <?php foreach ($monthlyPayments as $payment): ?>
-                    <div class="debt-card">
+                <?php foreach ($monthlyPayments as $index => $payment): ?>
+                    <div class="debt-card" id="payment-<?= $index ?>">
                         <label class="checkbox-container">
-                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
-
-
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>" data-id="<?= $index ?>">
                             <span class="checkmark"></span>
                             <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
                         </label>
-
                         <div class="amount-section">
-
                             <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
                         </div>
                     </div>
@@ -942,18 +1073,14 @@ $result = [
 
         <div id="overdue-content" class="tab-content">
             <?php if (!empty($overduePayments)): ?>
-                <?php foreach ($overduePayments as $payment): ?>
-                    <div class="debt-card">
+                <?php foreach ($overduePayments as $index => $payment): ?>
+                    <div class="debt-card" id="payment-<?= $index ?>">
                         <label class="checkbox-container">
-                            <input type="checkbox" data-amount="<?= $payment['price'] ?>">
-
-
+                            <input type="checkbox" data-amount="<?= $payment['price'] ?>" data-id="<?= $index ?>">
                             <span class="checkmark"></span>
                             <div class="amount"><?= convertToPersianNumber($payment['price']) ?> ریال</div>
                         </label>
-
                         <div class="amount-section">
-
                             <div class="amount"><?= $payment['shamsi_date'] ?> تاریخ</div>
                         </div>
                     </div>
@@ -966,13 +1093,11 @@ $result = [
         </div>
     </div>
 
-    <!-- نوار پرداخت جدید -->
     <div class="payment-bar">
         <div class="total-info d-flex justify-content-between align-items-center mb-2">
             <span class="fw-bold">مبلغ قابل پرداخت:</span>
             <div class="amount-input-container">
-                <input type="text" id="payment-amount-input" data-billid="<?php echo ($userData['billId']); ?>"
-                    class="amount-input" value="۰ ریال" readonly>
+                <input type="text" id="payment-amount-input" class="amount-input" value="۰ ریال" readonly>
                 <div class="amount-input-buttons">
                     <button class="amount-input-btn" id="increase-amount">+</button>
                     <button class="amount-input-btn" id="decrease-amount">-</button>
@@ -984,7 +1109,6 @@ $result = [
         </button>
     </div>
 
-    <!-- Modal پرداخت بانکی -->
     <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -994,6 +1118,8 @@ $result = [
                 </div>
                 <div class="modal-body">
                     <form id="paymentForm">
+                        <input type="hidden" id="mobileNumber" value="<?= $mobileNumber ?>">
+                        <input type="hidden" id="totalAmount">
                         <div class="mb-3">
                             <label for="cardNumber" class="form-label">شماره کارت</label>
                             <input type="text" class="form-control" id="cardNumber" placeholder="6037-XXXX-XXXX-XXXX"
@@ -1019,8 +1145,6 @@ $result = [
                             <div class="col-md-6 mb-3">
                                 <label for="password" class="form-label">رمز دوم</label>
                                 <input type="password" class="form-control" id="password" placeholder="رمز دوم کارت">
-                                <input type="hidden" class="form-control" id="billid"
-                                    value="<?php echo ($userData['billId']); ?>">
                             </div>
                         </div>
                     </form>
@@ -1037,286 +1161,307 @@ $result = [
         <div class="container">
             <ul class="tf-navigation-bar">
                 <li><a class="fw_6 d-flex justify-content-center align-items-center flex-column active"
-                        href="credit.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="خانه"><i
-                            class="fas fa-home"></i> خانه</a></li>
-
+                        href="credit.php<?= '?sr=' . random_int(1, 1000000000) ?>" aria-label="خانه">
+                        <i class="fas fa-home"></i> خانه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                        href="credit-debt.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پرداخت"><i
-                            class="fas fa-credit-card"></i> پرداخت</a></li>
+                        href="credit-debt.php<?= '?sr=' . random_int(1, 1000000000) ?>" aria-label="پرداخت">
+                        <i class="fas fa-credit-card"></i> پرداخت</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                        href="history.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="تاریخچه">
-                        <i class="fas fa-clock-rotate-left"></i>تاریخچه</a></li>
+                        href="history.php<?= '?sr=' . random_int(1, 1000000000) ?>" aria-label="تاریخچه">
+                        <i class="fas fa-clock-rotate-left"></i> تاریخچه</a></li>
                 <li><a class="fw_4 d-flex justify-content-center align-items-center flex-column"
-                        href="profile.php<?php echo '?sr=' . random_int(1, 1000000000); ?>" aria-label="پروفایل"><i
-                            class="fas fa-user-circle"></i> پروفایل</a></li>
+                        href="profile.php<?= '?sr=' . random_int(1, 1000000000) ?>" aria-label="پروفایل">
+                        <i class="fas fa-user-circle"></i> پروفایل</a></li>
             </ul>
         </div>
     </div>
-    <!-- اسکریپت‌ها -->
+
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2@11.js"></script>
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // عناصر DOM
-    const tabItems = document.querySelectorAll('.tab-nav-item');
-    const tabContents = document.querySelectorAll('.tab-content');
-    const payButton = document.getElementById('pay-button');
-    const paymentAmountInput = document.getElementById('payment-amount-input');
-    const increaseBtn = document.getElementById('increase-amount');
-    const decreaseBtn = document.getElementById('decrease-amount');
-    const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-    const confirmPaymentBtn = document.getElementById('confirmPayment');
+        document.addEventListener('DOMContentLoaded', function () {
+            // عناصر DOM
+            const tabItems = document.querySelectorAll('.tab-nav-item');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const payButton = document.getElementById('pay-button');
+            const paymentAmountInput = document.getElementById('payment-amount-input');
+            const increaseBtn = document.getElementById('increase-amount');
+            const decreaseBtn = document.getElementById('decrease-amount');
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            const confirmPaymentBtn = document.getElementById('confirmPayment');
+            const totalAmountInput = document.getElementById('totalAmount');
 
-    // متغیرهای حالت
-    let currentTotal = 0;
-    let globalSelectedItems = [];
+            // متغیرهای حالت
+            let currentTotal = 0;
+            let selectedItems = [];
+            let manualAdjustment = 0; // مقدار تنظیم دستی
 
-    // --- توابع کمکی ---
-    const formatCurrency = (amount) => new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
-    const parseCurrency = (currencyStr) => parseInt(currencyStr.replace(/[^0-9]/g, ''));
+            // توابع کمکی
+            const formatCurrency = (amount) => {
+                if (amount === 0) return "۰ ریال";
+                return new Intl.NumberFormat('fa-IR').format(amount) + ' ریال';
+            };
 
-    // --- مدیریت انتخاب پرداخت‌ها ---
-    const calculateAndDisplayTotal = () => {
-        currentTotal = 0;
-        globalSelectedItems = []; // Reset global selected items
+            const parseCurrency = (currencyStr) => parseInt(currencyStr.replace(/[^0-9]/g, '')) || 0;
 
-        const activeContent = document.querySelector('.tab-content.active');
-        const checkboxes = activeContent.querySelectorAll('.debt-card input[type="checkbox"]:checked');
+            // محاسبه و نمایش مبلغ کل
+            const calculateAndDisplayTotal = () => {
+                currentTotal = manualAdjustment; // شروع با مقدار تنظیم دستی
 
-        checkboxes.forEach(checkbox => {
-            const amount = parseInt(checkbox.dataset.amount);
-            currentTotal += amount;
-            globalSelectedItems.push({
-                id: checkbox.dataset.id || '',
-                amount: amount,
-                element: checkbox
+                // اضافه کردن مبالغ آیتمهای انتخاب شده
+                const activeContent = document.querySelector('.tab-content.active');
+                if (activeContent) {
+                    const checkboxes = activeContent.querySelectorAll('input[type="checkbox"]:checked');
+
+                    checkboxes.forEach(checkbox => {
+                        const amount = parseInt(checkbox.dataset.amount) || 0;
+                        const id = checkbox.dataset.id;
+                        currentTotal += amount;
+                        selectedItems.push({
+                            id: id,
+                            amount: amount,
+                            element: checkbox
+                        });
+                    });
+                }
+
+                paymentAmountInput.value = formatCurrency(currentTotal);
+                totalAmountInput.value = currentTotal;
+
+                // فعال/غیرفعال کردن دکمه پرداخت
+                payButton.disabled = currentTotal <= 0;
+
+                // به‌روزرسانی تعداد در تب
+                const activeTab = document.querySelector('.tab-nav-item.active');
+                if (activeTab) {
+                    const badge = activeTab.querySelector('.badge');
+                    if (badge) {
+                        const checkboxes = document.querySelector('.tab-content.active input[type="checkbox"]:checked');
+                        badge.textContent = checkboxes ? checkboxes.length : 0;
+                    }
+                }
+            };
+
+            // رویدادهای UI برای تنظیم دستی مبلغ
+            increaseBtn.addEventListener('click', () => {
+                manualAdjustment += 1000000;
+                selectedItems = []; // ریست آیتمهای انتخاب شده
+                calculateAndDisplayTotal();
             });
-        });
 
-        paymentAmountInput.value = formatCurrency(currentTotal);
-        payButton.disabled = globalSelectedItems.length === 0;
+            decreaseBtn.addEventListener('click', () => {
+                if (manualAdjustment >= 1000000) {
+                    manualAdjustment -= 1000000;
+                    selectedItems = []; // ریست آیتمهای انتخاب شده
+                    calculateAndDisplayTotal();
+                } else if (manualAdjustment > 0) {
+                    manualAdjustment = 0;
+                    selectedItems = []; // ریست آیتمهای انتخاب شده
+                    calculateAndDisplayTotal();
+                }
+            });
 
-        // Update badge count
-        const activeTab = document.querySelector('.tab-nav-item.active');
-        if (activeTab) {
-            const badge = activeTab.querySelector('.badge');
-            if (badge) {
-                badge.textContent = checkboxes.length;
-            }
-        }
-
-        return globalSelectedItems; // Return the updated array
-    };
-
-    // --- رویدادهای UI ---
-    increaseBtn.addEventListener('click', () => {
-        currentTotal += 1000000;
-        paymentAmountInput.value = formatCurrency(currentTotal);
-    });
-
-    decreaseBtn.addEventListener('click', () => {
-        if (currentTotal > 1000000) {
-            currentTotal -= 1000000;
-            paymentAmountInput.value = formatCurrency(currentTotal);
-        }
-    });
-
-    // مدیریت انتخاب چک‌باکس‌ها
-    document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            const container = this.closest('.checkbox-container');
-            const debtCard = container.closest('.debt-card');
-
-            if (this.checked) {
-                debtCard.style.border = '2px solid var(--primary-color)';
-                container.querySelector('.checkmark').classList.add('checked');
-            } else {
-                debtCard.style.border = 'none';
-                container.querySelector('.checkmark').classList.remove('checked');
-            }
-
-            calculateAndDisplayTotal();
-        });
-    });
-
-    // مدیریت تب‌ها
-    tabItems.forEach(item => {
-        item.addEventListener('click', function() {
-            tabItems.forEach(t => t.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            this.classList.add('active');
-            const targetTab = this.dataset.tab;
-            document.getElementById(targetTab + '-content').classList.add('active');
-
-            // Reset state
-            currentTotal = 0;
-            globalSelectedItems = [];
-            paymentAmountInput.value = formatCurrency(currentTotal);
-            payButton.disabled = true;
-
-            calculateAndDisplayTotal();
-        });
-    });
-
-    // --- پرداخت ---
-    payButton.addEventListener('click', () => {
-        // Double check selection before showing modal
-        const items = calculateAndDisplayTotal();
-        if (items.length === 0) {
-            Swal.fire('خطا', 'لطفاً حداقل یک قسط را انتخاب نمایید', 'warning');
-            return;
-        }
-        paymentModal.show();
-    });
-
-    // --- اعتبارسنجی فرم پرداخت ---
-    confirmPaymentBtn.addEventListener('click', async function() {
-        // Get fresh selection data
-        const selectedItems = calculateAndDisplayTotal();
-        
-        // Final validation
-        if (!selectedItems || selectedItems.length === 0) {
-            await Swal.fire('خطا', 'لطفاً حداقل یک قسط را انتخاب نمایید', 'error');
-            return;
-        }
-
-        const billid = document.getElementById('billid').value;
-        if (!billid) {
-            await Swal.fire('خطا', 'شناسه قبض معتبر نیست', 'error');
-            return;
-        }
-
-        // Validate card details
-        const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
-        const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
-        const expiryYear = document.getElementById('expiryYear').value;
-        const cvv2 = document.getElementById('cvv2').value;
-        const password = document.getElementById('password').value;
-
-        if (!cardNumber || cardNumber.length !== 16) {
-            await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
-            return;
-        }
-
-        if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
-            await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
-            return;
-        }
-
-        if (!expiryYear || expiryYear.length !== 2) {
-            await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
-            return;
-        }
-
-        if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
-            await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
-            return;
-        }
-
-        if (!password) {
-            await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
-            return;
-        }
-
-        // UI Feedback
-        const originalText = confirmPaymentBtn.innerHTML;
-        confirmPaymentBtn.disabled = true;
-        confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
-
-        try {
-            // Process each selected item
-            const paymentPromises = selectedItems.map(item => {
-                return fetch(`proxy-settle.php?id=${billid}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        amount: item.amount,
-                        payment_date: new Date().toISOString(),
-                        item_id: billid
-                    })
+            // مدیریت انتخاب چک‌باکس‌ها
+            document.querySelectorAll('.checkbox-container input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    manualAdjustment = 0; // وقتی آیتمی انتخاب شد، مقدار دستی را ریست می‌کنیم
+                    const debtCard = this.closest('.debt-card');
+                    if (this.checked) {
+                        debtCard.classList.add('selected');
+                    } else {
+                        debtCard.classList.remove('selected');
+                    }
+                    calculateAndDisplayTotal();
                 });
             });
 
-            const responses = await Promise.all(paymentPromises);
-            
-            // Check all responses
-            const allSuccessful = responses.every(response => response.ok);
-            if (!allSuccessful) {
-                throw new Error('برخی پرداخت‌ها انجام نشد');
-            }
+            // مدیریت تب‌ها
+            tabItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
 
-            const results = await Promise.all(responses.map(res => res.json()));
-            const allComplete = results.every(result => result.success);
+                    this.classList.add('active');
+                    const targetTab = this.dataset.tab;
+                    document.getElementById(targetTab + '-content').classList.add('active');
 
-            if (allComplete) {
-                paymentModal.hide();
-                await Swal.fire({
-                    icon: 'success',
-                    title: 'پرداخت موفق',
-                    text: `پرداخت ${selectedItems.length} قسط با موفقیت انجام شد`,
-                    confirmButtonText: 'باشه'
+                    // ریست حالت
+                    currentTotal = 0;
+                    manualAdjustment = 0;
+                    selectedItems = [];
+                    paymentAmountInput.value = formatCurrency(currentTotal);
+                    payButton.disabled = true;
                 });
-                
-                // Update UI after payment
+            });
+
+            // پرداخت
+            payButton.addEventListener('click', () => {
+                if (currentTotal <= 0) {
+                    Swal.fire('خطا', 'لطفاً مبلغی را برای پرداخت وارد کنید', 'warning');
+                    return;
+                }
+                paymentModal.show();
+            });
+
+            // اعتبارسنجی فرم پرداخت
+            confirmPaymentBtn.addEventListener('click', async function () {
+                // اعتبارسنجی اولیه
+                if (currentTotal <= 0) {
+                    await Swal.fire('خطا', 'مبلغ پرداخت باید بیشتر از صفر باشد', 'error');
+                    return;
+                }
+
+                const mobileNumber = document.getElementById('mobileNumber').value;
+                const totalAmount = document.getElementById('totalAmount').value;
+
+                if (!mobileNumber || !totalAmount) {
+                    await Swal.fire('خطا', 'اطلاعات پرداخت ناقص است', 'error');
+                    return;
+                }
+
+                // اعتبارسنجی اطلاعات کارت
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+                const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
+                const expiryYear = document.getElementById('expiryYear').value;
+                const cvv2 = document.getElementById('cvv2').value;
+                const password = document.getElementById('password').value;
+
+                if (!cardNumber || cardNumber.length !== 16) {
+                    await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
+                    await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!expiryYear || expiryYear.length !== 2) {
+                    await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
+                    await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
+                    return;
+                }
+
+                if (!password) {
+                    await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
+                    return;
+                }
+
+                // UI Feedback
+                const originalText = confirmPaymentBtn.innerHTML;
+                confirmPaymentBtn.disabled = true;
+                confirmPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال پردازش...';
+
+                try {
+                    // ساخت داده‌های ارسالی
+                    const paymentData = {
+                        mobileNumber: mobileNumber,
+                        amount: totalAmount,
+                        items: selectedItems,
+                        manualPayment: manualAdjustment > 0,
+                        cardDetails: {
+                            number: cardNumber,
+                            expiry: `${expiryMonth}/${expiryYear}`,
+                            cvv: cvv2
+                        }
+                    };
+
+                    // اضافه کردن لاگ برای دیباگ
+                    const apiUrl = `http://192.168.50.15:7475/api/BNPL/Settle?mobileNumber=${encodeURIComponent(mobileNumber)}&amount=${encodeURIComponent(totalAmount)}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(paymentData)
+                    });
+
+                    if (!response.ok) {
+                        const error = await response.text();
+                        throw new Error(error || 'خطا در ارتباط با سرور');
+                    }
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        paymentModal.hide();
+                        await Swal.fire({
+                            icon: 'success',
+                            title: 'پرداخت موفق',
+                            text: `پرداخت مبلغ ${formatCurrency(totalAmount)} با موفقیت انجام شد`,
+                            confirmButtonText: 'باشه'
+                        });
+
+                        // به‌روزرسانی UI و ریست مقادیر
+                        resetPaymentUI();
+                        window.location.reload();
+                    } else {
+                        throw new Error(result.message || 'خطا در پرداخت');
+                    }
+                } catch (error) {
+                    console.error('Payment error:', error);
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'خطا در پرداخت',
+                        text: error.message || 'خطایی در پرداخت رخ داده است',
+                        confirmButtonText: 'متوجه شدم'
+                    });
+                } finally {
+                    confirmPaymentBtn.disabled = false;
+                    confirmPaymentBtn.innerHTML = originalText;
+                }
+            });
+
+            function resetPaymentUI() {
                 selectedItems.forEach(item => {
                     if (item.element) {
                         item.element.checked = false;
                         item.element.dispatchEvent(new Event('change'));
                     }
                 });
-                
-                window.location.reload();
-            } else {
-                throw new Error('پرداخت با خطا مواجه شد');
+
+                currentTotal = 0;
+                manualAdjustment = 0;
+                selectedItems = [];
+                paymentAmountInput.value = formatCurrency(currentTotal);
+                payButton.disabled = true;
             }
-        } catch (error) {
-            console.error('Payment error:', error);
-            await Swal.fire({
-                icon: 'error',
-                title: 'خطا در پرداخت',
-                text: error.message || 'خطایی در پرداخت رخ داده است',
-                confirmButtonText: 'متوجه شدم'
+
+            // فرمت شماره کارت
+            document.getElementById('cardNumber').addEventListener('input', function (e) {
+                let value = this.value.replace(/\D/g, '');
+                let formatted = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) formatted += '-';
+                    formatted += value[i];
+                }
+                this.value = formatted;
             });
-        } finally {
-            confirmPaymentBtn.disabled = false;
-            confirmPaymentBtn.innerHTML = originalText;
-        }
-    });
 
-    // --- سایر رویدادهای فرم ---
-    const cardNumberInput = document.getElementById('cardNumber');
-    if (cardNumberInput) {
-        cardNumberInput.addEventListener('input', function(e) {
-            let value = this.value.replace(/\D/g, '');
-            let formatted = '';
-            for (let i = 0; i < value.length; i++) {
-                if (i > 0 && i % 4 === 0) formatted += '-';
-                formatted += value[i];
-            }
-            this.value = formatted;
+            // اعتبارسنجی ماه انقضا
+            document.getElementById('expiryMonth').addEventListener('input', function (e) {
+                this.value = this.value.replace(/\D/g, '').slice(0, 2);
+                if (this.value.length === 1 && parseInt(this.value) > 1) {
+                    this.value = '0' + this.value;
+                }
+                if (this.value.length === 2 && parseInt(this.value) > 12) {
+                    this.value = '12';
+                }
+            });
+
+            // اعتبارسنجی سال انقضا
+            document.getElementById('expiryYear').addEventListener('input', function (e) {
+                this.value = this.value.replace(/\D/g, '').slice(0, 2);
+            });
         });
-    }
-
-    document.getElementById('expiryMonth').addEventListener('input', function(e) {
-        this.value = this.value.replace(/\D/g, '').slice(0, 2);
-        if (this.value.length === 1 && parseInt(this.value) > 1) {
-            this.value = '0' + this.value;
-        }
-        if (this.value.length === 2 && parseInt(this.value) > 12) {
-            this.value = '12';
-        }
-    });
-
-    document.getElementById('expiryYear').addEventListener('input', function(e) {
-        this.value = this.value.replace(/\D/g, '').slice(0, 2);
-    });
-});
-</script>
+    </script>
 </body>
 
 </html>

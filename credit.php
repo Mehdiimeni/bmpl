@@ -6,10 +6,7 @@ header("Expires: 0"); // Proxies
 
 session_start();
 
-if (!isset($_SESSION['mobileNumber'])) {
-    header('Location: login-user.php');
-    exit();
-}
+
 
 function convertToPersianNumber($number, $decimals = 0)
 {
@@ -48,7 +45,7 @@ curl_close($curl);
 
 
 // تلاش برای تبدیل به JSON
-$data = json_decode($response, true);
+$userData = json_decode($response, true);
 
 // اگر داده‌ها معتبر بودن و خطا نبود، در سشن ذخیره شود
 
@@ -658,18 +655,15 @@ $data = json_decode($response, true);
 
     <div class="container flex-grow-1 d-flex flex-column justify-content-center align-items-center">
         <div class="credit-offer text-center">
-            <h5 class="mb-3">اعتبار باقی‌مانده <?php echo ($data['merchantName']); ?>:</h5>
-            <div class="main-credit-amount"><?php echo convertToPersianNumber($data['credit'] ?? 0); ?> ریال</div>
+            <h5 class="mb-3">اعتبار باقی‌مانده <?php echo ($userData['merchantName']); ?>:</h5>
+            <div class="main-credit-amount"><?php echo convertToPersianNumber($userData['credit'] ?? 0); ?> ریال</div>
 
             <div class="credit-summary-details">
-                <div class="credit-summary-item">
-                    <span>اعتبار اولیه</span>
-                    <strong><?php echo convertToPersianNumber($data['initialCredit'] ?? 0); ?> ریال</strong>
-                </div>
-                <div class="credit-summary-item">
+               
+              <div class="credit-summary-item">
                     <span>مانده بدهی</span>
-                    <strong><?php echo convertToPersianNumber($data['debt'] ?? 0); ?> ریال</strong>
-                </div>
+                    <strong><?php echo convertToPersianNumber($userData['debt'] ?? 0); ?> ریال</strong>
+                </div> 
 
             </div>
 

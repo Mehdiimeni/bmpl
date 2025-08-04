@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 'amount' => (int) $products['price'],
                 'paymentType' => 0
             ]);
-            $_SESSION['payment_result'][] = $buyResponse; 
+            $_SESSION['payment_result'][] = $buyResponse;
 
-            if(!isset($buyResponse['response']['data']['rrn']))
+            if (!isset($buyResponse['response']['data']['rrn']))
                 continue;
 
             $confirmResponse = callAPI('http://192.168.50.15:7475/api/BNPL/Verify', [
@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <div class="countdown mb-4" id="countdown">90</div>
 
             <div class="info-box text-start">
-                <p><strong>مبلغ:</strong> <?= number_format($paymentData['total_amount']) ?> تومان</p>
+                <p><strong>مبلغ:</strong> <?= number_format($paymentData['total_amount']) ?> ریال</p>
                 <p><strong>شماره ترمینال:</strong> <?= htmlspecialchars($paymentData['terminal_id']) ?></p>
                 <p><strong>تاریخ و ساعت:</strong> <?= date('Y/m/d H:i') ?></p>
             </div>

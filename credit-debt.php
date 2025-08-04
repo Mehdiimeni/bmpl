@@ -1371,17 +1371,12 @@ $result = [
                         }
                     };
 
-                    // اضافه کردن لاگ برای دیباگ
-                    const apiUrl = `http://192.168.50.15:7475/api/BNPL/Settle?mobileNumber=${encodeURIComponent(mobileNumber)}&amount=${encodeURIComponent(totalAmount)}`;
+                    const apiUrl = `./proxy-settle.php?mobileNumber=${encodeURIComponent(mobileNumber)}&amount=${encodeURIComponent(totalAmount)}`;
 
                     const response = await fetch(apiUrl, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(paymentData)
+                        method: 'PUT'
                     });
+
 
                     if (!response.ok) {
                         const error = await response.text();
@@ -1399,12 +1394,12 @@ $result = [
                             confirmButtonText: 'باشه'
                         });
 
-                        // به‌روزرسانی UI و ریست مقادیر
                         resetPaymentUI();
                         window.location.reload();
                     } else {
                         throw new Error(result.message || 'خطا در پرداخت');
                     }
+
                 } catch (error) {
                     console.error('Payment error:', error);
                     await Swal.fire({

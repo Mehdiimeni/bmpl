@@ -6,24 +6,17 @@ use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
-//use DomainException;
-//use UnexpectedValueException;
-
-
 
 // ذخیره کد در سشن برای بررسی بعدی
-if(isset($_POST['token'])&&$_POST['token']!='') {
-    
-
-$_SESSION['payment_data'] = [
-    'mobile' => $_POST['mobile'],
-    'terminal_id' => $_POST['terminal_id'],
-    'total_amount' => $_POST['total_amount'],
-    'token' => $_POST['token'],
-    'return_url' => $_POST['return_url'],
-    'products' => $_POST['products']
-];
-
+if (isset($_POST['token']) && $_POST['token'] != '') {
+    $_SESSION['payment_data'] = [
+        'mobile' => $_POST['mobile'],
+        'terminal_id' => $_POST['terminal_id'],
+        'total_amount' => $_POST['total_amount'],
+        'token' => $_POST['token'],
+        'return_url' => $_POST['return_url'],
+        'products' => $_POST['products']
+    ];
 }
 
 if (!isset($_SESSION['mobileNumber'])) {
@@ -38,9 +31,8 @@ if (empty($_SESSION['payment_data']['token'])) {
     showError('خطای پرداخت', 'توکن پرداخت نامعتبر است یا ارسال نشده است.');
 }
 
-
-
-function showError($title, $message, $redirect = null) {
+function showError($title, $message, $redirect = null)
+{
     $redirect = $redirect ?? (isset($_SESSION['payment_data']['return_url']) ? htmlspecialchars($_SESSION['payment_data']['return_url']) : 'index.php');
 
     echo <<<HTML
@@ -110,8 +102,6 @@ HTML;
     exit;
 }
 
-
-
 // ذخیره اطلاعات دریافتی
 $mobileNumber = $_SESSION['payment_data']['mobile'];
 $terminalId = $_SESSION['payment_data']['terminal_id'];
@@ -120,11 +110,9 @@ $products = $_SESSION['payment_data']['products'] ?? [];
 $token = $_SESSION['payment_data']['token'];
 $return_url = $_SESSION['payment_data']['return_url'];
 
-// تابع بررسی توکن (مثال - باید با سیستم شما تطبیق داده شود)
+// تابع بررسی توکن
 function validateToken($receivedToken, $mobile, $terminalId)
 {
-
-
     $secretKey = 'bnpl-intek-iw-123!@#'; // باید همان کلید تولید توکن باشد
 
     try {
@@ -149,19 +137,15 @@ function validateToken($receivedToken, $mobile, $terminalId)
         return true;
 
     } catch (SignatureInvalidException $e) {
-        // امضای نامعتبر
         error_log('Invalid token signature: ' . $e->getMessage());
         return false;
     } catch (BeforeValidException $e) {
-        // توکن هنوز معتبر نیست
         error_log('Token not yet valid: ' . $e->getMessage());
         return false;
     } catch (ExpiredException $e) {
-        // توکن منقضی شده
         error_log('Expired token: ' . $e->getMessage());
         return false;
     } catch (DomainException | UnexpectedValueException $e) {
-        // خطاهای عمومی
         error_log('Token validation error: ' . $e->getMessage());
         return false;
     }
@@ -180,7 +164,6 @@ curl_setopt_array($curl, [
     CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
 ]);
 
-
 $merchantResponse = curl_exec($curl);
 if (curl_errno($curl)) {
     die('خطا در دریافت اطلاعات پذیرنده: ' . curl_error($curl));
@@ -195,10 +178,8 @@ curl_close($curl);
 // تولید کد تصادفی 8 رقمی
 $verificationCode = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
 
-
-
-// ارسال کد به موبایل کاربر (این بخش بستگی به سرویس SMS شما دارد)
-// sendSms($mobileNumber, "کد تأیید پرداخت شما: $verificationCode");
+// محاسبه مبلغ اولیه پرداخت
+$firstPayment = ($totalAmount / 4);
 ?>
 
 <!DOCTYPE html>
@@ -209,6 +190,7 @@ $verificationCode = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تأیید پرداخت اعتباری</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         .payment-summary {
             border: 1px solid #ddd;
@@ -225,6 +207,14 @@ $verificationCode = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
         .verification-box {
             max-width: 400px;
             margin: 0 auto;
+        }
+
+        .modal-backdrop {
+            z-index: 1040 !important;
+        }
+
+        .modal {
+            z-index: 1050 !important;
         }
     </style>
 </head>
@@ -251,35 +241,44 @@ $verificationCode = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
                                 <div class="product-item py-2 border-bottom d-flex flex-column">
                                     <div class="d-flex justify-content-between">
                                         <span><?= htmlspecialchars($product['name']) ?></span>
-                                        <span class="text-end"><?= number_format($product['price']) ?> تومان</span>
+                                        <span class="text-end"><?= number_format($product['price']) ?> ریال</span>
                                     </div>
                                     <small class="text-muted">کد: <?= htmlspecialchars($product['id']) ?></small>
                                 </div>
                             <?php endforeach; ?>
                             <div class="product-item py-3 mt-3 bg-light rounded-3 px-3">
                                 <div class="d-flex justify-content-between fw-bold">
+                                    <span>پرداختی امروز:</span>
+                                    <span><?= number_format($firstPayment) ?> ریال</span>
+                                </div>
+                            </div>
+                            <div class="product-item py-3 mt-3 bg-light rounded-3 px-3">
+                                <div class="d-flex justify-content-between fw-bold">
                                     <span>جمع کل:</span>
-                                    <span><?= number_format($totalAmount) ?> تومان</span>
+                                    <span><?= number_format($totalAmount) ?> ریال</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- فرم تأیید -->
                         <div class="verification-box">
-                            <form id="verifyForm" method="POST" action="process-payment.php" novalidate>
+                            <form id="verifyForm" method="POST" novalidate>
                                 <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                                 <div class="mb-3">
                                     <label for="verificationCode" class="form-label fw-semibold">
-                                        کد تأیید ارسال شده به <span class="text-primary"><?= htmlspecialchars($mobileNumber) ?></span>
+                                        کد تأیید ارسال شده به <span
+                                            class="text-primary"><?= htmlspecialchars($mobileNumber) ?></span>
                                     </label>
-                                    <input type="text" class="form-control text-center fw-bold fs-5" 
+                                    <input type="text" class="form-control text-center fw-bold fs-5"
                                         id="verificationCode" name="verification_code" required maxlength="8"
                                         placeholder="مثلاً 12345678">
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-between">
-                                    <button type="submit" class="btn btn-success w-100 w-md-50">تأیید پرداخت</button>
-                                    <a href="<?= htmlspecialchars($_SESSION['payment_data']['return_url']) ?>" class="btn btn-outline-secondary w-100 w-md-50">انصراف و بازگشت</a>
+                                    <button type="button" id="submitPayment" class="btn btn-success w-100 w-md-50">تأیید
+                                        پرداخت</button>
+                                    <a href="<?= htmlspecialchars($_SESSION['payment_data']['return_url']) ?>"
+                                        class="btn btn-outline-secondary w-100 w-md-50">انصراف و بازگشت</a>
                                 </div>
                             </form>
                         </div>
@@ -289,21 +288,220 @@ $verificationCode = str_pad(mt_rand(0, 99999999), 8, '0', STR_PAD_LEFT);
         </div>
     </div>
 
-    <!-- اعتبارسنجی سمت کاربر -->
+    <!-- مودال پرداخت -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">پیش پرداخت الزامی</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paymentForm">
+                        <input type="hidden" id="mobileNumber" value="<?= $mobileNumber ?>">
+                        <input type="hidden" id="firstPayment" value="<?= $firstPayment ?>">
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">مبلغ پیش پرداخت</label>
+                            <?php echo number_format(($firstPayment)); ?> ریال
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">شماره کارت</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="6037-XXXX-XXXX-XXXX"
+                                maxlength="19">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="expiryMonth" class="form-label">ماه انقضا (MM)</label>
+                                <input type="text" class="form-control" id="expiryMonth" placeholder="00" maxlength="2"
+                                    inputmode="numeric">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="expiryYear" class="form-label">سال انقضا (YY)</label>
+                                <input type="text" class="form-control" id="expiryYear" placeholder="00" maxlength="2"
+                                    inputmode="numeric">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cvv2" class="form-label">CVV2</label>
+                                <input type="password" class="form-control" id="cvv2" placeholder="XXX" maxlength="4">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">رمز دوم</label>
+                                <input type="password" class="form-control" id="password" placeholder="رمز دوم کارت">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">انصراف</button>
+                    <button type="button" id="confirmPayment" class="btn btn-primary">تأیید پرداخت</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- اسکریپت‌های مورد نیاز -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // اعتبارسنجی فرم تأیید
         document.getElementById('verifyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+        });
+
+        // باز کردن مودال پرداخت هنگام کلیک روی دکمه تأیید پرداخت
+        document.getElementById('submitPayment').addEventListener('click', function () {
             const codeInput = document.getElementById('verificationCode');
+
             if (!/^\d{8}$/.test(codeInput.value.trim())) {
-                e.preventDefault();
-                alert('لطفاً کد تأیید 8 رقمی را صحیح وارد کنید');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطا',
+                    text: 'لطفاً کد تأیید 8 رقمی را صحیح وارد کنید',
+                    confirmButtonText: 'متوجه شدم'
+                });
                 codeInput.focus();
+                return;
             }
+
+            // نمایش مودال پرداخت
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
+        });
+
+        // اعتبارسنجی فرم پرداخت
+        document.getElementById('confirmPayment').addEventListener('click', async function () {
+            const mobileNumber = document.getElementById('mobileNumber').value;
+            const firstPayment = document.getElementById('firstPayment').value;
+            const confirmPaymentBtn = document.getElementById('confirmPayment');
+
+            // اعتبارسنجی اطلاعات کارت
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+            const expiryMonth = document.getElementById('expiryMonth').value.padStart(2, '0');
+            const expiryYear = document.getElementById('expiryYear').value;
+            const cvv2 = document.getElementById('cvv2').value;
+            const password = document.getElementById('password').value;
+
+            if (!cardNumber || cardNumber.length !== 16) {
+                await Swal.fire('خطا', 'شماره کارت معتبر نیست', 'error');
+                return;
+            }
+
+            if (!expiryMonth || expiryMonth.length !== 2 || parseInt(expiryMonth) < 1 || parseInt(expiryMonth) > 12) {
+                await Swal.fire('خطا', 'ماه انقضا معتبر نیست', 'error');
+                return;
+            }
+
+            if (!expiryYear || expiryYear.length !== 2) {
+                await Swal.fire('خطا', 'سال انقضا معتبر نیست', 'error');
+                return;
+            }
+
+            if (!cvv2 || cvv2.length < 3 || cvv2.length > 4) {
+                await Swal.fire('خطا', 'CVV2 معتبر نیست', 'error');
+                return;
+            }
+
+            if (!password) {
+                await Swal.fire('خطا', 'رمز دوم را وارد کنید', 'error');
+                return;
+            }
+
+            // UI Feedback
+            const originalText = confirmPaymentBtn.innerHTML;
+            confirmPaymentBtn.disabled = true;
+            confirmPaymentBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> در حال پردازش...';
+
+            try {
+                // ساخت داده‌های ارسالی
+                const paymentData = {
+                    mobileNumber: mobileNumber,
+                    amount: firstPayment,
+                    cardDetails: {
+                        number: cardNumber,
+                        expiry: `${expiryMonth}/${expiryYear}`,
+                        cvv: cvv2
+                    }
+                };
+
+                // ارسال درخواست به API
+                const apiUrl = `./proxy-settle.php?mobileNumber=${encodeURIComponent(mobileNumber)}&amount=${encodeURIComponent(firstPayment)}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'PUT'
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(error || 'خطا در ارتباط با سرور');
+                }
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // بستن مودال
+                    const paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+                    paymentModal.hide();
+
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'پرداخت موفق',
+                        text: `پرداخت مبلغ ${new Intl.NumberFormat().format(firstPayment)} ریال با موفقیت انجام شد`,
+                        confirmButtonText: 'باشه'
+                    });
+
+                    // ارسال فرم و انتقال به صفحه پرداخت
+                    document.getElementById('verifyForm').action = 'process-payment.php';
+                    document.getElementById('verifyForm').submit();
+                } else {
+                    throw new Error(result.message || 'خطا در پرداخت');
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'خطا در پرداخت',
+                    text: error.message || 'خطایی در پرداخت رخ داده است',
+                    confirmButtonText: 'متوجه شدم'
+                });
+            } finally {
+                confirmPaymentBtn.disabled = false;
+                confirmPaymentBtn.innerHTML = originalText;
+            }
+        });
+
+        // فرمت شماره کارت
+        document.getElementById('cardNumber').addEventListener('input', function (e) {
+            let value = this.value.replace(/\D/g, '');
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += '-';
+                formatted += value[i];
+            }
+            this.value = formatted;
+        });
+
+        // اعتبارسنجی ماه انقضا
+        document.getElementById('expiryMonth').addEventListener('input', function (e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 2);
+            if (this.value.length === 1 && parseInt(this.value) > 1) {
+                this.value = '0' + this.value;
+            }
+            if (this.value.length === 2 && parseInt(this.value) > 12) {
+                this.value = '12';
+            }
+        });
+
+        // اعتبارسنجی سال انقضا
+        document.getElementById('expiryYear').addEventListener('input', function (e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 2);
         });
     </script>
 
-    <!-- فونت فارسی (اختیاری) -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn-font@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <!-- فونت فارسی -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn-font@v33.003/Vazirmatn-font-face.css" rel="stylesheet"
+        type="text/css" />
 </body>
-
 
 </html>

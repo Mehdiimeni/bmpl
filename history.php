@@ -348,7 +348,7 @@ if ($buyHistory['success'] && !empty($buyHistory['data'])) {
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h5><?= htmlspecialchars($prod['name']) ?></h5>
-                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> تومان</div>
+                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> ریال</div>
                                 </div>
                                 <i class="fas fa-chevron-down"></i>
                             </div>
@@ -359,7 +359,7 @@ if ($buyHistory['success'] && !empty($buyHistory['data'])) {
                                     <div class="installment-item">
                                         <div class="installment-date">قسط <?= $i + 1 ?> - <?= $inst['date'] ?></div>
                                         <div class="d-flex align-items-center">
-                                            <span class="installment-amount"><?= number_format($inst['price']) ?> تومان</span>
+                                            <span class="installment-amount"><?= number_format($inst['price']) ?> ریال</span>
                                             <?php if ($inst['isPaid']): ?>
                                                 <span class="status-badge status-paid ms-2">پرداخت شده</span>
                                             <?php else: ?>
@@ -369,8 +369,8 @@ if ($buyHistory['success'] && !empty($buyHistory['data'])) {
                                     </div>
                                 <?php endforeach; ?>
                                 <div class="total-paid">
-                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> تومان از
-                                    <?= number_format($prod['totalPrice']) ?> تومان
+                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> ریال از
+                                    <?= number_format($prod['totalPrice']) ?> ریال
                                 </div>
                             </div>
                         </div>
@@ -386,7 +386,7 @@ if ($buyHistory['success'] && !empty($buyHistory['data'])) {
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h5><?= htmlspecialchars($prod['name']) ?></h5>
-                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> تومان</div>
+                                    <div class="product-price"><?= number_format($prod['totalPrice']) ?> ریال</div>
                                 </div>
                                 <i class="fas fa-chevron-down"></i>
                             </div>
@@ -397,13 +397,13 @@ if ($buyHistory['success'] && !empty($buyHistory['data'])) {
                                     <div class="installment-item">
                                         <div class="installment-date">قسط <?= $i + 1 ?> - <?= $inst['date'] ?></div>
                                         <div class="d-flex align-items-center">
-                                            <span class="installment-amount"><?= number_format($inst['price']) ?> تومان</span>
+                                            <span class="installment-amount"><?= number_format($inst['price']) ?> ریال</span>
                                             <span class="status-badge status-paid ms-2">پرداخت شده</span>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
                                 <div class="total-paid">
-                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> تومان از
+                                    مجموع پرداختی: <?= number_format($prod['totalPaid']) ?> ریال از
                                     <?= number_format($prod['totalPrice']) ?> تومان
                                 </div>
                             </div>
